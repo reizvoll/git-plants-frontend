@@ -192,6 +192,7 @@ const config: Config = {
       borderColor: ["checked"], // checked 상태에서 테두리색 활성화
       textColor: ["checked"] // checked 상태에서 텍스트 색상 활성화
     }
-  }
+  },
+  plugins: [require("tailwindcss-animate")]
 };
 export default config;
