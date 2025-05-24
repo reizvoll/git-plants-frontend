@@ -1,3 +1,4 @@
+import TQProviders from "@/lib/providers/TQProvider";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -12,22 +13,24 @@ const pretendard = localFont({
 const galmuri = localFont({
   src: "../assets/fonts/GalmuriMono9.woff2",
   display: "swap",
-  variable: "--font-galmuri",
+  variable: "--font-galmuri"
 });
 
 export const metadata: Metadata = {
   title: "Git Plants",
-  description: "Generating plant visuals based on GitHub activity, designed for use in profile READMEs.",
+  description: "Generating plant visuals based on GitHub activity, designed for use in profile READMEs."
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={`${pretendard.className} ${galmuri.className}`}>{children}</body>
+      <TQProviders>
+        <body className={`${pretendard.className} ${galmuri.className}`}>{children}</body>
+      </TQProviders>
     </html>
   );
 }
