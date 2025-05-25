@@ -1,5 +1,6 @@
+import Header from "@/components/layout/Header";
 import TQProviders from "@/lib/providers/TQProvider";
-import "@/styles/globals.css";
+import "@/lib/styles/globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
@@ -29,7 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <TQProviders>
-        <body className={`${pretendard.className} ${galmuri.className}`}>{children}</body>
+        <body className={`${pretendard.className} ${galmuri.className}`}>
+          <Header />
+          {children}
+        </body>
       </TQProviders>
     </html>
   );
