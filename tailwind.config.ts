@@ -5,6 +5,7 @@ const config: Config = {
   theme: {
     fontSize: {
       heading: ["36px", { lineHeight: "150%", letterSpacing: "-0.025em" }], // Heading 36px
+      subHeading: ["28px", { lineHeight: "150%", letterSpacing: "-0.025em" }], // SubHeading 28px
       title1: ["24px", { lineHeight: "150%", letterSpacing: "-0.025em" }], // Title1 24px
       subtitle: ["20px", { lineHeight: "150%", letterSpacing: "-0.015em" }], // Subtitle 20px
       title2: ["18px", { lineHeight: "150%", letterSpacing: "-0.015em" }], // Title2 18px
