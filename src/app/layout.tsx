@@ -19,7 +19,10 @@ const galmuri = localFont({
 
 export const metadata: Metadata = {
   title: "Git Plants",
-  description: "Generating plant visuals based on GitHub activity, designed for use in profile READMEs."
+  description: "Generating plant visuals based on GitHub activity, designed for use in profile READMEs.",
+  icons: {
+    icon: "/favicon.ico"
+  }
 };
 
 export default function RootLayout({
