@@ -4,7 +4,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef, type ButtonHTMLAttributes, type MouseEvent } from "react";
 
 const buttonVariants = cva(
-  "inline-block rounded-[8px] font-medium transition duration-300", // 공통 스타일
+  "inline-block rounded-[8px] font-medium transition duration-300 font-pretendard", // 공통 스타일
   {
     variants: {
       variant: {

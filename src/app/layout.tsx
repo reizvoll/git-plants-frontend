@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${pretendard.variable} ${galmuri.variable}`}>
       <TQProviders>
         <body className={`${pretendard.className} ${galmuri.className} overflow-x-hidden`}>
           <Header />
