@@ -1,3 +1,4 @@
+import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import TQProviders from "@/lib/providers/TQProvider";
 import "@/lib/styles/globals.css";
@@ -36,6 +37,7 @@ export default function RootLayout({
         <body className={`${pretendard.className} ${galmuri.className}`}>
           <Header />
           {children}
+          <Footer />
         </body>
       </TQProviders>
     </html>
