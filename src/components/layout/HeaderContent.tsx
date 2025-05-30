@@ -36,7 +36,7 @@ const HeaderContent = () => {
             </div>
           ) : (
             <Button
-              variant="whiteLine"
+              variant="gray"
               size="md"
               className="flex h-[2.9375rem] items-center justify-center gap-2 rounded-lg bg-gray-800 px-4 py-3 md:px-[2.1875rem]"
               onClick={login}
