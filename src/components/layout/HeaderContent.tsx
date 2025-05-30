@@ -42,7 +42,7 @@ const HeaderContent = () => {
               onClick={login}
             >
               <div className="flex items-center gap-2">
-                <GithubIcon className="h-5 w-5" />
+                <GithubIcon className="text-text-01" width={20} height={20} />
                 <span className="hidden text-body1 text-white md:flex">로그인</span>
               </div>
             </Button>
