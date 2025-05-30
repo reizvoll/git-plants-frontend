@@ -8,14 +8,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-primary-default !text-black-50 hover:bg-primary-light active:bg-primary-strong",
+        primary: "bg-primary-default !text-text-01 hover:bg-primary-light active:bg-primary-strong",
         secondary: "bg-secondary-default !text-text-01 hover:bg-sageGreen-700",
-        primaryLine:
-          "bg-white border border-primary-strong !text-primary-strong hover:bg-brown-50 active:bg-primary-light",
+        primaryLine: "bg-white border border-primary-strong !text-primary-strong active:bg-primary-light",
+        secondaryLine:
+          "bg-bg-01 border border-sageGreen-900 !text-sageGreen-900 hover:bg-sageGreen-50 active:bg-sageGreen-700",
+        secondaryStrong: "bg-sageGreen-700 !text-text-01 hover:bg-sageGreen-900",
         disabled: "bg-bg-02 !text-text-02",
         disabledLine: "bg-bg-01 border border-line-02 !text-text-02",
-        whiteLine: "bg-bg-01 border border-sageGreen-900 !text-sageGreen-900",
-        grayLine: "bg-sageGreen-50 border border-sageGreen-900 !text-sageGreen-900"
+        gray: "bg-gray-800 !text-text-01 hover:bg-gray-700 active:bg-gray-600",
+        grayLine: "bg-bg-01 border border-gray-500 !text-text-03 hover:bg-gray-50"
       },
       size: {
         lg: "h-14 leading-[3.5rem] px-6 text-subtitle",

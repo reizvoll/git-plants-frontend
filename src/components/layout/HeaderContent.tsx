@@ -36,13 +36,13 @@ const HeaderContent = () => {
             </div>
           ) : (
             <Button
-              variant="whiteLine"
+              variant="gray"
               size="md"
               className="flex h-[2.9375rem] items-center justify-center gap-2 rounded-lg bg-gray-800 px-4 py-3 md:px-[2.1875rem]"
               onClick={login}
             >
               <div className="flex items-center gap-2">
-                <GithubIcon className="h-5 w-5" />
+                <GithubIcon className="text-text-01" width={20} height={20} />
                 <span className="hidden text-body1 text-white md:flex">로그인</span>
               </div>
             </Button>

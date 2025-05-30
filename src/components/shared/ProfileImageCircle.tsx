@@ -17,7 +17,7 @@ const ProfileImageCircle = ({ profileImage, nickname, size, className }: Props) 
       alt={`${nickname}의 프로필 이미지`}
       width={size}
       height={size}
-      className={clsx("overflow-hidden rounded-full bg-bg-02 object-cover", className)}
+      className={clsx("overflow-hidden rounded-full bg-gray-50 object-cover", className)}
       onError={() => setIsImgError(true)}
     />
   );
