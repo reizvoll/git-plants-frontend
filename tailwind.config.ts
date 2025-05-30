@@ -141,8 +141,14 @@ const config: Config = {
       },
       keyframes: {
         fadeIn: {
-          from: { opacity: "0" },
-          to: { opacity: "1" }
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        loadingText: {
+          "0%": { transform: "translateY(0)" },
+          "25%": { transform: "translateY(-10px)" },
+          "50%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(0)" }
         },
         fadeOut: {
           from: { opacity: "1" },

@@ -1,5 +1,7 @@
 "use client";
 
+import { LoadingDots } from "@/components/shared/LoadingDots";
+import { LoadingText } from "@/components/shared/LoadingText";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -31,8 +33,13 @@ export default function CallbackClient({ error }: { error?: string }) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-bg-01 p-8 text-center">
       <div className="mx-auto flex w-full max-w-[400px] flex-col items-center justify-center">
-        <h1 className="m-0 text-center text-title1 text-text-04">Processing authentication...</h1>
-        <div className="mt-8 flex w-full justify-center">Loading...</div>
+        <h1 className="m-0 text-center text-title1 text-text-04">
+          Processing authentication
+          <LoadingDots />
+        </h1>
+        <div className="mt-8 flex w-full justify-center">
+          <LoadingText text="Loading..." />
+        </div>
       </div>
     </div>
   );
