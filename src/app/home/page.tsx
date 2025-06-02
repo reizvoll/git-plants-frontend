@@ -1,6 +1,7 @@
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import FeatureSlider from "./_components/section/feature/FeatureSlider";
 import HeroSection from "./_components/section/hero/HeroSection";
+import HowItWorksIntro from "./_components/section/howitworks/HowItWorksIntro";
 import UpdateNote from "./_components/section/note/UpdateNote";
 
 const MainPage = () => {
@@ -11,6 +12,7 @@ const MainPage = () => {
         <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-60 pb-20 pt-32">
           <UpdateNote />
           <FeatureSlider />
+          <HowItWorksIntro />
         </div>
       </div>
       <ScrollTopButton />
