@@ -1,6 +1,6 @@
 import ContributionsTab from "./ContributionsTab";
 
-const HowItWorksIntro = () => {
+const HowItWorksSection = () => {
   return (
     <div className="bg-brown-100 relative mx-auto flex w-full max-w-[1000px] items-center justify-center rounded-2xl px-[96px] py-10">
       <div className="flex w-full flex-col items-center justify-center gap-10">
@@ -20,4 +20,4 @@ const HowItWorksIntro = () => {
   );
 };
 
-export default HowItWorksIntro;
+export default HowItWorksSection;

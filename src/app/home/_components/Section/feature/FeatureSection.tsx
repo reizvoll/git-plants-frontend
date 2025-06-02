@@ -14,7 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const FeatureSlider = () => {
+const FeatureSection = () => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
@@ -71,4 +71,4 @@ const FeatureSlider = () => {
   );
 };
 
-export default FeatureSlider;
+export default FeatureSection;
