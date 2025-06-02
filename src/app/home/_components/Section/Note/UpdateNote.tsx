@@ -1,13 +1,13 @@
 import corn1 from "@/assets/images/corn1.webp";
 import corn2 from "@/assets/images/corn2.webp";
-import Note from "@/assets/images/note.webp";
+import note from "@/assets/images/note.webp";
 import plant from "@/assets/images/plant_icon.png";
 import Image from "next/image";
 
 const UpdateNote = () => {
   return (
     <div className="relative w-full">
-      <Image src={Note} alt="Note" width={1200} height={400} className="w-full object-cover" />
+      <Image src={note} alt="Note" width={1200} height={400} className="w-full object-cover" />
       <div className="absolute inset-0 flex items-center justify-center px-12 py-12">
         <div className="flex w-full flex-row items-center justify-center gap-12">
           {/* Left Content Section */}
