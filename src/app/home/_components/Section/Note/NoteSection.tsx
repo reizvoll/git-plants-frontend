@@ -4,7 +4,8 @@ import note from "@/assets/images/note.webp";
 import plant from "@/assets/images/plant_icon.png";
 import Image from "next/image";
 
-const UpdateNote = () => {
+//Todo : refactoring code, and explore strategies for connecting with the back office.
+const NoteSection = () => {
   return (
     <div className="flex w-full justify-center">
       <div className="relative h-[634px] w-[1000px]">
@@ -98,4 +99,4 @@ const UpdateNote = () => {
   );
 };
 
-export default UpdateNote;
+export default NoteSection;
