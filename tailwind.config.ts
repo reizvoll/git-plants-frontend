@@ -23,7 +23,19 @@ const config: Config = {
         primary: {
           default: "#845F4C", // Brown/700
           light: "#BCA386", // Brown/400
-          strong: "#553428", // Brown/900
+          strong: "#553428" // Brown/900
+        },
+        secondary: {
+          default: "#CDD5AE", // SageGreen/500
+          light: "#E9F0DB" // SageGreen/100
+        },
+        status: {
+          success: "#00F050", // Green/600
+          danger: "#ED7373", // Red/400
+          warning: "#FFDA6B", // Yellow/300
+          info: "#71AAFE" // Blue/300
+        },
+        brown: {
           "50": "#FFF9F0",
           "100": "#F4EBDC",
           "200": "#D2C7B6",
@@ -35,16 +47,6 @@ const config: Config = {
           "800": "#6C4839",
           "900": "#553428",
           "950": "#3D241B"
-        },
-        secondary: {
-          default: "#CDD5AE", // SageGreen/500
-          light: "#E9F0DB" // SageGreen/100
-        },
-        status: {
-          success: "#00F050", // Green/600
-          danger: "#ED7373", // Red/400
-          warning: "#FFDA6B", // Yellow/300
-          info: "#71AAFE" // Blue/300
         },
         sageGreen: {
           DEFAULT: "#CDD5AE", // SageGreen/500

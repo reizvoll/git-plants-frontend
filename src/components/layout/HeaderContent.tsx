@@ -1,7 +1,7 @@
 "use client";
 
-import GithubIcon from "@/assets/images/github";
-import StoreIcon from "@/assets/images/store";
+import GithubIcon from "@/assets/icons/github";
+import StoreIcon from "@/assets/icons/store";
 import { useAuthStore } from "@/lib/store/authStore";
 import { GearSixIcon } from "@phosphor-icons/react";
 import Link from "next/link";
