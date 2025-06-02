@@ -1,6 +1,6 @@
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
-import HeroSection from "./_components/Section/Hero/HeroSection";
-import UpdateNote from "./_components/Section/Note/UpdateNote";
+import HeroSection from "./_components/section/hero/HeroSection";
+import UpdateNote from "./_components/section/note/UpdateNote";
 
 const MainPage = () => {
   return (
