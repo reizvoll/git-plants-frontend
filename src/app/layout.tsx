@@ -33,7 +33,7 @@ export default function RootLayout({
       <TQProviders>
         <body className={`${pretendard.className} ${galmuri.className} overflow-x-hidden`}>
           <Header />
-          <main className="relative mx-auto w-full max-w-[1200px] pt-20 tb:pb-[77px] tb:pt-0">{children}</main>
+          <main className="relative mx-auto w-full pt-20 tb:pt-0">{children}</main>
           <Footer />
         </body>
       </TQProviders>
