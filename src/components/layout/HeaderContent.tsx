@@ -1,7 +1,7 @@
 "use client";
 
-import GithubIcon from "@/assets/images/github";
-import StoreIcon from "@/assets/images/store";
+import GithubIcon from "@/assets/icons/github";
+import StoreIcon from "@/assets/icons/store";
 import { useAuthStore } from "@/lib/store/authStore";
 import { GearSixIcon } from "@phosphor-icons/react";
 import Link from "next/link";
@@ -52,11 +52,11 @@ const HeaderContent = () => {
             <Dropdown
               trigger={<button className="font-galmuri text-body1 text-text-04 focus:outline-none">한국어</button>}
             >
-              <button className="flex h-[1.6875rem] w-[4.6875rem] flex-row items-center justify-center px-2 font-pretendard text-caption text-text-04">
+              <button className="flex h-[1.6875rem] w-[4.6875rem] flex-row items-center justify-center px-2 font-galmuri text-caption text-text-04">
                 English
               </button>
               <hr className="my-0 w-[4.75rem] border-t border-line-02" />
-              <button className="flex h-[1.6875rem] w-[3.9375rem] flex-row items-center justify-center px-2 font-pretendard text-caption text-text-04">
+              <button className="flex h-[1.6875rem] w-[3.9375rem] flex-row items-center justify-center px-2 font-galmuri text-caption text-text-04">
                 한국어
               </button>
             </Dropdown>
@@ -67,7 +67,7 @@ const HeaderContent = () => {
           </button>
           {/* Gear Icon */}
           <button className="flex h-[1.875rem] w-[1.875rem] items-center justify-center" aria-label="설정">
-            <GearSixIcon size={30} weight="regular" />
+            <GearSixIcon size={30} className="[stroke-width:3]" />
           </button>
         </div>
       </div>

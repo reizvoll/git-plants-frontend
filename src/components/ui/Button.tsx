@@ -4,11 +4,12 @@ import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef, type ButtonHTMLAttributes, type MouseEvent } from "react";
 
 const buttonVariants = cva(
-  "inline-block rounded-[8px] font-medium transition duration-300", // 공통 스타일
+  "inline-block rounded-[8px] font-medium transition duration-300 font-pretendard", // 공통 스타일
   {
     variants: {
       variant: {
         primary: "bg-primary-default !text-text-01 hover:bg-primary-light active:bg-primary-strong",
+        primaryLight: "bg-primary-light !text-text-01 hover:bg-primary-default active:bg-primary-default",
         secondary: "bg-secondary-default !text-text-01 hover:bg-sageGreen-700",
         primaryLine: "bg-white border border-primary-strong !text-primary-strong active:bg-primary-light",
         secondaryLine:

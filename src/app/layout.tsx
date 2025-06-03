@@ -20,10 +20,7 @@ const galmuri = localFont({
 
 export const metadata: Metadata = {
   title: "Git Plants",
-  description: "Generating plant visuals based on GitHub activity, designed for use in profile READMEs.",
-  icons: {
-    icon: "/favicon.ico"
-  }
+  description: "Generating plant visuals based on GitHub activity, designed for use in profile READMEs."
 };
 
 export default function RootLayout({
@@ -32,11 +29,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${pretendard.variable} ${galmuri.variable}`}>
       <TQProviders>
-        <body className={`${pretendard.className} ${galmuri.className}`}>
+        <body className={`${pretendard.className} ${galmuri.className} overflow-x-hidden`}>
           <Header />
-          {children}
+          <main className="relative mx-auto w-full pt-20 tb:pt-0">{children}</main>
           <Footer />
         </body>
       </TQProviders>
