@@ -51,7 +51,49 @@ export const authApi = {
         }
       }
     };
-  }
+  },
+  getProfile: () =>
+    API.get<{
+      user: {
+        username: string;
+        image: string | null;
+      };
+      seedCount: number;
+      badges: Array<{
+        id: string;
+        awardedAt: string;
+        badge: {
+          id: string;
+          name: string;
+          condition: string;
+          imageUrl: string;
+        };
+      }>;
+      equipped: {
+        background: {
+          id: string;
+          name: string;
+          category: string;
+          imageUrl: string;
+          price: number;
+        } | null;
+        pot: {
+          id: string;
+          name: string;
+          category: string;
+          imageUrl: string;
+          price: number;
+        } | null;
+      };
+      plants: Array<{
+        id: string;
+        name: string;
+        stage: "SEED" | "SPROUT" | "GROWING" | "MATURE" | "HARVEST";
+        currentContributions: number;
+        createdAt: string;
+        updatedAt: string;
+      }>;
+    }>("/api/users/profile")
 };
 
 // GitHub 활동 관련 API
