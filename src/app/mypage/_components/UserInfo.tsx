@@ -3,13 +3,14 @@
 import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import { useProfileStore } from "@/lib/store/profileStore";
-
 import { CaretRightIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import BadgeModal from "./BadgeModal";
 
 const UserInfo = () => {
-  const { user, seedCount, badges, equipped, isLoading, error, fetchProfile } = useProfileStore();
+  const { user, seedCount, badges, isLoading, error, fetchProfile } = useProfileStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -29,7 +30,7 @@ const UserInfo = () => {
 
   return (
     <div className="flex w-full justify-center">
-      <div className="bg-brown-100 relative flex w-full max-w-[1000px] flex-row items-center justify-center gap-20 rounded-2xl px-[96px] py-8">
+      <div className="relative flex w-full max-w-[1000px] flex-row items-center justify-center gap-20 rounded-2xl bg-brown-100 px-[96px] py-8">
         <div className="flex-shrink-0 overflow-hidden rounded-full">
           {user.image ? (
             <Image src={user.image} alt={user.username} width={160} height={160} className="object-cover" />
@@ -48,7 +49,12 @@ const UserInfo = () => {
           <div className="flex flex-col gap-6">
             <div className="flex flex-row items-center justify-between">
               <div className="text-subtitle text-text-03">뱃지</div>
-              <Button variant="primaryLight" size="mn" className="flex items-center gap-2">
+              <Button
+                variant="primaryLight"
+                size="mn"
+                className="flex items-center gap-2"
+                onClick={() => setIsModalOpen(true)}
+              >
                 더 보기
                 <CaretRightIcon className="h-4 w-4" weight="bold" />
               </Button>
@@ -72,6 +78,7 @@ const UserInfo = () => {
           </div>
         </div>
       </div>
+      <BadgeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} badges={badges} />
     </div>
   );
 };
