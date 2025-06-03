@@ -11,7 +11,7 @@ const Dropdown = ({ trigger, children, className = "" }: DropdownProps) => {
     <div className="group relative">
       <div className="cursor-pointer">{trigger}</div>
       <div
-        className={`shadow-emphasize absolute left-1/2 top-full z-50 mt-5 hidden min-w-[7.5rem] -translate-x-1/2 flex-col items-center justify-center gap-4 rounded-2xl bg-white p-5 group-hover:flex ${className}`}
+        className={`shadow-emphasize absolute left-1/2 top-full z-50 mt-5 hidden min-w-[7.5rem] -translate-x-1/2 flex-col items-center justify-center gap-4 rounded-2xl bg-white p-5 before:absolute before:-top-5 before:left-0 before:h-5 before:w-full before:content-[''] group-hover:flex ${className}`}
       >
         {children}
       </div>
