@@ -11,7 +11,7 @@ import { Button } from "../ui/Button";
 import Dropdown from "../ui/Dropdown";
 
 const HeaderContent = () => {
-  const { user, login, checkAuth } = useAuthStore();
+  const { user, login, logout, checkAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
@@ -28,12 +28,15 @@ const HeaderContent = () => {
         <div className="flex items-center gap-4 md:gap-6">
           {/* User Info or Login Button */}
           {user ? (
-            <div className="border-747474 flex h-12 items-center justify-center gap-2 rounded-lg border bg-white px-4 py-3">
+            <button
+              className="flex h-12 items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3"
+              onClick={() => (window.location.href = "/mypage")}
+            >
               <div className="flex items-center gap-2">
                 <ProfileImageCircle profileImage={user.image} nickname={user.username} size={24} />
                 <span className="font-pretendard text-body1 text-text-04">{user.username}</span>
               </div>
-            </div>
+            </button>
           ) : (
             <Button
               variant="gray"
@@ -42,26 +45,36 @@ const HeaderContent = () => {
               onClick={login}
             >
               <div className="flex items-center gap-2">
-                <GithubIcon className="text-text-01" width={20} height={20} />
+                <GithubIcon width={20} height={20} className="text-text-01" />
                 <span className="hidden text-body1 text-white md:flex">로그인</span>
               </div>
             </Button>
           )}
           {/* Language */}
-          <div className="hidden h-6 items-center justify-center px-2 md:flex">
-            <Dropdown
-              items={[{ label: "English" }, { label: "한국어", active: true }]}
-              className="font-galmuri text-body1"
-            />
-          </div>
+          <Dropdown
+            items={[{ label: "English" }, { label: "한국어", active: true }]}
+            className="font-galmuri text-body1"
+            triggerClassName="h-[30px]"
+          />
           {/* Store Icon */}
-          <button className="flex h-[1.875rem] w-[1.875rem] items-center justify-center" aria-label="스토어">
-            <StoreIcon className="h-[1.875rem] w-[1.875rem] text-text-04" />
+          <button className="flex items-center justify-center" aria-label="스토어">
+            <StoreIcon width={24} height={24} className="text-text-04" />
           </button>
           {/* Gear Icon */}
-          <button className="flex h-[1.875rem] w-[1.875rem] items-center justify-center" aria-label="설정">
-            <GearSixIcon size={30} className="[stroke-width:3]" />
-          </button>
+          {user && (
+            <Dropdown
+              items={[
+                { label: "마이페이지", onClick: () => (window.location.href = "/mypage") },
+                { label: "로그아웃", onClick: logout }
+              ]}
+              trigger={
+                <button className="flex h-[1.875rem] w-[1.875rem] items-center justify-center" aria-label="설정">
+                  <GearSixIcon size={30} className="[stroke-width:3]" />
+                </button>
+              }
+              className="font-galmuri text-body1 text-text-04"
+            />
+          )}
         </div>
       </div>
     </header>
