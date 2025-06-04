@@ -78,7 +78,7 @@ const Dropdown = ({
         {displayTrigger}
       </div>
       <div
-        className={`shadow-emphasize absolute left-1/2 top-full z-50 min-w-[7.5rem] -translate-x-1/2 flex-col items-center justify-center gap-4 rounded-2xl bg-white p-5 before:absolute before:-top-5 before:left-0 before:h-5 before:w-full before:content-[''] ${
+        className={`shadow-emphasize absolute left-1/2 top-full z-50 -translate-x-1/2 flex-col items-center justify-center gap-4 whitespace-nowrap rounded-2xl bg-white p-5 before:absolute before:-top-5 before:left-0 before:h-5 before:w-full before:content-[''] ${
           mode === "hover" ? "mt-5 hidden group-hover:flex" : isOpen ? "mt-2 flex" : "hidden"
         } ${className}`}
       >

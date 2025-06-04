@@ -5,24 +5,12 @@ import { Button } from "@/components/ui/Button";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { CaretRightIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BadgeModal from "./BadgeModal";
 
 const UserInfo = () => {
-  const { user, seedCount, badges, isLoading, error, fetchProfile } = useProfileStore();
+  const { user, seedCount, badges } = useProfileStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   if (!user) {
     return null;
