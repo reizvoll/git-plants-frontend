@@ -1,4 +1,4 @@
-import { ActivityStats, ApiResponse, GitHubActivity, UserProfile } from "@/types/api";
+import { ActivityStats, ApiResponse, GitHubActivity, UserProfile } from "@/lib/types/api";
 import axios from "axios";
 import Router from "next/router";
 
