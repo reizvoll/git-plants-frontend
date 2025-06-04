@@ -2,7 +2,7 @@ import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import CtaSection from "./_components/section/cta/CtaSection";
 import FeatureSection from "./_components/section/feature/FeatureSection";
 import HeroSection from "./_components/section/hero/HeroSection";
-import HowItWorksSection from "./_components/section/howitworks/HowItWorksSection";
+import HowItWorksSection from "./_components/section/how-it-works/HowItWorksSection";
 import NoteSection from "./_components/section/note/NoteSection";
 
 const MainPage = () => {
