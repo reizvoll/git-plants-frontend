@@ -41,7 +41,6 @@ export const authApi = {
       }
     }
 
-    console.log("Invalid session response format:", response.data);
     return {
       data: {
         success: false,

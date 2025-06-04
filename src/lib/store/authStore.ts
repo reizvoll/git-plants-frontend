@@ -13,8 +13,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isPending: true });
     try {
       await authApi.signOut();
-      localStorage.removeItem("auth_token"); // 토큰 제거
+      localStorage.removeItem("auth_token");
       set({ user: null, error: null });
+      window.location.href = "/";
     } catch (error) {
       set({ error: "로그아웃에 실패했습니다." });
     } finally {
@@ -29,10 +30,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       if (response.data?.success && response.data?.data) {
         set({ user: response.data.data, error: null });
       } else if (response.data?.error) {
-        console.log("Session error:", response.data.error);
         set({ user: null, error: response.data.error.message });
       } else {
-        console.log("No valid session data");
         set({ user: null, error: "인증 정보가 없습니다." });
       }
     } catch (error) {
