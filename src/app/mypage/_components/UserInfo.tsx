@@ -56,7 +56,7 @@ const UserInfo = () => {
                 onClick={() => setIsModalOpen(true)}
               >
                 더 보기
-                <CaretRightIcon className="h-4 w-4" weight="bold" />
+                <CaretRightIcon width={16} height={16} weight="bold" />
               </Button>
             </div>
             <div className="flex w-full flex-row gap-4">
