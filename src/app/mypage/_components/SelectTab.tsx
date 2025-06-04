@@ -1,13 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import StyleSection from "./StyleSection";
 
 const SelectTab = () => {
   const [filter, setFilter] = useState<"tab1" | "tab2">("tab1");
 
   const tabContents = {
     //Todo : add contents
-    tab1: <div className="flex w-full flex-col items-center justify-center pt-16">contents1</div>,
+    tab1: (
+      <div className="flex w-full flex-col items-center justify-center pt-16">
+        <StyleSection />
+      </div>
+    ),
     tab2: <div className="flex w-full flex-col items-center justify-center pt-16">contents2</div>
   };
 
