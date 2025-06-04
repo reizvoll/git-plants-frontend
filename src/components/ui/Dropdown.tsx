@@ -1,39 +1,97 @@
-import { ReactNode } from "react";
+import { CaretDownIcon } from "@phosphor-icons/react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
-interface DropdownItem {
+type DropdownItem = {
   label: string;
   onClick?: () => void;
   active?: boolean;
-}
+};
 
-interface DropdownProps {
+type DropdownProps = {
+  mode?: "hover" | "click";
   trigger?: ReactNode;
   children?: ReactNode;
   items?: DropdownItem[];
   className?: string;
   triggerClassName?: string;
-}
+};
 
-const Dropdown = ({ trigger, children, items, className = "", triggerClassName = "" }: DropdownProps) => {
+const Dropdown = ({
+  mode = "hover",
+  trigger,
+  children,
+  items,
+  className = "",
+  triggerClassName = ""
+}: DropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   // use active item as trigger
   const activeItem = items?.find((item) => item.active);
   const displayTrigger =
     trigger ||
     (activeItem ? (
-      <button className={`focus:outline-none ${triggerClassName} ${className}`}>{activeItem.label}</button>
+      <button
+        className={`flex items-center gap-2 focus:outline-none ${triggerClassName} ${className} ${
+          mode === "click" ? "shadow-normal rounded-lg bg-bg-01 px-5 py-3" : ""
+        }`}
+      >
+        {activeItem.label}
+        {mode === "click" && (
+          <CaretDownIcon
+            size={20}
+            className={`transition-transform duration-200 ${isOpen ? "-rotate-180" : ""}`}
+            weight="fill"
+          />
+        )}
+      </button>
     ) : null);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (mode === "click") {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      if (mode === "click") {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+    };
+  }, [mode]);
+
+  const handleTriggerClick = () => {
+    if (mode === "click") {
+      setIsOpen(!isOpen);
+    }
+  };
+
   return (
-    <div className="group relative">
-      <div className="cursor-pointer">{displayTrigger}</div>
+    <div className="group relative" ref={dropdownRef}>
+      <div className="cursor-pointer" onClick={handleTriggerClick}>
+        {displayTrigger}
+      </div>
       <div
-        className={`shadow-emphasize absolute left-1/2 top-full z-50 mt-5 hidden min-w-[7.5rem] -translate-x-1/2 flex-col items-center justify-center gap-4 rounded-2xl bg-white p-5 before:absolute before:-top-5 before:left-0 before:h-5 before:w-full before:content-[''] group-hover:flex ${className}`}
+        className={`shadow-emphasize absolute left-1/2 top-full z-50 min-w-[7.5rem] -translate-x-1/2 flex-col items-center justify-center gap-4 rounded-2xl bg-white p-5 before:absolute before:-top-5 before:left-0 before:h-5 before:w-full before:content-[''] ${
+          mode === "hover" ? "mt-5 hidden group-hover:flex" : isOpen ? "mt-2 flex" : "hidden"
+        } ${className}`}
       >
         {items
           ? items.map((item, index) => [
               <button
                 key={`item-${index}`}
-                onClick={item.onClick}
+                onClick={() => {
+                  item.onClick?.();
+                  if (mode === "click") {
+                    setIsOpen(false);
+                  }
+                }}
                 className={`flex h-[1.6875rem] w-full flex-row items-center justify-center px-2 ${className} transition-colors hover:text-text-03 ${
                   item.active ? "text-text-04" : "text-text-02"
                 }`}
