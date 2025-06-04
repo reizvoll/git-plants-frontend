@@ -50,16 +50,9 @@ const HeaderContent = () => {
           {/* Language */}
           <div className="hidden h-6 items-center justify-center px-2 md:flex">
             <Dropdown
-              trigger={<button className="font-galmuri text-body1 text-text-04 focus:outline-none">한국어</button>}
-            >
-              <button className="flex h-[1.6875rem] w-[4.6875rem] flex-row items-center justify-center px-2 font-galmuri text-caption text-text-04">
-                English
-              </button>
-              <hr className="my-0 w-[4.75rem] border-t border-line-02" />
-              <button className="flex h-[1.6875rem] w-[3.9375rem] flex-row items-center justify-center px-2 font-galmuri text-caption text-text-04">
-                한국어
-              </button>
-            </Dropdown>
+              items={[{ label: "English" }, { label: "한국어", active: true }]}
+              className="font-galmuri text-body1"
+            />
           </div>
           {/* Store Icon */}
           <button className="flex h-[1.875rem] w-[1.875rem] items-center justify-center" aria-label="스토어">
