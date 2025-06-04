@@ -1,6 +1,11 @@
-export const LoadingText = ({ text }: { text: string }) => {
+type LoadingTextProps = {
+  text: string;
+  className: string;
+};
+
+const LoadingText = ({ text, className }: LoadingTextProps) => {
   return (
-    <div className="font-pretendard text-body1 text-text-04">
+    <div className={`${className}`}>
       {text.split("").map((char, index) => (
         <span
           key={index}
@@ -17,3 +22,5 @@ export const LoadingText = ({ text }: { text: string }) => {
     </div>
   );
 };
+
+export default LoadingText;
