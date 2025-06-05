@@ -62,7 +62,7 @@ export const authApi = {
         id: string;
         awardedAt: string;
         badge: {
-          id: string;
+          id: number;
           name: string;
           condition: string;
           imageUrl: string;
@@ -70,14 +70,14 @@ export const authApi = {
       }>;
       equipped: {
         background: {
-          id: string;
+          id: number;
           name: string;
           category: string;
           imageUrl: string;
           price: number;
         } | null;
         pot: {
-          id: string;
+          id: number;
           name: string;
           category: string;
           imageUrl: string;
@@ -93,6 +93,12 @@ export const authApi = {
         updatedAt: string;
       }>;
     }>("/api/users/profile")
+};
+
+// Seed 관련 API
+export const seedApi = {
+  getSeeds: () => API.get<ApiResponse<{ userId: string; count: number }>>("/api/seeds"),
+  addSeeds: (count: number) => API.post<ApiResponse<{ message: string }>>("/api/seeds/add", { count })
 };
 
 // GitHub 활동 관련 API

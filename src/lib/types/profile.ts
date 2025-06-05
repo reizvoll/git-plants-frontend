@@ -2,7 +2,7 @@ export interface Badge {
   id: string;
   awardedAt: string;
   badge: {
-    id: string;
+    id: number;
     name: string;
     condition: string;
     imageUrl: string;
@@ -10,7 +10,7 @@ export interface Badge {
 }
 
 export interface Item {
-  id: string;
+  id: number;
   name: string;
   category: string;
   imageUrl: string;
