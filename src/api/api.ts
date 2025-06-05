@@ -1,4 +1,4 @@
-import { ActivityStats, ApiResponse, GitHubActivity, UserProfile } from "@/lib/types/api";
+import { ActivityStats, ApiResponse, GitHubActivity, UserProfile, type ProfileResponse } from "@/lib/types/api";
 import axios from "axios";
 import Router from "next/router";
 
@@ -51,48 +51,7 @@ export const authApi = {
       }
     };
   },
-  getProfile: () =>
-    API.get<{
-      user: {
-        username: string;
-        image: string | null;
-      };
-      seedCount: number;
-      badges: Array<{
-        id: string;
-        awardedAt: string;
-        badge: {
-          id: number;
-          name: string;
-          condition: string;
-          imageUrl: string;
-        };
-      }>;
-      equipped: {
-        background: {
-          id: number;
-          name: string;
-          category: string;
-          imageUrl: string;
-          price: number;
-        } | null;
-        pot: {
-          id: number;
-          name: string;
-          category: string;
-          imageUrl: string;
-          price: number;
-        } | null;
-      };
-      plants: Array<{
-        id: string;
-        name: string;
-        stage: "SEED" | "SPROUT" | "GROWING" | "MATURE" | "HARVEST";
-        currentContributions: number;
-        createdAt: string;
-        updatedAt: string;
-      }>;
-    }>("/api/users/profile")
+  getProfile: () => API.get<ApiResponse<ProfileResponse>>("/api/users/profile")
 };
 
 // Seed 관련 API

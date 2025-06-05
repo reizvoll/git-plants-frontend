@@ -1,54 +1,98 @@
-export interface ApiResponse<T> {
-    success?: boolean;
-    data?: T;
-    error?: {
-        message: string;
-        code: string;
-    };
-}
+export type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+  error: {
+    message: string;
+    code: string;
+  };
+};
 
-export interface GitHubActivity {
-    userId: string;
-    type: 'Contribution' | 'Commit' | 'PullRequest';
+export type ProfileUser = {
+  username: string;
+  image: string | null;
+};
+
+export type ProfileBadge = {
+  id: string;
+  awardedAt: string;
+  badge: {
+    id: number;
+    name: string;
+    condition: string;
+    imageUrl: string;
+  };
+};
+
+export type ProfileItem = {
+  id: number;
+  name: string;
+  category: string;
+  imageUrl: string;
+  price: number;
+};
+
+export type ProfilePlant = {
+  id: string;
+  name: string;
+  stage: "SEED" | "SPROUT" | "GROWING" | "MATURE" | "HARVEST";
+  currentContributions: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ProfileResponse = {
+  user: ProfileUser;
+  seedCount: number;
+  badges: ProfileBadge[];
+  equipped: {
+    background: ProfileItem | null;
+    pot: ProfileItem | null;
+  };
+  plants: ProfilePlant[];
+};
+
+export type GitHubActivity = {
+  userId: string;
+  type: "Contribution" | "Commit" | "PullRequest";
+  repository: string;
+  title: string;
+  url: string;
+  eventId: string;
+  createdAt: Date;
+  contributionCount: number;
+  description?: string | null;
+  state?: "MERGED" | "CLOSED";
+  mergedAt?: Date | null;
+};
+
+export type UserProfile = {
+  id: string;
+  githubId: string;
+  username: string;
+  name?: string;
+  email?: string;
+  image?: string;
+};
+
+export type ActivityStats = {
+  totalCommits: number;
+  totalPullRequests: number;
+  totalIssues: number;
+  repositories: string[];
+};
+
+export type AnalyticsData = {
+  timeline: Array<{
+    date: string;
+    count: number;
+  }>;
+  repositoryDistribution: Array<{
     repository: string;
-    title: string;
-    url: string;
-    eventId: string;
-    createdAt: Date;
-    contributionCount: number;
-    description?: string | null;
-    state?: 'MERGED' | 'CLOSED';
-    mergedAt?: Date | null;
-}
-
-export interface UserProfile {
-    id: string;
-    githubId: string;
-    username: string;
-    name?: string;
-    email?: string;
-    image?: string;
-}
-
-export interface ActivityStats {
-    totalCommits: number;
-    totalPullRequests: number;
-    totalIssues: number;
-    repositories: string[];
-}
-
-export interface AnalyticsData {
-    timeline: Array<{
-        date: string;
-        count: number;
-    }>;
-    repositoryDistribution: Array<{
-        repository: string;
-        _count: number;
-    }>;
-    timePattern: Array<{
-        createdAt: string;
-        _count: number;
-    }>;
-    availableYears: number[];
-} 
+    _count: number;
+  }>;
+  timePattern: Array<{
+    createdAt: string;
+    _count: number;
+  }>;
+  availableYears: number[];
+};
