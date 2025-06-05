@@ -1,16 +1,16 @@
 import type { UserProfile } from "./api";
 
-export interface Session {
+export type Session = {
   id: string;
   githubId: string;
   username: string;
   image?: string;
-}
+};
 
-export interface AuthError {
+export type AuthError = {
   message: string;
   status: number;
-}
+};
 
 export interface AuthState {
   user: UserProfile | null;

@@ -1,30 +1,30 @@
-export interface Badge {
+export type Badge = {
   id: string;
   awardedAt: string;
   badge: {
-    id: string;
+    id: number;
     name: string;
     condition: string;
     imageUrl: string;
   };
-}
+};
 
-export interface Item {
-  id: string;
+export type Item = {
+  id: number;
   name: string;
   category: string;
   imageUrl: string;
   price: number;
-}
+};
 
-export interface Plant {
+export type Plant = {
   id: string;
   name: string;
   stage: "SEED" | "SPROUT" | "GROWING" | "MATURE" | "HARVEST";
   currentContributions: number;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 export interface ProfileState {
   user: {
