@@ -40,17 +40,6 @@ export type ProfilePlant = {
   updatedAt: string;
 };
 
-export type ProfileResponse = {
-  user: ProfileUser;
-  seedCount: number;
-  badges: ProfileBadge[];
-  equipped: {
-    background: ProfileItem | null;
-    pot: ProfileItem | null;
-  };
-  plants: ProfilePlant[];
-};
-
 export type GitHubActivity = {
   userId: string;
   type: "Contribution" | "Commit" | "PullRequest";
@@ -95,4 +84,9 @@ export type AnalyticsData = {
     _count: number;
   }>;
   availableYears: number[];
+};
+
+export type SessionResponse = {
+  user: UserProfile;
+  isAdmin: boolean;
 };

@@ -1,4 +1,5 @@
-import { ActivityStats, ApiResponse, GitHubActivity, UserProfile, type ProfileResponse } from "@/lib/types/api";
+import { ActivityStats, ApiResponse, GitHubActivity, SessionResponse } from "@/lib/types/api";
+import { ProfileState } from "@/lib/types/profile";
 import axios from "axios";
 import Router from "next/router";
 
@@ -21,24 +22,15 @@ export const authApi = {
   },
   signOut: () => API.post("/api/auth/signout"),
   getSession: async () => {
-    const response = await API.get<ApiResponse<UserProfile>>("/api/auth/session");
+    const response = await API.get<SessionResponse>("/api/auth/session");
 
-    // 응답 데이터 구조 확인 및 변환
-    if (response.data) {
-      // ApiResponse 형태인 경우
-      if ("data" in response.data) {
-        return response;
-      }
-      // 직접 UserProfile 형태인 경우
-      const userData = response.data as unknown as UserProfile;
-      if (userData.username && userData.image) {
-        return {
-          data: {
-            success: true,
-            data: userData
-          }
-        };
-      }
+    if (response.data?.user) {
+      return {
+        data: {
+          success: true,
+          data: response.data.user
+        }
+      };
     }
 
     return {
@@ -51,7 +43,7 @@ export const authApi = {
       }
     };
   },
-  getProfile: () => API.get<ApiResponse<ProfileResponse>>("/api/users/profile")
+  getProfile: () => API.get<ProfileState>("/api/users/profile")
 };
 
 // Seed 관련 API
