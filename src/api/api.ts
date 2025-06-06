@@ -23,27 +23,16 @@ export const authApi = {
   signOut: () => API.post("/api/auth/signout"),
   getSession: async () => {
     const response = await API.get<SessionResponse>("/api/auth/session");
-
-    if (response.data?.user) {
-      return {
-        data: {
-          success: true,
-          data: response.data.user
-        }
-      };
-    }
-
     return {
-      data: {
-        success: false,
-        error: {
-          message: "Invalid session data format",
-          code: "INVALID_FORMAT"
-        }
-      }
+      success: true,
+      data: response.data
     };
   },
-  getProfile: () => API.get<ProfileState>("/api/users/profile")
+  getProfile: () =>
+    API.get<ProfileState>("/api/users/profile").then((response) => ({
+      success: true,
+      data: response.data
+    }))
 };
 
 // Seed 관련 API

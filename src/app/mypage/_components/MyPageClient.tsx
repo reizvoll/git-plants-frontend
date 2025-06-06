@@ -18,7 +18,7 @@ const MyPageClient = () => {
     const checkLoginStatus = async () => {
       try {
         const response = await authApi.getSession();
-        if (!response.data?.success) {
+        if (!response.success) {
           alert("로그인이 필요한 서비스입니다.");
           router.push("/");
         } else {
