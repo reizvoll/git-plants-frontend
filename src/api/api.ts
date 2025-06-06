@@ -28,7 +28,11 @@ export const authApi = {
       data: response.data
     };
   },
-  getProfile: () => API.get<ProfileState>("/api/users/profile")
+  getProfile: () =>
+    API.get<ProfileState>("/api/users/profile").then((response) => ({
+      success: true,
+      data: response.data
+    }))
 };
 
 // Seed 관련 API

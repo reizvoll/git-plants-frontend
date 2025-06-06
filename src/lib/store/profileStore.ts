@@ -18,7 +18,7 @@ export const useProfileStore = create<ProfileState>((set) => ({
       set({ isLoading: true, error: null });
       const response = await authApi.getProfile();
 
-      if (response.data) {
+      if (response.success && response.data) {
         const { user, seedCount, badges, equipped, plants } = response.data;
         set({
           user,
