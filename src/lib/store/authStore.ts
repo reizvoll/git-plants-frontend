@@ -27,10 +27,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const response = await authApi.getSession();
 
-      if (response.data?.success && response.data?.data) {
-        set({ user: response.data.data, error: null });
-      } else if (response.data?.error) {
-        set({ user: null, error: response.data.error.message });
+      if (response.success && response.data?.user) {
+        set({ user: response.data.user, error: null });
       } else {
         set({ user: null, error: "인증 정보가 없습니다." });
       }
