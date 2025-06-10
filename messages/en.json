@@ -1,0 +1,15 @@
+{
+  "common": {},
+  "navigation": {
+    "login": "Login",
+    "logout": "logout",
+    "mypage": "mypage"
+  },
+  "cta": {},
+  "mypage": {},
+  "plants-note": {
+    "title": "",
+    "plant": "",
+    "description": ""
+  }
+}
