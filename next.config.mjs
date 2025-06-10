@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin();
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -15,7 +19,14 @@ const nextConfig = {
         hostname: "res.cloudinary.com"
       }
     ]
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.json$/,
+      type: "json"
+    });
+    return config;
   }
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
