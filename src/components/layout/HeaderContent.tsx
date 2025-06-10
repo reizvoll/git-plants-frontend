@@ -3,19 +3,32 @@
 import GithubIcon from "@/assets/icons/github";
 import StoreIcon from "@/assets/icons/store";
 import { useAuthStore } from "@/lib/store/authStore";
+import { useLanguageStore } from "@/lib/store/languageStore";
 import { GearSixIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProfileImageCircle from "../shared/ProfileImageCircle";
 import { Button } from "../ui/Button";
 import Dropdown from "../ui/Dropdown";
 
 const HeaderContent = () => {
   const { user, login, logout, checkAuth } = useAuthStore();
+  const { language, setLanguage } = useLanguageStore();
+  const t = useTranslations("navigation");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     checkAuth();
+    setMounted(true);
   }, [checkAuth]);
+
+  const handleLanguageChange = (lang: string) => {
+    setLanguage(lang as "ko" | "en");
+  };
+
+  // 서버 사이드 렌더링 시에는 기본값 'ko'를 사용
+  const currentLanguage = mounted ? language : "ko";
 
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-white">
@@ -46,13 +59,16 @@ const HeaderContent = () => {
             >
               <div className="flex items-center gap-2">
                 <GithubIcon width={20} height={20} className="text-text-01" />
-                <span className="hidden text-body1 text-white md:flex">로그인</span>
+                <span className="hidden text-body1 text-white md:flex">{t("login")}</span>
               </div>
             </Button>
           )}
           {/* Language */}
           <Dropdown
-            items={[{ label: "English" }, { label: "한국어", active: true }]}
+            items={[
+              { label: "English", onClick: () => handleLanguageChange("en"), active: currentLanguage === "en" },
+              { label: "한국어", onClick: () => handleLanguageChange("ko"), active: currentLanguage === "ko" }
+            ]}
             className="font-galmuri text-body1"
             triggerClassName="h-[30px]"
           />
@@ -64,8 +80,8 @@ const HeaderContent = () => {
           {user && (
             <Dropdown
               items={[
-                { label: "마이페이지", onClick: () => (window.location.href = "/mypage") },
-                { label: "로그아웃", onClick: logout }
+                { label: t("mypage"), onClick: () => (window.location.href = "/mypage") },
+                { label: t("logout"), onClick: logout }
               ]}
               trigger={
                 <button className="flex h-[1.875rem] w-[1.875rem] items-center justify-center" aria-label="설정">
