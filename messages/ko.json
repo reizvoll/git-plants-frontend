@@ -11,5 +11,11 @@
     "title": "",
     "plant": "",
     "description": ""
+  },
+  "main-hero": {
+    "title": "코드로 자라는 식물친구,\nGit-Plants",
+    "subtitle": "GitHub활동을 바탕으로 식물을 키우고, 씨앗을 수확해요!",
+    "startButton": "시작하기",
+    "myPageButton": "마이페이지"
   }
 }

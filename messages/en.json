@@ -11,5 +11,11 @@
     "title": "",
     "plant": "",
     "description": ""
+  },
+  "main-hero": {
+    "title": "Grow your own little friend,\nGit-Plants",
+    "subtitle": "Plant a commit, harvest a dream.\n(based on your GitHub activity)",
+    "startButton": "Get started",
+    "myPageButton": "Go to my page"
   }
 }

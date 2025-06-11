@@ -1,27 +1,24 @@
 import plant from "@/assets/images/plants.png";
 import { Button } from "@/components/ui/Button";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const MainHero = () => {
+  const t = useTranslations("main-hero");
+
   return (
     <div className="shadow-emphasize flex items-center justify-center gap-16 rounded-[1rem] bg-[#F4EBDC]/80 px-16 py-16">
       <div className="flex w-full flex-col items-start gap-20">
         <div className="flex w-full flex-col items-start gap-12">
-          <div className="w-full font-galmuri text-heading text-primary-strong">
-            코드로 자라는 식물친구,
-            <br />
-            <span className="font-galmuri text-heading">Git-Plants</span>
-          </div>
-          <div className="font-galmuri text-title2 text-primary-strong">
-            GitHub활동을 바탕으로 식물을 키우고, 씨앗을 수확해요!
-          </div>
+          <div className="w-full whitespace-pre-line font-galmuri text-heading text-primary-default">{t("title")}</div>
+          <div className="text-subtitle2 whitespace-pre-line font-galmuri text-primary-default">{t("subtitle")}</div>
         </div>
         <div className="flex w-full flex-row items-start gap-4">
           <Button variant="primary" size="md" className="flex items-center justify-center px-8 py-3">
-            시작하기
+            {t("startButton")}
           </Button>
           <Button variant="primaryLine" size="md" className="flex items-center justify-center px-8 py-3">
-            마이페이지
+            {t("myPageButton")}
           </Button>
         </div>
       </div>
