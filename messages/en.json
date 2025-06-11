@@ -55,6 +55,9 @@
       "title-right": "Harvest crops, collect seeds, \nand unlock badges!",
       "storeButton": "Go to shop",
       "badgeButton": "Check badges"
+    },
+    "update": {
+      "description": "(Big update coming soon, stay tuned!🎁)"
     }
   }
 }
