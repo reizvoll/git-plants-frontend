@@ -33,5 +33,31 @@
     "feedbackEnd": "에 남겨주세요.",
     "copyright": "창작물에 대한 무단 복제 및 상업적 사용을 금합니다.",
     "copyrightNotice": "© 2025 reizvoll. All illustrations and UI elements are copyright protected."
+  },
+  "feature": {
+    "mode": {
+      "title": "두 가지 모드로 나만의 정원을 더 따뜻하게, 더 풍성하게!",
+      "miniMode": {
+        "title": "🌿 미니 모드",
+        "description": "작물 하나에 온전히 집중할 수 있는 모드예요.\n차분한 실내 또는 야외 배경 속에서,\n씨앗이 자라나는 모습을 지켜보며 힐링을 느껴보세요."
+      },
+      "gardenMode": {
+        "title": "🏅 정원 모드",
+        "description": "지금까지 키운 작물과 획득한 뱃지를 한눈에!\n성과와 함께 자라난 정원을 바라보며,\n당신의 꾸준함이 만든 이야기들을 즐겨보세요!"
+      }
+    },
+    "reward": {
+      "title": "작물을 수확해 씨앗을 모으고, 나만의 정원을 꾸며보세요!",
+      "description": "열매나 꽃을 수확하면 씨앗을 얻을 수 있어요. \n씨앗은 배경, 화분, 다양한 오브제를 구매하는 데 사용됩니다. \n하나하나 모아가며, 나만의 정원을 더욱 풍성하게 꾸며보세요!"
+    },
+    "system": {
+      "title-left": "모은 씨앗을 활용하여 \n다양한 상품을 구매하세요!",
+      "title-right": "작물 수확, 씨앗 획득 등의 \n다양한 활동을 진행하며 \n뱃지를 찾고, 획득해 보세요!",
+      "storeButton": "상점 바로가기",
+      "badgeButton": "뱃지 확인하기"
+    },
+    "update": {
+      "description": "(🎁 준비 중이니, 조금만 기다려주세요!)"
+    }
   }
 }
