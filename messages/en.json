@@ -10,14 +10,14 @@
   "plants-note": {
     "title": "Monthly Plant Note :",
     "plant": "Corn",
-    "description": "Corn is the ultimate summer crop — it loves sunshine and \ngrows super fast when it’s warm. \nFrom June to August, it’s harvest time… and you know what \nthat means — it’s popcorn o’clock! 🍿🌽",
+    "description": "Corn is the ultimate summer crop — it loves sunshine and \ngrows super fast when it's warm. \nFrom June to August, it's harvest time… and you know what \nthat means — it's popcorn o'clock! 🍿🌽",
     "growth_stage": {
       "title": "Growth Stage",
-      "description": "Let’s explore \nthe 5 growth stages \n(from seed to harvest!)!"
+      "description": "Let's explore \nthe 5 growth stages \n(from seed to harvest!)!"
     },
     "start_now": {
       "title": "Start Now!",
-      "description": "Enjoy growing your plants, \nand don’t miss sweet rewards!"
+      "description": "Enjoy growing your plants, \nand don't miss sweet rewards!"
     }
   },
   "main-hero": {
@@ -33,5 +33,18 @@
     "feedbackEnd": ".",
     "copyright": "",
     "copyrightNotice": "© 2025 reizvoll. All illustrations and UI elements are copyright protected."
+  },
+  "feature": {
+    "mode": {
+      "title": "Grow Your Garden Warm and Full — with Two Unique Modes",
+      "miniMode": {
+        "title": "🌿 Mini Mode",
+        "description": "Care for a single plant, \nwatch your seed grow in a calm & focused space, \nand enjoy a peaceful moment for yourself."
+      },
+      "gardenMode": {
+        "title": "🏅 Garden Mode",
+        "description": "Watch your whole garden come together. \nFrom every plant to every badge, \nit's your journey, grown one commit at a time."
+      }
+    }
   }
 }
