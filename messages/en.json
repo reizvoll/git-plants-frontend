@@ -17,5 +17,13 @@
     "subtitle": "Plant a commit, harvest a dream.\n(based on your GitHub activity)",
     "startButton": "Get started",
     "myPageButton": "Go to my page"
+  },
+  "footer": {
+    "description": "Git-Plants is a personal project made for learning and portfolio purposes only.",
+    "feedback": "If you have any questions or feedback, feel free to drop an issue on",
+    "githubIssues": "GitHub Issues",
+    "feedbackEnd": ".",
+    "copyright": "",
+    "copyrightNotice": "© 2025 reizvoll. All illustrations and UI elements are copyright protected."
   }
 }
