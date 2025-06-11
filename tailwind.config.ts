@@ -8,6 +8,7 @@ const config: Config = {
       subHeading: ["28px", { lineHeight: "150%", letterSpacing: "-0.025em" }], // SubHeading 28px
       title1: ["24px", { lineHeight: "150%", letterSpacing: "-0.025em" }], // Title1 24px
       subtitle: ["20px", { lineHeight: "150%", letterSpacing: "-0.015em" }], // Subtitle 20px
+      subtitle2: ["20px", { lineHeight: "200%", letterSpacing: "-0.015em" }], // Subtitle2 20px (for hero subtitle)
       title2: ["18px", { lineHeight: "150%", letterSpacing: "-0.015em" }], // Title2 18px
       body1: ["15px", { lineHeight: "150%", letterSpacing: "0.010em" }], // Body1 15px
       body2: ["15px", { lineHeight: "150%", letterSpacing: "0" }], // Body2 15px (For Galmuri)

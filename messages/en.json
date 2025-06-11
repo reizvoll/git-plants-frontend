@@ -8,8 +8,30 @@
   "cta": {},
   "mypage": {},
   "plants-note": {
-    "title": "",
-    "plant": "",
-    "description": ""
+    "title": "Monthly Plant Note :",
+    "plant": "Corn",
+    "description": "Corn is the ultimate summer crop — it loves sunshine and \ngrows super fast when it’s warm. \nFrom June to August, it’s harvest time… and you know what \nthat means — it’s popcorn o’clock! 🍿🌽",
+    "growth_stage": {
+      "title": "Growth Stage",
+      "description": "Let’s explore \nthe 5 growth stages \n(from seed to harvest!)!"
+    },
+    "start_now": {
+      "title": "Start Now!",
+      "description": "Enjoy growing your plants, \nand don’t miss sweet rewards!"
+    }
+  },
+  "main-hero": {
+    "title": "Grow your own little friend,\nGit-Plants",
+    "subtitle": "Plant a commit, harvest a dream.\n(based on your GitHub activity)",
+    "startButton": "Get started",
+    "myPageButton": "Go to my page"
+  },
+  "footer": {
+    "description": "Git-Plants is a personal project made for learning and portfolio purposes only.",
+    "feedback": "If you have any questions or feedback, feel free to drop an issue on",
+    "githubIssues": "GitHub Issues",
+    "feedbackEnd": ".",
+    "copyright": "",
+    "copyrightNotice": "© 2025 reizvoll. All illustrations and UI elements are copyright protected."
   }
 }
