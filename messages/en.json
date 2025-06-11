@@ -45,6 +45,10 @@
         "title": "🏅 Garden Mode",
         "description": "Watch your whole garden come together. \nFrom every plant to every badge, \nit's your journey, grown one commit at a time."
       }
+    },
+    "reward": {
+      "title": "Harvest crops to collect seeds and decorate your own garden!",
+      "description": "When you pick fruits or flowers, you’ll earn seeds. \nUse them to buy backgrounds, pots, and special items. \nCollect them all and make your garden truly yours!"
     }
   }
 }
