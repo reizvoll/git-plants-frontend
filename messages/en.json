@@ -58,6 +58,10 @@
     },
     "update": {
       "description": "(Big update coming soon, stay tuned!🎁)"
+    },
+    "how-it-works": {
+      "title": "How Your Contributions Help Plants Thrive",
+      "description": "Every contribution you make on GitHub helps grow your garden. \nWatch your plants grow and earn seeds as you engage!"
     }
   }
 }
