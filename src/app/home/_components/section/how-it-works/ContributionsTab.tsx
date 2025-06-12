@@ -1,11 +1,13 @@
 "use client";
 
 import noimage from "@/assets/images/no_image.webp";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 
 const ContributionsTab = () => {
   const [filter, setFilter] = useState<"tab1" | "tab2" | "tab3">("tab1");
+  const t = useTranslations("feature.how-it-works.tab");
 
   const tabContents = {
     //Todo : add images
@@ -32,18 +34,18 @@ const ContributionsTab = () => {
         {[
           {
             key: "tab1",
-            title: "성장 방식",
-            description: "Pull Request나 Commit을 통해\n기여도를 쌓을 수 있습니다."
+            title: t("title1"),
+            description: t("description1")
           },
           {
             key: "tab2",
-            title: "보상 리워드",
-            description: "작물을 가꾸고 씨앗을 모아\n새로운 아이템을 잠금 해제해 보세요!"
+            title: t("title2"),
+            description: t("description2")
           },
           {
             key: "tab3",
-            title: "지금 바로 참여하세요!",
-            description: "GitHub 활동을 통해 멋진 정원을 가꾸고,\n보람 있는 코딩을 즐겨봐요!"
+            title: t("title3"),
+            description: t("description3")
           }
         ].map((tab) => (
           <button
@@ -54,7 +56,7 @@ const ContributionsTab = () => {
             }`}
           >
             <div className={`font-pretendard text-body1 ${filter === tab.key ? "font-bold" : ""}`}>{tab.title}</div>
-            <div className="mt-1 whitespace-pre-line font-pretendard text-caption">{tab.description}</div>
+            <div className="mt-1 whitespace-pre-line font-pretendard text-small">{tab.description}</div>
           </button>
         ))}
         <div
