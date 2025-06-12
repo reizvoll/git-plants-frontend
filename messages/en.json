@@ -58,6 +58,24 @@
     },
     "update": {
       "description": "(Big update coming soon, stay tuned!🎁)"
+    },
+    "how-it-works": {
+      "title": "How Your Contributions Help Plants Thrive",
+      "description": "Every contribution you make on GitHub helps grow your garden. \nWatch your plants grow and earn seeds as you engage!",
+      "tab": {
+        "title1": "How Plants Grow",
+        "description1": "Build your contribution through\nPull Requests and Commits.",
+        "title2": "Rewarding Your Efforts",
+        "description2": "Collect seeds to unlock new items \nas you progress in your gardening journey.",
+        "title3": "Join Now!",
+        "description3": "Grow your garden through GitHub activity\nand enjoy a meaningful coding experience!"
+      }
+    },
+    "cta": {
+      "title": "Start your journey today!",
+      "subtitle": "Join us and watch your garden grow, one seed at a time!",
+      "startButton": "Get started",
+      "moreInfoButton": "More Info"
     }
   }
 }
