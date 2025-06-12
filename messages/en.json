@@ -70,6 +70,12 @@
         "title3": "Join Now!",
         "description3": "Grow your garden through GitHub activity\nand enjoy a meaningful coding experience!"
       }
+    },
+    "cta": {
+      "title": "Start your journey today!",
+      "subtitle": "Join us and watch your garden grow, one seed at a time!",
+      "startButton": "Get started",
+      "moreInfoButton": "More Info"
     }
   }
 }
