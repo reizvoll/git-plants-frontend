@@ -27,15 +27,19 @@ const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
             <Close width={36} height={36} />
           </button>
         </div>
-        <Image src={badgeSlot} alt="badgeSlot" priority />
-        <div className="relative z-10 flex flex-col items-center gap-8">
-          <div className="grid grid-cols-4 gap-6">
-            {badges.map((badge) => (
-              <div key={badge.id} className="flex flex-col items-center gap-2">
-                <Image src={badge.badge.imageUrl} alt={badge.badge.name} width={80} height={80} />
-                <span className="text-body text-white">{badge.badge.name}</span>
-              </div>
-            ))}
+        <div className="relative">
+          <Image src={badgeSlot} alt="badgeSlot" priority />
+          <div className="absolute inset-0 flex -translate-x-3 -translate-y-[72px] transform flex-col items-center justify-center">
+            <div className="grid grid-cols-6 gap-6">
+              {badges.map((badge) => (
+                <div key={badge.id} className="group relative flex flex-col items-center">
+                  <Image src={badge.badge.imageUrl} alt={badge.badge.name} width={120} height={120} />
+                  <span className="text-body group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full rounded-lg bg-bg-01 px-4 py-2 text-center text-primary-default opacity-0 transition-all duration-200 group-hover:opacity-100">
+                    {badge.badge.name}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
