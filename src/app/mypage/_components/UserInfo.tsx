@@ -29,9 +29,9 @@ const UserInfo = () => {
         <div className="flex w-full flex-col gap-8">
           <div className="flex flex-row gap-[200px]">
             <div className="font-galmuri text-title1 text-text-03">{user.username}</div>
-            <div className="flex flex-row items-center gap-6">
+            <div className="flex flex-row items-center gap-5">
               <Image src={seed} alt="seed" width={24} height={33} />
-              <div className="font-galmuri text-title1 text-text-03">{seedCount}</div>
+              <div className="font-galmuri text-title1 text-text-03">{seedCount.toLocaleString()}</div>
             </div>
           </div>
           <div className="flex flex-col gap-6">
