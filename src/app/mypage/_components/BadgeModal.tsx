@@ -32,8 +32,8 @@ const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
         </div>
         <div className="relative">
           <Image src={badgeSlot} alt="badgeSlot" priority />
-          <div className="absolute inset-0 flex -translate-x-3 -translate-y-[72px] transform flex-col items-center justify-center">
-            <div className="grid grid-cols-6 gap-6">
+          <div className="absolute inset-0 flex -translate-x-[3px] -translate-y-[72px] transform flex-col items-center justify-center">
+            <div className="grid grid-cols-6 gap-7">
               {badges.map((badge) => (
                 <div key={badge.id} className="group relative flex flex-col items-center">
                   <Image src={badge.badge.imageUrl} alt={badge.badge.name} width={120} height={120} />
