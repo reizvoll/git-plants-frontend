@@ -14,7 +14,12 @@ export type Item = {
   name: string;
   category: string;
   imageUrl: string;
+  iconUrl: string;
   price: number;
+  mode: string;
+  createdAt: string;
+  updatedAt: string;
+  updatedById: string;
 };
 
 export type Plant = {
@@ -34,8 +39,8 @@ export interface ProfileState {
   seedCount: number;
   badges: Badge[];
   equipped: {
-    background: Item | null;
-    pot: Item | null;
+    backgrounds: Item[];
+    pots: Item[];
   };
   plants: Plant[];
   isLoading: boolean;
