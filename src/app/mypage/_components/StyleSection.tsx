@@ -4,26 +4,25 @@ import { useProfileStore } from "@/lib/store/profileStore";
 import { ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useState } from "react";
+import SizeAdjustModal from "./SizeAdjustModal";
 
 const StyleSection = () => {
   const { equipped } = useProfileStore();
-  const [currentMode, setCurrentMode] = useState("GARDEN"); // 드롭다운 상태 추가
+  const [currentMode, setCurrentMode] = useState("GARDEN");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 모드에 따른 기본 이미지 크기 설정
   const getDefaultImageSize = (mode: string) => {
-    return mode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 200 };
+    return mode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
   };
 
   const [imageSize, setImageSize] = useState(getDefaultImageSize("GARDEN"));
 
-  // 현재 모드에 따른 배경화면과 화분 필터링
   const currentBackgrounds = equipped?.backgrounds?.filter((bg) => bg.mode === currentMode) || [];
   const currentPots = equipped?.pots?.filter((pot) => pot.mode === currentMode) || [];
 
   const handleModeChange = (selectedMode: string) => {
     const newMode = selectedMode === "미니 모드" ? "MINI" : "GARDEN";
     setCurrentMode(newMode);
-    // 모드 변경 시 해당 모드에 맞는 기본 크기로 설정
     setImageSize(getDefaultImageSize(newMode));
   };
 
@@ -70,14 +69,17 @@ const StyleSection = () => {
                   <Image
                     src={currentBackgrounds[0].imageUrl}
                     alt={currentBackgrounds[0].name}
-                    className="object-cover"
+                    style={{
+                      width: `${imageSize.width}px`,
+                      height: `${imageSize.height}px`
+                    }}
                     width={imageSize.width}
                     height={imageSize.height}
                   />
                 </div>
               ) : (
                 <div className="flex items-center justify-center bg-gray-200">
-                  <div className="text-body3 text-text-04">배경화면 없음</div>
+                  <div className="text-body3 text-text-04">배경화면이 존재하지 않습니다.</div>
                 </div>
               )}
             </div>
@@ -97,7 +99,7 @@ const StyleSection = () => {
               variant="primary"
               size="md"
               className="flex flex-row items-center gap-2 text-body1"
-              // onClick={} (TODO: 사이즈 조정 모달 생성 필요)
+              onClick={() => setIsModalOpen(true)}
             >
               사이즈 조정하기
               <SlidersHorizontalIcon width={16} height={16} />
@@ -120,7 +122,7 @@ const StyleSection = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-body3 text-text-04">배경화면이 없습니다</div>
+                  <div className="text-body3 text-text-04">배경화면이 없습니다.</div>
                 )}
               </div>
             </div>
@@ -134,13 +136,19 @@ const StyleSection = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-body3 text-text-03">화분이 없습니다</div>
+                  <div className="text-body3 text-text-03">화분이 없습니다.</div>
                 )}
               </div>
             </div>
           </div>
         </div>
       </div>
+      <SizeAdjustModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        currentSize={imageSize}
+        onApply={setImageSize}
+      />
     </div>
   );
 };
