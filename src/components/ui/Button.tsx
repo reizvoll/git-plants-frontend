@@ -15,7 +15,7 @@ const buttonVariants = cva(
         secondaryLine:
           "bg-bg-01 border border-sageGreen-900 !text-sageGreen-900 hover:bg-sageGreen-50 active:bg-sageGreen-700",
         secondaryStrong: "bg-sageGreen-700 !text-text-01 hover:bg-sageGreen-900",
-        disabled: "bg-bg-02 !text-text-02",
+        disabled: "bg-gray-50 !text-text-02",
         disabledLine: "bg-bg-01 border border-line-02 !text-text-02",
         gray: "bg-gray-800 !text-text-01 hover:bg-gray-700 active:bg-gray-600",
         grayLine: "bg-bg-01 border border-gray-500 !text-text-03 hover:bg-gray-50"

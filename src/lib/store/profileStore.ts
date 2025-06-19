@@ -7,8 +7,8 @@ export const useProfileStore = create<ProfileState>((set) => ({
   seedCount: 0,
   badges: [],
   equipped: {
-    background: null,
-    pot: null
+    backgrounds: [],
+    pots: []
   },
   plants: [],
   isLoading: false,
