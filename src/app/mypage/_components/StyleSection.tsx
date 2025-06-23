@@ -3,27 +3,44 @@ import Dropdown from "@/components/ui/Dropdown";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SizeAdjustModal from "./SizeAdjustModal";
 
+const LOCAL_STORAGE_KEY = "customSizes";
 const StyleSection = () => {
   const { equipped } = useProfileStore();
   const [currentMode, setCurrentMode] = useState("GARDEN");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const getDefaultImageSize = (mode: string) => {
-    return mode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
-  };
+  const getDefaultImageSize = (mode: string) =>
+    mode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
 
-  const [imageSize, setImageSize] = useState(getDefaultImageSize("GARDEN"));
+  // load initial values from localStorage
+  const [customSizes, setCustomSizes] = useState<{ [mode: string]: { width: number; height: number } }>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : {};
+    }
+    return {};
+  });
+
+  // save customSizes to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(customSizes));
+  }, [customSizes]);
+
+  // calculate imageSize when needed
+  const imageSize = customSizes[currentMode] || getDefaultImageSize(currentMode);
 
   const currentBackgrounds = equipped?.backgrounds?.filter((bg) => bg.mode === currentMode) || [];
   const currentPots = equipped?.pots?.filter((pot) => pot.mode === currentMode) || [];
 
   const handleModeChange = (selectedMode: string) => {
-    const newMode = selectedMode === "미니 모드" ? "MINI" : "GARDEN";
-    setCurrentMode(newMode);
-    setImageSize(getDefaultImageSize(newMode));
+    setCurrentMode(selectedMode === "미니 모드" ? "MINI" : "GARDEN");
+  };
+
+  const handleApplySize = (size: { width: number; height: number }) => {
+    setCustomSizes((prev) => ({ ...prev, [currentMode]: size }));
   };
 
   return (
@@ -62,7 +79,7 @@ const StyleSection = () => {
         {/* Todo : separate contents for each mode */}
         <div className="flex flex-row gap-[60px]">
           <div className="flex flex-col items-center gap-6">
-            {/* 현재 선택된 배경화면 표시 */}
+            {/* display the currently selected background */}
             <div className="flex flex-col items-center gap-2">
               {currentBackgrounds.length > 0 ? (
                 <div className="relative">
@@ -147,7 +164,7 @@ const StyleSection = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         currentSize={imageSize}
-        onApply={setImageSize}
+        onApply={handleApplySize}
       />
     </div>
   );
