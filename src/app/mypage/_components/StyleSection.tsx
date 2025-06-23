@@ -112,15 +112,27 @@ const StyleSection = () => {
                 </span>
               )}
             </div>
-            <Button
-              variant="primary"
-              size="md"
-              className="flex flex-row items-center gap-2 text-body1"
-              onClick={() => setIsModalOpen(true)}
-            >
-              사이즈 조정하기
-              <SlidersHorizontalIcon width={16} height={16} />
-            </Button>
+            <div className={`flex ${currentMode === "MINI" ? "flex-col" : "flex-row"} gap-2`}>
+              <Button
+                variant="primary"
+                size="md"
+                className="flex flex-row items-center gap-2 text-body1"
+                onClick={() => setIsModalOpen(true)}
+              >
+                사이즈 조정하기
+                <SlidersHorizontalIcon width={16} height={16} />
+              </Button>
+              <Button
+                variant="primaryLine"
+                size="md"
+                className="flex flex-row items-center gap-2 text-body1"
+                onClick={() => {
+                  setCustomSizes({});
+                }}
+              >
+                기본값으로 설정하기
+              </Button>
+            </div>
           </div>
           <div className="flex flex-col gap-[60px]">
             <div className="flex flex-col gap-6">
