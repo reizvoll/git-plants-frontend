@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import CollectionSection from "./CollectionSection";
 import StyleSection from "./StyleSection";
 
 const SelectTab = () => {
@@ -13,7 +14,11 @@ const SelectTab = () => {
         <StyleSection />
       </div>
     ),
-    tab2: <div className="flex w-full flex-col items-center justify-center pt-16">contents2</div>
+    tab2: (
+      <div className="flex w-full flex-col items-center justify-center pt-16">
+        <CollectionSection />
+      </div>
+    )
   };
 
   return (
