@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .click-box {
+    @apply absolute left-0 top-0 block h-full w-full cursor-pointer;
+  }
+}
+
 @layer components {
   .shadow-normal {
     @apply shadow-[0px_0px_1px_0px_rgba(0,0,0,0.08)] shadow-[0px_0px_8px_0px_rgba(0,0,0,0.12)];
