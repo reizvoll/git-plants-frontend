@@ -40,7 +40,7 @@ const Dropdown = ({
         {activeItem.label}
         {mode === "click" && (
           <CaretDownIcon
-            size={20}
+            size={16}
             className={`transition-transform duration-200 ${isOpen ? "-rotate-180" : ""}`}
             weight="fill"
           />
