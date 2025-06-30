@@ -13,7 +13,8 @@ const config: Config = {
       body1: ["15px", { lineHeight: "150%", letterSpacing: "0.010em" }], // Body1 15px
       body2: ["15px", { lineHeight: "150%", letterSpacing: "0" }], // Body2 15px (For Galmuri)
       caption: ["13px", { lineHeight: "150%", letterSpacing: "0" }], // Caption 13px
-      small: ["11px", { lineHeight: "150%", letterSpacing: "0" }] // Small1 11px
+      small: ["11px", { lineHeight: "150%", letterSpacing: "0" }], // Small1 11px
+      mini: ["9px", { lineHeight: "150%", letterSpacing: "0" }] // Mini 9px
     },
     extend: {
       fontFamily: {
