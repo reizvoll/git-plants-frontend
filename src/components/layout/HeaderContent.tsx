@@ -7,6 +7,7 @@ import { useLanguageStore } from "@/lib/store/languageStore";
 import { GearSixIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProfileImageCircle from "../shared/ProfileImageCircle";
 import { Button } from "../ui/Button";
@@ -16,6 +17,7 @@ const HeaderContent = () => {
   const { user, login, logout, checkAuth } = useAuthStore();
   const { language, setLanguage } = useLanguageStore();
   const t = useTranslations("navigation");
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const HeaderContent = () => {
           {user ? (
             <button
               className="flex h-12 items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3"
-              onClick={() => (window.location.href = "/mypage")}
+              onClick={() => router.push("/mypage")}
             >
               <div className="flex items-center gap-2">
                 <ProfileImageCircle profileImage={user.image} nickname={user.username} size={24} />
@@ -73,14 +75,14 @@ const HeaderContent = () => {
             triggerClassName="h-[30px]"
           />
           {/* Store Icon */}
-          <button className="flex items-center justify-center" aria-label="스토어">
+          <Link href="/shop" className="flex items-center justify-center">
             <StoreIcon width={24} height={24} className="text-text-04" />
-          </button>
+          </Link>
           {/* Gear Icon */}
           {user && (
             <Dropdown
               items={[
-                { label: t("mypage"), onClick: () => (window.location.href = "/mypage") },
+                { label: t("mypage"), onClick: () => router.push("/mypage") },
                 { label: t("logout"), onClick: logout }
               ]}
               trigger={
