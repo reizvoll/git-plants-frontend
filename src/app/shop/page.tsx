@@ -1,7 +1,7 @@
-import ShopClient from "./_components/ShopClient";
+import ShopPageClient from "./_components/ShopPageClient";
 
-const Shop = () => {
-  return <ShopClient />;
+const ShopPage = () => {
+  return <ShopPageClient />;
 };
 
-export default Shop;
+export default ShopPage;

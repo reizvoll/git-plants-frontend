@@ -3,7 +3,7 @@
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import ShopHero from "./ShopHero";
 
-const ShopClient = () => {
+const ShopPageClient = () => {
   return (
     <>
       <div className="relative w-full bg-sageGreen-100">
@@ -16,4 +16,4 @@ const ShopClient = () => {
   );
 };
 
-export default ShopClient;
+export default ShopPageClient;
