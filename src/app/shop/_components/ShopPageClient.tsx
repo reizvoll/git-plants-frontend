@@ -1,7 +1,7 @@
 "use client";
 
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
-import ShopHero from "./ShopHero";
+import ShopHero from "./section/hero/ShopHero";
 
 const ShopPageClient = () => {
   return (
