@@ -33,7 +33,7 @@ const StyleSection = () => {
   const imageSize = customSizes[currentMode] || getDefaultImageSize(currentMode);
 
   const currentBackgrounds = equipped?.backgrounds?.filter((bg) => bg.mode === currentMode) || [];
-  const currentPots = equipped?.pots?.filter((pot) => pot.mode === currentMode) || [];
+  const currentPots = equipped?.pots || [];
 
   const handleModeChange = (selectedMode: string) => {
     setCurrentMode(selectedMode === "미니 모드" ? "MINI" : "GARDEN");
@@ -155,13 +155,13 @@ const StyleSection = () => {
                 )}
               </div>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               <div className="text-body2 text-text-03">화분</div>
               <div className="flex flex-wrap gap-4">
                 {currentPots.length > 0 ? (
                   currentPots.map((pot) => (
                     <div key={pot.id} className="relative">
-                      <Image src={pot.iconUrl} alt={pot.name} className="object-cover" width={80} height={80} />
+                      <Image src={pot.iconUrl} alt={pot.name} className="object-cover" width={60} height={60} />
                     </div>
                   ))
                 ) : (
