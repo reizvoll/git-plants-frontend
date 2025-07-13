@@ -1,4 +1,6 @@
-import { ActivityStats, ApiResponse, GitHubActivity, SessionResponse } from "@/lib/types/api/api";
+import { ApiResponse } from "@/lib/types/api/api";
+import { SessionResponse } from "@/lib/types/api/auth";
+import { ActivityStats, GitHubActivity } from "@/lib/types/api/github";
 import { ProfileState } from "@/lib/types/api/profile";
 import API, { BASE_URL } from "./api";
 
