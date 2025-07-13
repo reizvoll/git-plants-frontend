@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/lib/types/api";
+import { ApiResponse } from "@/lib/types/api/api";
 import API from "./api";
 
 // Seed 관련 API

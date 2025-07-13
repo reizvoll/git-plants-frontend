@@ -1,10 +1,22 @@
-export type ApiResponse<T> = {
-  success: boolean;
-  data: T;
-  error: {
-    message: string;
-    code: string;
-  };
+export type ActivityStats = {
+  totalCommits: number;
+  totalPullRequests: number;
+  totalIssues: number;
+  repositories: string[];
+};
+
+export type GitHubActivity = {
+  userId: string;
+  type: "Contribution" | "Commit" | "PullRequest";
+  repository: string;
+  title: string;
+  url: string;
+  eventId: string;
+  createdAt: Date;
+  contributionCount: number;
+  description?: string | null;
+  state?: "MERGED" | "CLOSED";
+  mergedAt?: Date | null;
 };
 
 export type ProfileUser = {
@@ -40,36 +52,6 @@ export type ProfilePlant = {
   updatedAt: string;
 };
 
-export type GitHubActivity = {
-  userId: string;
-  type: "Contribution" | "Commit" | "PullRequest";
-  repository: string;
-  title: string;
-  url: string;
-  eventId: string;
-  createdAt: Date;
-  contributionCount: number;
-  description?: string | null;
-  state?: "MERGED" | "CLOSED";
-  mergedAt?: Date | null;
-};
-
-export type UserProfile = {
-  id: string;
-  githubId: string;
-  username: string;
-  name?: string;
-  email?: string;
-  image?: string;
-};
-
-export type ActivityStats = {
-  totalCommits: number;
-  totalPullRequests: number;
-  totalIssues: number;
-  repositories: string[];
-};
-
 export type AnalyticsData = {
   timeline: Array<{
     date: string;
@@ -84,9 +66,4 @@ export type AnalyticsData = {
     _count: number;
   }>;
   availableYears: number[];
-};
-
-export type SessionResponse = {
-  user: UserProfile;
-  isAdmin: boolean;
 };

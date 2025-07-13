@@ -1,5 +1,5 @@
 import { authApi } from "@/api/auth";
-import { AuthState } from "@/lib/types/auth";
+import { AuthState } from "@/lib/types/api/auth";
 import { create } from "zustand";
 
 export const useAuthStore = create<AuthState>((set) => ({

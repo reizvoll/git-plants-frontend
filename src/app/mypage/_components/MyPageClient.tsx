@@ -1,6 +1,6 @@
 "use client";
 
-import { authApi } from "@/api/api";
+import { authApi } from "@/api/auth";
 import LoadingText from "@/components/shared/LoadingText";
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import { useProfileStore } from "@/lib/store/profileStore";

@@ -1,12 +1,3 @@
-import type { UserProfile } from "./api";
-
-export type Session = {
-  id: string;
-  githubId: string;
-  username: string;
-  image?: string;
-};
-
 export type AuthError = {
   message: string;
   status: number;
@@ -27,3 +18,24 @@ export interface SyncState {
   lastSyncTime: Date | null;
   setLastSyncTime: (time: Date) => void;
 }
+
+export type Session = {
+  id: string;
+  githubId: string;
+  username: string;
+  image?: string;
+};
+
+export type UserProfile = {
+  id: string;
+  githubId: string;
+  username: string;
+  name?: string;
+  email?: string;
+  image?: string;
+};
+
+export type SessionResponse = {
+  user: UserProfile;
+  isAdmin: boolean;
+};
