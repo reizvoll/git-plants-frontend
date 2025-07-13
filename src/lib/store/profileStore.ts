@@ -1,5 +1,5 @@
-import { authApi } from "@/api/api";
-import { ProfileState } from "@/lib/types/profile";
+import { authApi } from "@/api/auth";
+import { ProfileState } from "@/lib/types/api/profile";
 import { create } from "zustand";
 
 export const useProfileStore = create<ProfileState>((set) => ({

@@ -1,5 +1,5 @@
-import { ActivityStats, ApiResponse, GitHubActivity, SessionResponse } from "@/lib/types/api";
-import { ProfileState } from "@/lib/types/profile";
+import { ActivityStats, ApiResponse, GitHubActivity, SessionResponse } from "@/lib/types/api/api";
+import { ProfileState } from "@/lib/types/api/profile";
 import API, { BASE_URL } from "./api";
 
 // 인증 관련 API
