@@ -1,9 +1,7 @@
-import { ActivityStats, ApiResponse, GitHubActivity, SessionResponse } from "@/lib/types/api";
-import { ProfileState } from "@/lib/types/profile";
 import axios from "axios";
 import Router from "next/router";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -14,58 +12,6 @@ export const API = axios.create({
     "Content-Type": "application/json"
   }
 });
-
-// 인증 관련 API
-export const authApi = {
-  signInWithGithub: () => {
-    window.location.href = `${BASE_URL}/api/auth/github`;
-  },
-  signOut: () => API.post("/api/auth/signout"),
-  getSession: async () => {
-    const response = await API.get<SessionResponse>("/api/auth/session");
-    return {
-      success: true,
-      data: response.data
-    };
-  },
-  getProfile: () =>
-    API.get<ProfileState>("/api/users/profile").then((response) => ({
-      success: true,
-      data: response.data
-    }))
-};
-
-// Seed 관련 API
-export const seedApi = {
-  getSeeds: () => API.get<ApiResponse<{ userId: string; count: number }>>("/api/seeds"),
-  addSeeds: (count: number) => API.post<ApiResponse<{ message: string }>>("/api/seeds/add", { count })
-};
-
-// GitHub 활동 관련 API
-export const githubApi = {
-  getActivities: (params?: {
-    period?: "day" | "week" | "month" | "year" | "all";
-    year?: number;
-    type?: "contribution" | "commit" | "pull_request";
-    repository?: string;
-  }) => API.get<ApiResponse<GitHubActivity[]>>("/api/activities", { params }),
-  getActivityById: (id: string) => API.get<ApiResponse<GitHubActivity>>(`/api/activities/${id}`),
-  getStats: (params?: { period?: "day" | "week" | "month" | "year" }) =>
-    API.get<ApiResponse<ActivityStats>>("/api/activities/stats", { params }),
-  getAnalytics: (params?: { period?: "day" | "week" | "month" | "year" | "all"; year?: number }) =>
-    API.get<
-      ApiResponse<{
-        timeline: Array<{ date: string; count: number }>;
-        repositoryDistribution: Array<{ repository: string; _count: number }>;
-        timePattern: Array<{ createdAt: string; _count: number }>;
-      }>
-    >("/api/activities/analytics", { params }),
-  getAvailableYears: () => API.get<ApiResponse<number[]>>("/api/activities/years"),
-  syncActivities: () =>
-    API.post<ApiResponse<{ message: string; activities: GitHubActivity[] }>>("/api/activities/sync"),
-  setAutoSync: (enabled: boolean) =>
-    API.post<ApiResponse<{ message: string }>>("/api/activities/sync/auto", { enabled })
-};
 
 // 응답 인터셉터 - 에러 처리
 API.interceptors.response.use(

@@ -1,4 +1,4 @@
-import { authApi } from "@/api/api";
+import { authApi } from "@/api/auth";
 import { AuthState } from "@/lib/types/auth";
 import { create } from "zustand";
 
