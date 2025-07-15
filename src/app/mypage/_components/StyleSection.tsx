@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
+import { useBackgroundSelection, usePotSelection } from "@/lib/hooks/mypage/useItemSelection";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import Image from "next/image";
@@ -32,8 +33,12 @@ const StyleSection = () => {
   // calculate imageSize when needed
   const imageSize = customSizes[currentMode] || getDefaultImageSize(currentMode);
 
-  const currentBackgrounds = equipped?.backgrounds?.filter((bg) => bg.mode === currentMode) || [];
+  const currentBackgrounds =
+    equipped?.backgrounds?.filter((bg) => bg.mode === currentMode || bg.mode === "DEFAULT") || [];
   const currentPots = equipped?.pots || [];
+
+  const backgroundSelection = useBackgroundSelection(currentBackgrounds, currentMode);
+  const potSelection = usePotSelection(currentPots);
 
   const handleModeChange = (selectedMode: string) => {
     setCurrentMode(selectedMode === "미니 모드" ? "MINI" : "GARDEN");
@@ -81,11 +86,11 @@ const StyleSection = () => {
           <div className="flex flex-col items-center gap-6">
             {/* display the currently selected background */}
             <div className="flex flex-col items-center gap-2">
-              {currentBackgrounds.length > 0 ? (
+              {backgroundSelection.selectedBackground ? (
                 <div className="relative">
                   <Image
-                    src={currentBackgrounds[0].imageUrl}
-                    alt={currentBackgrounds[0].name}
+                    src={backgroundSelection.selectedBackground.imageUrl}
+                    alt={backgroundSelection.selectedBackground.name}
                     style={{
                       width: `${imageSize.width}px`,
                       height: `${imageSize.height}px`
@@ -102,13 +107,9 @@ const StyleSection = () => {
             </div>
             <div className="text-body2 text-text-03">
               현재 사이즈 <br />
-              {currentBackgrounds.length > 0 && (
+              {backgroundSelection.selectedBackground && (
                 <span className="text-body3 text-text-03">
-                  {currentBackgrounds[0].imageUrl && (
-                    <>
-                      {imageSize.width} X {imageSize.height} px
-                    </>
-                  )}
+                  {imageSize.width} X {imageSize.height} px
                 </span>
               )}
             </div>
@@ -139,12 +140,16 @@ const StyleSection = () => {
               <div className="text-body2 text-text-03">배경화면</div>
               <div className="flex flex-wrap gap-4">
                 {currentBackgrounds.length > 0 ? (
-                  currentBackgrounds.map((background) => (
-                    <div key={background.id} className="relative">
+                  currentBackgrounds.map((background, index) => (
+                    <div
+                      key={background.id}
+                      className="relative cursor-pointer transition-all duration-200 hover:opacity-80"
+                      onClick={() => backgroundSelection.selectBackground(index)}
+                    >
                       <Image
                         src={background.iconUrl}
                         alt={background.name}
-                        className="object-cover"
+                        className="rounded object-cover"
                         width={80}
                         height={80}
                       />
@@ -159,9 +164,13 @@ const StyleSection = () => {
               <div className="text-body2 text-text-03">화분</div>
               <div className="flex flex-wrap gap-4">
                 {currentPots.length > 0 ? (
-                  currentPots.map((pot) => (
-                    <div key={pot.id} className="relative">
-                      <Image src={pot.iconUrl} alt={pot.name} className="object-cover" width={60} height={60} />
+                  currentPots.map((pot, index) => (
+                    <div
+                      key={pot.id}
+                      className="relative cursor-pointer transition-all duration-200 hover:opacity-80"
+                      onClick={() => potSelection.selectPot(index)}
+                    >
+                      <Image src={pot.iconUrl} alt={pot.name} className="rounded object-cover" width={60} height={60} />
                     </div>
                   ))
                 ) : (
