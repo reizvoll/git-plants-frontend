@@ -1,51 +1,49 @@
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
-import { useBackgroundSelection, usePotSelection } from "@/lib/hooks/mypage/useItemSelection";
+import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPostionStore";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import PotPositionAdjustModal from "./PotPositionAdjustModal";
 import SizeAdjustModal from "./SizeAdjustModal";
 
-const LOCAL_STORAGE_KEY = "customSizes";
 const StyleSection = () => {
-  const { equipped } = useProfileStore();
+  const { equipped, plants } = useProfileStore();
   const [currentMode, setCurrentMode] = useState("GARDEN");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPotPositionModalOpen, setIsPotPositionModalOpen] = useState(false);
 
-  const getDefaultImageSize = (mode: string) =>
-    mode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
-
-  // load initial values from localStorage
-  const [customSizes, setCustomSizes] = useState<{ [mode: string]: { width: number; height: number } }>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : {};
-    }
-    return {};
-  });
-
-  // save customSizes to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(customSizes));
-  }, [customSizes]);
-
-  // calculate imageSize when needed
-  const imageSize = customSizes[currentMode] || getDefaultImageSize(currentMode);
+  const { potPosition, setPotPosition } = usePotPosition(currentMode);
+  const { customSize, setCustomSize } = useCustomSize(currentMode);
+  const { backgroundIndex, potIndex, setIndexes } = useSelectedIndexes(currentMode);
 
   const currentBackgrounds =
     equipped?.backgrounds?.filter((bg) => bg.mode === currentMode || bg.mode === "DEFAULT") || [];
   const currentPots = equipped?.pots || [];
 
-  const backgroundSelection = useBackgroundSelection(currentBackgrounds, currentMode);
-  const potSelection = usePotSelection(currentPots);
+  const selectedBackground = currentBackgrounds[backgroundIndex] || currentBackgrounds[0] || null;
+  const selectedPot = currentPots[potIndex] || currentPots[0] || null;
+  const currentPlant = plants && plants.length > 0 ? plants[0] : null;
 
   const handleModeChange = (selectedMode: string) => {
     setCurrentMode(selectedMode === "미니 모드" ? "MINI" : "GARDEN");
   };
 
   const handleApplySize = (size: { width: number; height: number }) => {
-    setCustomSizes((prev) => ({ ...prev, [currentMode]: size }));
+    setCustomSize(size);
+  };
+
+  const handleApplyPotPosition = (position: { x: number; y: number }) => {
+    setPotPosition(position);
+  };
+
+  const handleBackgroundSelect = (index: number) => {
+    setIndexes(index, potIndex);
+  };
+
+  const handlePotSelect = (index: number) => {
+    setIndexes(backgroundIndex, index);
   };
 
   return (
@@ -83,21 +81,54 @@ const StyleSection = () => {
 
         {/* Todo : separate contents for each mode */}
         <div className="flex flex-row gap-[60px]">
-          <div className="flex flex-col items-center gap-6">
-            {/* display the currently selected background */}
+          <div className="flex flex-shrink-0 flex-col items-center gap-6">
+            {/* display the currently selected background with pot */}
             <div className="flex flex-col items-center gap-2">
-              {backgroundSelection.selectedBackground ? (
+              {selectedBackground ? (
                 <div className="relative">
                   <Image
-                    src={backgroundSelection.selectedBackground.imageUrl}
-                    alt={backgroundSelection.selectedBackground.name}
+                    src={selectedBackground.imageUrl}
+                    alt={selectedBackground.name}
                     style={{
-                      width: `${imageSize.width}px`,
-                      height: `${imageSize.height}px`
+                      width: `${customSize.width}px`,
+                      height: `${customSize.height}px`
                     }}
-                    width={imageSize.width}
-                    height={imageSize.height}
+                    width={customSize.width}
+                    height={customSize.height}
                   />
+
+                  {selectedPot && (
+                    <div
+                      className="absolute cursor-move"
+                      style={{
+                        left: `${potPosition.x}%`,
+                        top: `${potPosition.y}%`,
+                        transform: "translate(-50%, -80%)"
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Image src={selectedPot.iconUrl} alt={selectedPot.name} width={80} height={80} />
+
+                      {currentPlant && (
+                        <picture
+                          className="absolute size-[100px]"
+                          style={{
+                            left: "50%",
+                            top: "-70px",
+                            transform: "translateX(-50%)",
+                            zIndex: 10
+                          }}
+                        >
+                          <Image
+                            src={currentPlant.currentImageUrl}
+                            alt={currentPlant.monthlyPlant.name}
+                            fill
+                            className="object-contain"
+                          />
+                        </picture>
+                      )}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center justify-center bg-gray-200">
@@ -105,11 +136,12 @@ const StyleSection = () => {
                 </div>
               )}
             </div>
+
             <div className="text-body2 text-text-03">
               현재 사이즈 <br />
-              {backgroundSelection.selectedBackground && (
+              {selectedBackground && (
                 <span className="text-body3 text-text-03">
-                  {imageSize.width} X {imageSize.height} px
+                  {customSize.width} X {customSize.height} px
                 </span>
               )}
             </div>
@@ -128,7 +160,8 @@ const StyleSection = () => {
                 size="md"
                 className="flex flex-row items-center gap-2 text-body1"
                 onClick={() => {
-                  setCustomSizes({});
+                  setCustomSize({ width: 400, height: 300 });
+                  setPotPosition({ x: 50, y: 80 });
                 }}
               >
                 기본값으로 설정하기
@@ -136,7 +169,7 @@ const StyleSection = () => {
             </div>
           </div>
           <div className="flex flex-col gap-[60px]">
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-1 flex-col gap-6">
               <div className="text-body2 text-text-03">배경화면</div>
               <div className="flex flex-wrap gap-4">
                 {currentBackgrounds.length > 0 ? (
@@ -144,7 +177,7 @@ const StyleSection = () => {
                     <div
                       key={background.id}
                       className="relative cursor-pointer transition-all duration-200 hover:opacity-80"
-                      onClick={() => backgroundSelection.selectBackground(index)}
+                      onClick={() => handleBackgroundSelect(index)}
                     >
                       <Image
                         src={background.iconUrl}
@@ -161,14 +194,25 @@ const StyleSection = () => {
               </div>
             </div>
             <div className="flex flex-col gap-6">
-              <div className="text-body2 text-text-03">화분</div>
+              <div className="flex flex-row items-center justify-between gap-2">
+                <div className="text-body2 text-text-03">화분</div>
+                <Button
+                  variant="primaryLine"
+                  size="md"
+                  className="flex flex-row items-center gap-2 text-body1"
+                  onClick={() => setIsPotPositionModalOpen(true)}
+                >
+                  위치 조정하기
+                  <SlidersHorizontalIcon width={16} height={16} />
+                </Button>
+              </div>
               <div className="flex flex-wrap gap-4">
                 {currentPots.length > 0 ? (
                   currentPots.map((pot, index) => (
                     <div
                       key={pot.id}
                       className="relative cursor-pointer transition-all duration-200 hover:opacity-80"
-                      onClick={() => potSelection.selectPot(index)}
+                      onClick={() => handlePotSelect(index)}
                     >
                       <Image src={pot.iconUrl} alt={pot.name} className="rounded object-cover" width={60} height={60} />
                     </div>
@@ -184,8 +228,15 @@ const StyleSection = () => {
       <SizeAdjustModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        currentSize={imageSize}
+        currentSize={customSize}
         onApply={handleApplySize}
+      />
+      <PotPositionAdjustModal
+        isOpen={isPotPositionModalOpen}
+        onClose={() => setIsPotPositionModalOpen(false)}
+        currentPotPosition={potPosition}
+        onApply={handleApplyPotPosition}
+        selectedPot={selectedPot}
       />
     </div>
   );
