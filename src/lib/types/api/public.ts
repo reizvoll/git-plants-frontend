@@ -7,6 +7,9 @@ export type MonthlyPlant = {
   iconUrl: string;
   month: number;
   year: number;
+  createdAt: string;
+  updatedAt: string;
+  updatedById: string;
 };
 
 export type UpdateNote = {

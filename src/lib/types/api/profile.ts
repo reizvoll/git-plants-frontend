@@ -1,3 +1,5 @@
+import type { MonthlyPlant } from "./public";
+
 export type Badge = {
   id: string;
   awardedAt: string;
@@ -24,11 +26,16 @@ export type Item = {
 
 export type Plant = {
   id: string;
-  name: string;
+  userId: string;
+  monthlyPlantId: number;
   stage: "SEED" | "SPROUT" | "GROWING" | "MATURE" | "HARVEST";
-  currentContributions: number;
-  createdAt: string;
+  harvestCount: number;
+  harvestedAt: string;
   updatedAt: string;
+  monthlyPlant: MonthlyPlant;
+  currentContributions: number;
+  totalContributions: number;
+  currentImageUrl: string;
 };
 
 export interface ProfileState {
