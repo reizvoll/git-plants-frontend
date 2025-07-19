@@ -11,8 +11,12 @@ import { FunnelIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const CollectionSection = () => {
-  const [currentMode, setCurrentMode] = useState<"CROP" | "BACKGROUND" | "POT">("CROP");
+interface CollectionSectionProps {
+  initialMode?: "CROP" | "BACKGROUND" | "POT";
+}
+
+const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => {
+  const [currentMode, setCurrentMode] = useState<"CROP" | "BACKGROUND" | "POT">(initialMode);
   const [currentSort, setCurrentSort] = useState<"LATEST" | "MOST_GROWN" | "A_Z">("LATEST");
   const { equipped } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
@@ -27,6 +31,11 @@ const CollectionSection = () => {
 
   const backgrounds = equipped?.backgrounds || [];
   const pots = equipped?.pots || [];
+
+  // update currentMode when initialMode changes
+  useEffect(() => {
+    setCurrentMode(initialMode);
+  }, [initialMode]);
 
   useEffect(() => {
     const hasNoItems =
@@ -68,14 +77,12 @@ const CollectionSection = () => {
           <div className="grid auto-rows-min grid-cols-10 items-start gap-[18px] px-1 py-1 leading-none">
             {pots.length > 0 &&
               pots.map((pot) => (
-                <picture key={pot.id} className="relative size-[66px]">
-                  <Image src={pot.iconUrl} alt={pot.name} className="object-cover" fill />
-                  <span className="text-body group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full rounded-lg bg-bg-01 px-4 py-2 text-center text-primary-default opacity-0 transition-all duration-200 group-hover:opacity-100">
-                    <span className="block">{pot.name}</span>
+                <picture key={pot.id} className="group relative size-[66px]">
+                  <Image src={pot.iconUrl} alt={pot.name} width={66} height={66} className="object-cover" />
+                  <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
+                    <span className="block text-body2 text-primary-default">{pot.name}</span>
                     {pot.createdAt && (
-                      <span className="block text-caption text-text-03">
-                        {new Date(pot.createdAt).toLocaleDateString("ko-KR")}
-                      </span>
+                      <span className="text-mini text-brown-500">(획득날짜 : {formatDate(pot.createdAt)})</span>
                     )}
                   </span>
                 </picture>

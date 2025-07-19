@@ -6,17 +6,22 @@ import StyleSection from "./StyleSection";
 
 const SelectTab = () => {
   const [filter, setFilter] = useState<"tab1" | "tab2">("tab1");
+  const [collectionMode, setCollectionMode] = useState<"CROP" | "BACKGROUND" | "POT">("CROP");
+
+  const handleNavigateToCollection = (mode: "CROP" | "BACKGROUND" | "POT") => {
+    setCollectionMode(mode);
+    setFilter("tab2");
+  };
 
   const tabContents = {
-    //Todo : add contents
     tab1: (
       <div className="flex w-full flex-col items-center justify-center pt-16">
-        <StyleSection />
+        <StyleSection onNavigateToCollection={handleNavigateToCollection} />
       </div>
     ),
     tab2: (
       <div className="flex w-full flex-col items-center justify-center pt-16">
-        <CollectionSection />
+        <CollectionSection initialMode={collectionMode} />
       </div>
     )
   };

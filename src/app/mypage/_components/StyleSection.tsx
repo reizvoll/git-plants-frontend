@@ -1,18 +1,25 @@
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
-import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPostionStore";
+import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPositionStore";
 import { useProfileStore } from "@/lib/store/profileStore";
-import { ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
+import { ArrowsOutCardinalIcon, DotsThreeIcon, ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useState } from "react";
 import PotPositionAdjustModal from "./PotPositionAdjustModal";
 import SizeAdjustModal from "./SizeAdjustModal";
 
-const StyleSection = () => {
+interface StyleSectionProps {
+  onNavigateToCollection: (mode: "CROP" | "BACKGROUND" | "POT") => void;
+}
+
+const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const { equipped, plants } = useProfileStore();
   const [currentMode, setCurrentMode] = useState("GARDEN");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPotPositionModalOpen, setIsPotPositionModalOpen] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showBackgroundTooltip, setShowBackgroundTooltip] = useState(false);
+  const [showPotTooltip, setShowPotTooltip] = useState(false);
 
   const { potPosition, setPotPosition } = usePotPosition(currentMode);
   const { customSize, setCustomSize } = useCustomSize(currentMode);
@@ -137,13 +144,15 @@ const StyleSection = () => {
               )}
             </div>
 
-            <div className="text-body2 text-text-03">
-              현재 사이즈 <br />
-              {selectedBackground && (
-                <span className="text-body3 text-text-03">
-                  {customSize.width} X {customSize.height} px
-                </span>
-              )}
+            <div className="flex flex-row items-center gap-4">
+              <div className="text-body2 text-text-03">
+                현재 사이즈 <br />
+                {selectedBackground && (
+                  <span className="text-body3 text-text-03">
+                    {customSize.width} X {customSize.height} px
+                  </span>
+                )}
+              </div>
             </div>
             <div className={`flex ${currentMode === "MINI" ? "flex-col" : "flex-row"} gap-2`}>
               <Button
@@ -164,13 +173,30 @@ const StyleSection = () => {
                   setPotPosition({ x: 50, y: 80 });
                 }}
               >
-                기본값으로 설정하기
+                기본값으로 설정
               </Button>
             </div>
           </div>
-          <div className="flex flex-col gap-[60px]">
-            <div className="flex flex-1 flex-col gap-6">
-              <div className="text-body2 text-text-03">배경화면</div>
+          <div className="flex w-full flex-col gap-[60px]">
+            <div className="flex w-full flex-col gap-6">
+              <div className="flex w-full flex-row items-center justify-between">
+                <div className="text-body2 text-text-03">배경화면</div>
+                <div className="relative">
+                  <button
+                    className="group text-text-04"
+                    onClick={() => onNavigateToCollection("BACKGROUND")}
+                    onMouseEnter={() => setShowBackgroundTooltip(true)}
+                    onMouseLeave={() => setShowBackgroundTooltip(false)}
+                  >
+                    <DotsThreeIcon width={20} height={20} />
+                    {showBackgroundTooltip && (
+                      <span className="group-hover:shadow-emphasize absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
+                        <span className="text-caption text-primary-default">더보기</span>
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
               <div className="flex flex-wrap gap-4">
                 {currentBackgrounds.length > 0 ? (
                   currentBackgrounds.map((background, index) => (
@@ -193,18 +219,32 @@ const StyleSection = () => {
                 )}
               </div>
             </div>
-            <div className="flex flex-col gap-6">
-              <div className="flex flex-row items-center justify-between gap-2">
+            <div className="flex w-full flex-col gap-6">
+              <div className="flex w-full flex-row items-center justify-between">
                 <div className="text-body2 text-text-03">화분</div>
-                <Button
-                  variant="primaryLine"
-                  size="md"
-                  className="flex flex-row items-center gap-2 text-body1"
-                  onClick={() => setIsPotPositionModalOpen(true)}
-                >
-                  위치 조정하기
-                  <SlidersHorizontalIcon width={16} height={16} />
-                </Button>
+                <div className="flex flex-row items-center gap-4">
+                  <button
+                    className="flex flex-row items-center text-text-03"
+                    onClick={() => setIsPotPositionModalOpen(true)}
+                  >
+                    <ArrowsOutCardinalIcon width={16} height={16} />
+                  </button>
+                  <div className="relative">
+                    <button
+                      className="group text-text-04"
+                      onClick={() => onNavigateToCollection("POT")}
+                      onMouseEnter={() => setShowPotTooltip(true)}
+                      onMouseLeave={() => setShowPotTooltip(false)}
+                    >
+                      <DotsThreeIcon width={20} height={20} />
+                      {showPotTooltip && (
+                        <span className="group-hover:shadow-emphasize absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
+                          <span className="text-caption text-primary-default">더보기</span>
+                        </span>
+                      )}
+                    </button>
+                  </div>
+                </div>
               </div>
               <div className="flex flex-wrap gap-4">
                 {currentPots.length > 0 ? (
