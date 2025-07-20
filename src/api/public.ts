@@ -12,7 +12,7 @@ export const getMonthlyPlant = async (): Promise<ApiResponse<MonthlyPlant>> => {
   }
 };
 
-export const getCurrentUpdate = async (): Promise<ApiResponse<CurrentUpdate>> => {
+export const getCurrentUpdate = async (): Promise<CurrentUpdate> => {
   try {
     const response = await API.get("/api/public/current-update");
     return response.data;
