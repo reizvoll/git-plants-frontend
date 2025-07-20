@@ -22,16 +22,19 @@ export type UpdateNote = {
 export type NewItem = {
   id: number;
   name: string;
-  description: string;
+  category: "background" | "pot" | "decoration";
+  mode: string | null;
   imageUrl: string;
-  type: "background" | "pot" | "decoration";
-  price?: number;
+  iconUrl: string;
+  price: number;
+  createdAt: string;
+  updatedAt: string;
+  updatedById: string;
 };
 
 export type CurrentUpdate = {
   month: number;
   year: number;
-  plant: MonthlyPlant;
   updateNote: UpdateNote;
   newItems: NewItem[];
 };
