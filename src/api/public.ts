@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/lib/types/api/api";
-import { CurrentUpdate, MonthlyPlant } from "@/lib/types/api/public";
+import { CurrentUpdate, MonthlyPlant, ShopItem } from "@/lib/types/api/public";
 import API from "./api";
 
 export const getMonthlyPlant = async (): Promise<ApiResponse<MonthlyPlant>> => {
@@ -18,6 +18,16 @@ export const getCurrentUpdate = async (): Promise<CurrentUpdate> => {
     return response.data;
   } catch (error) {
     console.error("Failed to fetch current update:", error);
+    throw error;
+  }
+};
+
+export const getShopItems = async (): Promise<ShopItem[]> => {
+  try {
+    const response = await API.get("/api/public/items");
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch shop items:", error);
     throw error;
   }
 };

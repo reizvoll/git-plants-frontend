@@ -22,7 +22,7 @@ export type UpdateNote = {
 export type NewItem = {
   id: number;
   name: string;
-  category: "background" | "pot" | "decoration";
+  category: "background" | "pot";
   mode: string | null;
   imageUrl: string;
   iconUrl: string;
@@ -30,6 +30,18 @@ export type NewItem = {
   createdAt: string;
   updatedAt: string;
   updatedById: string;
+};
+
+export type ShopItem = {
+  id: number;
+  name: string;
+  category: "background" | "pot";
+  mode: string | null;
+  imageUrl: string;
+  iconUrl: string;
+  price: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type CurrentUpdate = {
