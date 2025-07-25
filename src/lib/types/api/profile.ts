@@ -24,6 +24,11 @@ export type Item = {
   updatedById: string;
 };
 
+export type SeedResponse = {
+  userId: string;
+  count: number;
+};
+
 export type Plant = {
   id: string;
   userId: string;
