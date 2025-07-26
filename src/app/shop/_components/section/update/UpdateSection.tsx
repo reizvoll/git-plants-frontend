@@ -1,7 +1,7 @@
 "use client";
 
 import { CaretCircleLeftIcon, CaretCircleRightIcon } from "@phosphor-icons/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import NewUpdatesCard from "./NewUpdatesCard";
@@ -15,11 +15,16 @@ import BackgroundSectionCard from "./BackgroundSectionCard";
 import PotSectionCard from "./PotSectionCard";
 import UpdateNoteModal from "./UpdateNoteModal";
 
-const FeatureSection = () => {
+const UpdateSection = () => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: currentUpdate } = useCurrentUpdateStore();
+  const { data: currentUpdate, fetchCurrentUpdate } = useCurrentUpdateStore();
+
+  // UpdateSection에서 한 번만 API 호출
+  useEffect(() => {
+    fetchCurrentUpdate();
+  }, [fetchCurrentUpdate]);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -86,4 +91,4 @@ const FeatureSection = () => {
   );
 };
 
-export default FeatureSection;
+export default UpdateSection;

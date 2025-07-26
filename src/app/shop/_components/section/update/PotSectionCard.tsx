@@ -4,15 +4,10 @@ import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import { useCurrentUpdateStore } from "@/lib/store/currentUpdateStore";
 import Image from "next/image";
-import { useEffect } from "react";
 
 const PotSectionCard = () => {
-  const { data: currentUpdate, isLoading, error, fetchCurrentUpdate } = useCurrentUpdateStore();
+  const { data: currentUpdate, isLoading, error } = useCurrentUpdateStore();
   const potItems = currentUpdate?.newItems.filter((item) => item.category === "pot") || [];
-
-  useEffect(() => {
-    fetchCurrentUpdate();
-  }, [fetchCurrentUpdate]);
 
   if (isLoading) {
     return <div>{/* <LoadingSpinner /> */}</div>;

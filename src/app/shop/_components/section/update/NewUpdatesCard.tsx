@@ -3,18 +3,13 @@
 import { Button } from "@/components/ui/Button";
 import { useCurrentUpdateStore } from "@/lib/store/currentUpdateStore";
 import Image from "next/image";
-import { useEffect } from "react";
 
 interface NewUpdatesCardProps {
   isModalOpen: () => void;
 }
 
 const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
-  const { data: currentUpdate, isLoading, error, fetchCurrentUpdate } = useCurrentUpdateStore();
-
-  useEffect(() => {
-    fetchCurrentUpdate();
-  }, [fetchCurrentUpdate]);
+  const { data: currentUpdate, isLoading, error } = useCurrentUpdateStore();
 
   if (isLoading) {
     return <div>{/* <LoadingSpinner /> */}</div>;
