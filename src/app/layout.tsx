@@ -1,5 +1,6 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import Toast from "@/components/shared/Toast";
 import TQProviders from "@/lib/providers/TQProvider";
 import "@/lib/styles/globals.css";
 import type { Metadata } from "next";
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Header />
             <main className="relative mx-auto w-full pt-20 tb:pt-0">{children}</main>
             <Footer />
+            <Toast />
           </NextIntlClientProvider>
         </body>
       </TQProviders>
