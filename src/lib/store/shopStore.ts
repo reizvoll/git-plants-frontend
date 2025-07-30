@@ -1,6 +1,6 @@
 import { getShopItems } from "@/api/public";
 import { shopApi } from "@/api/user";
-import { Plant } from "@/lib/types/api/profile";
+import { Crop } from "@/lib/types/api/profile";
 import { ShopItem } from "@/lib/types/api/public";
 import { create } from "zustand";
 import { useAuthStore } from "./authStore";
@@ -12,8 +12,8 @@ interface ShopState {
   backgroundItems: ShopItem[];
   potItems: ShopItem[];
 
-  // 판매용 작물 선택 상태
-  selectedCropsForSale: string[];
+  // 판매용 작물 선택 상태 - 개수 추적
+  selectedCropsForSale: Array<{ plantId: string; count: number }>;
 
   // 로딩 및 에러 상태
   isLoading: boolean;
@@ -27,9 +27,9 @@ interface ShopState {
 
   // 판매 액션
   toggleCropSelection: (cropId: string) => void;
-  selectAllCrops: (crops: Plant[]) => void;
+  selectAllCrops: (crops: Crop[]) => void;
   clearSelection: () => void;
-  sellSelectedCrops: (crops: Plant[]) => Promise<void>;
+  sellSelectedCrops: (crops: Crop[]) => Promise<void>;
 }
 
 export const useShopStore = create<ShopState>((set, get) => ({
@@ -96,25 +96,47 @@ export const useShopStore = create<ShopState>((set, get) => ({
   },
 
   toggleCropSelection: (cropId: string) => {
-    set((state) => ({
-      selectedCropsForSale: state.selectedCropsForSale.includes(cropId)
-        ? state.selectedCropsForSale.filter((id) => id !== cropId)
-        : [...state.selectedCropsForSale, cropId]
-    }));
+    const { crops } = useProfileStore.getState();
+    const { selectedCropsForSale } = get();
+
+    const currentCrop = crops.find((crop) => crop.id === cropId);
+    if (!currentCrop || currentCrop.quantity === 0) return;
+
+    const existingIndex = selectedCropsForSale.findIndex((item) => item.plantId === cropId);
+
+    let newSelections: typeof selectedCropsForSale;
+
+    if (existingIndex >= 0) {
+      const existing = selectedCropsForSale[existingIndex];
+      newSelections =
+        existing.count < currentCrop.quantity
+          ? selectedCropsForSale.map((item, i) => (i === existingIndex ? { ...item, count: item.count + 1 } : item))
+          : selectedCropsForSale.filter((_, i) => i !== existingIndex);
+    } else {
+      newSelections = [...selectedCropsForSale, { plantId: cropId, count: 1 }];
+    }
+
+    set({ selectedCropsForSale: newSelections });
   },
 
-  selectAllCrops: (crops: Plant[]) => {
-    // 수확 가능한 작물들만 선택
-    const harvestableIds = crops.filter((crop) => crop.stage === "HARVEST").map((crop) => crop.id);
+  selectAllCrops: (crops: Crop[]) => {
+    // 수확 가능한 작물들 필터링하여 모두 선택
+    const selections = crops
+      .filter((crop) => crop.quantity > 0)
+      .map((crop) => ({
+        plantId: crop.id,
+        count: crop.quantity
+      }));
 
-    set({ selectedCropsForSale: harvestableIds });
+    set({ selectedCropsForSale: selections });
   },
 
   clearSelection: () => {
+    // 단순히 선택 목록만 초기화
     set({ selectedCropsForSale: [] });
   },
 
-  sellSelectedCrops: async (crops: Plant[]) => {
+  sellSelectedCrops: async (crops: Crop[]) => {
     const { selectedCropsForSale } = get();
     const { addToast } = useToastStore.getState();
     const { user } = useAuthStore.getState();
@@ -134,21 +156,28 @@ export const useShopStore = create<ShopState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
 
-      // 선택된 작물들의 가격 계산 (임시로 개당 10 seed)
-      const totalPrice = selectedCropsForSale.length * 10;
+      // 선택된 작물들의 가격 계산 (임시로 개당 100 seed)
+      const totalCount = selectedCropsForSale.reduce((sum, item) => sum + item.count, 0);
+      const totalPrice = totalCount * 100;
 
-      // seed 적립
-      await shopApi.sellCrops(selectedCropsForSale, totalPrice);
+      // 서버로 전송할 데이터 준비
+      const plantIds = selectedCropsForSale.flatMap((item) => Array(item.count).fill(item.plantId));
 
-      // 프로필 정보 새로고침 (seed 개수 업데이트)
+      // 작물 판매 API 호출
+      const response = await shopApi.sellCrops(plantIds, totalPrice);
+
+      // 프로필 정보 새로고침 (서버에서 업데이트된 seeds와 crops 데이터 가져오기)
       await fetchProfile();
 
       // 선택 초기화
       set({ selectedCropsForSale: [] });
 
-      addToast(`${selectedCropsForSale.length}개 작물을 판매했습니다! (+${totalPrice} seeds)`, "success");
+      // 서버 응답에서 정보 가져오기
+      const { soldCropsCount, seeds } = response.data;
+      addToast(`작물 ${soldCropsCount}개를 판매했습니다! (+${totalPrice} 시드)`, "success");
       set({ isLoading: false });
     } catch (error) {
+      // 실패 시에는 복구 로직 불필요 (애초에 quantity를 건드리지 않았으므로)
       console.error("Sell failed:", error);
       const errorMessage = error instanceof Error ? error.message : "판매에 실패했습니다.";
 
