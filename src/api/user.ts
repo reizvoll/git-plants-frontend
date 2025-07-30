@@ -17,6 +17,6 @@ export const shopApi = {
   },
 
   sellCrops: async (cropIds: string[], totalPrice: number) => {
-    return seedApi.addSeeds(totalPrice);
+    return API.post("/api/garden/user-crops/sell", { cropIds, totalPrice });
   }
 };

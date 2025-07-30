@@ -24,6 +24,13 @@ export type Item = {
   updatedById: string;
 };
 
+export type UserItem = {
+  id: string;
+  equipped: boolean;
+  acquiredAt: string;
+  item: Item;
+};
+
 export type SeedResponse = {
   userId: string;
   count: number;
@@ -43,13 +50,33 @@ export type Plant = {
   currentImageUrl: string;
 };
 
+export type EquipItemResponse = {
+  category: string;
+  changes: Array<{
+    userItemId: string;
+    equipped: boolean;
+  }>;
+};
+
+export type Crop = {
+  id: string;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  monthlyPlant: MonthlyPlant & {
+    cropImageUrl: string;
+  };
+};
 export interface ProfileState {
   user: {
     username: string;
     image: string | null;
+    isAdmin?: boolean;
   } | null;
   seedCount: number;
   badges: Badge[];
+  items: UserItem[];
+  crops: Crop[];
   equipped: {
     backgrounds: Item[];
     pots: Item[];
@@ -58,4 +85,7 @@ export interface ProfileState {
   isLoading: boolean;
   error: string | null;
   fetchProfile: () => Promise<void>;
+  updateItemEquipStatus: (changes: Array<{ userItemId: string; equipped: boolean }>) => void;
+  decrementCropQuantity: (cropId: string) => void;
+  restoreCropQuantity: (restorations: Array<{ cropId: string; count: number }>) => void;
 }
