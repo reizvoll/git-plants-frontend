@@ -6,6 +6,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   user: null,
   seedCount: 0,
   badges: [],
+  newBadges: [],
   items: [],
   crops: [],
   equipped: {
@@ -22,8 +23,8 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       const response = await authApi.getProfile();
 
       if (response.success && response.data) {
-        const { user, seedCount, badges, items, crops, equipped, plants } = response.data;
-        set({ user, seedCount, badges, items, crops, equipped, plants, isLoading: false });
+        const { user, seedCount, badges, newBadges, items, crops, equipped, plants } = response.data;
+        set({ user, seedCount, badges, newBadges, items, crops, equipped, plants, isLoading: false });
       } else {
         throw new Error("No profile data received");
       }
