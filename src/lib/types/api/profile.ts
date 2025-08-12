@@ -11,6 +11,11 @@ export type Badge = {
   };
 };
 
+export type NewBadge = {
+  name: string;
+  imageUrl: string;
+};
+
 export type Item = {
   id: number;
   name: string;
@@ -75,6 +80,7 @@ export interface ProfileState {
   } | null;
   seedCount: number;
   badges: Badge[];
+  newBadges: NewBadge[];
   items: UserItem[];
   crops: Crop[];
   equipped: {
