@@ -4,7 +4,7 @@ import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/p
 import { useProfileStore } from "@/lib/store/profileStore";
 import { ArrowsOutCardinalIcon, DotsThreeIcon, ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PotPositionAdjustModal from "./PotPositionAdjustModal";
 import SizeAdjustModal from "./SizeAdjustModal";
 
@@ -13,21 +13,44 @@ interface StyleSectionProps {
 }
 
 const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
-  const { equipped, plants } = useProfileStore();
+  const { equipped, items, plants } = useProfileStore(); // TODO: equipped 처리 추가
   const [currentMode, setCurrentMode] = useState("GARDEN");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPotPositionModalOpen, setIsPotPositionModalOpen] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
   const [showBackgroundTooltip, setShowBackgroundTooltip] = useState(false);
   const [showPotTooltip, setShowPotTooltip] = useState(false);
+
+  const availableModes = useMemo(() => {
+    if (!items || items.length === 0) return { garden: false, mini: false };
+
+    const gardenBackgrounds = items.filter(
+      (item) => item.item.category === "background" && item.item.mode === "GARDEN"
+    );
+    const miniBackgrounds = items.filter((item) => item.item.category === "background" && item.item.mode === "MINI");
+
+    return {
+      garden: gardenBackgrounds.length > 0,
+      mini: miniBackgrounds.length > 0
+    };
+  }, [items]);
+
+  const defaultMode = useMemo(() => {
+    if (availableModes.garden) return "GARDEN";
+    if (availableModes.mini) return "MINI";
+    return "GARDEN"; // 아무것도 없으면 기본값
+  }, [availableModes]);
+
+  useEffect(() => {
+    setCurrentMode(defaultMode);
+  }, [defaultMode]);
 
   const { potPosition, setPotPosition } = usePotPosition(currentMode);
   const { customSize, setCustomSize } = useCustomSize(currentMode);
   const { backgroundIndex, potIndex, setIndexes } = useSelectedIndexes(currentMode);
 
   const currentBackgrounds =
-    equipped?.backgrounds?.filter((bg) => bg.mode === currentMode || bg.mode === "DEFAULT") || [];
-  const currentPots = equipped?.pots || [];
+    items?.filter((item) => item.item.category === "background" && item.item.mode === currentMode) || [];
+  const currentPots = items?.filter((item) => item.item.category === "pot") || [];
 
   const selectedBackground = currentBackgrounds[backgroundIndex] || currentBackgrounds[0] || null;
   const selectedPot = currentPots[potIndex] || currentPots[0] || null;
@@ -94,8 +117,8 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
               {selectedBackground ? (
                 <div className="relative">
                   <Image
-                    src={selectedBackground.imageUrl}
-                    alt={selectedBackground.name}
+                    src={selectedBackground.item.imageUrl}
+                    alt={selectedBackground.item.name}
                     style={{
                       width: `${customSize.width}px`,
                       height: `${customSize.height}px`
@@ -114,7 +137,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                       }}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Image src={selectedPot.iconUrl} alt={selectedPot.name} width={80} height={80} />
+                      <Image src={selectedPot.item.iconUrl} alt={selectedPot.item.name} width={80} height={80} />
 
                       {currentPlant && (
                         <picture
@@ -206,8 +229,8 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                       onClick={() => handleBackgroundSelect(index)}
                     >
                       <Image
-                        src={background.iconUrl}
-                        alt={background.name}
+                        src={background.item.iconUrl}
+                        alt={background.item.name}
                         className="rounded object-cover"
                         width={80}
                         height={80}
@@ -254,7 +277,13 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                       className="relative cursor-pointer transition-all duration-200 hover:opacity-80"
                       onClick={() => handlePotSelect(index)}
                     >
-                      <Image src={pot.iconUrl} alt={pot.name} className="rounded object-cover" width={60} height={60} />
+                      <Image
+                        src={pot.item.iconUrl}
+                        alt={pot.item.name}
+                        className="rounded object-cover"
+                        width={60}
+                        height={60}
+                      />
                     </div>
                   ))
                 ) : (
@@ -276,7 +305,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
         onClose={() => setIsPotPositionModalOpen(false)}
         currentPotPosition={potPosition}
         onApply={handleApplyPotPosition}
-        selectedPot={selectedPot}
+        selectedPot={selectedPot.item}
       />
     </div>
   );
