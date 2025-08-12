@@ -1,7 +1,6 @@
 "use client";
 
 import inventory from "@/assets/images/inventory.webp";
-import Toast from "@/components/shared/Toast";
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import { useProfileStore } from "@/lib/store/profileStore";
@@ -9,7 +8,7 @@ import { useToastStore } from "@/lib/store/useToaststore";
 import { formatDate } from "@/lib/utils/formatDate";
 import { FunnelIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface CollectionSectionProps {
   initialMode?: "CROP" | "BACKGROUND" | "POT";
@@ -18,7 +17,7 @@ interface CollectionSectionProps {
 const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => {
   const [currentMode, setCurrentMode] = useState<"CROP" | "BACKGROUND" | "POT">(initialMode);
   const [currentSort, setCurrentSort] = useState<"LATEST" | "MOST_GROWN" | "A_Z">("LATEST");
-  const { equipped } = useProfileStore();
+  const { items, crops } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
 
   const handleModeChange = (mode: "CROP" | "BACKGROUND" | "POT") => {
@@ -29,25 +28,65 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
     setCurrentSort(sort);
   };
 
-  const backgrounds = equipped?.backgrounds || [];
-  const pots = equipped?.pots || [];
+  const {
+    backgrounds,
+    pots,
+    crops: ownedCrops
+  } = useMemo(() => {
+    if (!items) return { backgrounds: [], pots: [], crops: [] };
+
+    return {
+      backgrounds: items.filter((item) => item.item.category === "background"),
+      pots: items.filter((item) => item.item.category === "pot"),
+      crops: crops || []
+    };
+  }, [items, crops]);
 
   // update currentMode when initialMode changes
   useEffect(() => {
     setCurrentMode(initialMode);
   }, [initialMode]);
 
+  const hasShownToast = useRef(false);
+
   useEffect(() => {
     const hasNoItems =
-      (currentMode === "BACKGROUND" && backgrounds.length === 0) || (currentMode === "POT" && pots.length === 0);
+      (currentMode === "CROP" && crops.length === 0) ||
+      (currentMode === "BACKGROUND" && backgrounds.length === 0) ||
+      (currentMode === "POT" && pots.length === 0);
 
-    if (hasNoItems) {
+    if (hasNoItems && !hasShownToast.current) {
+      hasShownToast.current = true;
       addToast("아이템을 찾을 수 없어요.", "warning");
     }
-  }, [currentMode, backgrounds.length, pots.length, addToast]);
+  }, [currentMode, backgrounds.length, pots.length, crops.length, addToast]);
 
   const renderContent = () => {
     switch (currentMode) {
+      case "CROP":
+        return (
+          <div className="grid auto-rows-min grid-cols-10 items-start gap-[10px] leading-none">
+            {ownedCrops.length > 0 &&
+              ownedCrops.map((crop) => (
+                <picture key={crop.id} className="group relative size-[74px]">
+                  <Image
+                    src={crop.monthlyPlant.cropImageUrl}
+                    alt={crop.monthlyPlant.name}
+                    className="object-cover"
+                    width={74}
+                    height={74}
+                    priority
+                  />
+                  <div className="text-border absolute -bottom-1 -right-1 flex items-center justify-center text-title1 text-white">
+                    {crop.quantity}
+                  </div>
+                  <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
+                    <span className="block text-body2 text-primary-default">{crop.monthlyPlant.name}</span>
+                  </span>
+                </picture>
+              ))}
+          </div>
+        );
       case "BACKGROUND":
         return (
           <div className="grid auto-rows-min grid-cols-10 items-start gap-[10px] leading-none">
@@ -55,18 +94,16 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
               backgrounds.map((background) => (
                 <picture key={background.id} className="group relative size-[76px]">
                   <Image
-                    src={background.iconUrl}
-                    alt={background.name}
+                    src={background.item.iconUrl}
+                    alt={background.item.name}
                     className="object-cover"
                     width={76}
                     height={76}
                     priority
                   />
                   <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
-                    <span className="block text-body2 text-primary-default">{background.name}</span>
-                    {background.createdAt && (
-                      <span className="text-mini text-brown-500">(획득날짜 : {formatDate(background.createdAt)})</span>
-                    )}
+                    <span className="block text-body2 text-primary-default">{background.item.name}</span>
+                    <span className="text-mini text-brown-500">(획득날짜 : {formatDate(background.acquiredAt)})</span>
                   </span>
                 </picture>
               ))}
@@ -78,12 +115,10 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
             {pots.length > 0 &&
               pots.map((pot) => (
                 <picture key={pot.id} className="group relative size-[66px]">
-                  <Image src={pot.iconUrl} alt={pot.name} width={66} height={66} className="object-cover" />
+                  <Image src={pot.item.iconUrl} alt={pot.item.name} width={66} height={66} className="object-cover" />
                   <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
-                    <span className="block text-body2 text-primary-default">{pot.name}</span>
-                    {pot.createdAt && (
-                      <span className="text-mini text-brown-500">(획득날짜 : {formatDate(pot.createdAt)})</span>
-                    )}
+                    <span className="block text-body2 text-primary-default">{pot.item.name}</span>
+                    <span className="text-mini text-brown-500">(획득날짜 : {formatDate(pot.acquiredAt)})</span>
                   </span>
                 </picture>
               ))}
@@ -159,7 +194,6 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
           </div>
         </div>
       </div>
-      <Toast />
     </div>
   );
 };
