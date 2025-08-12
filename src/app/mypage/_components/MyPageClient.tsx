@@ -5,7 +5,7 @@ import LoadingText from "@/components/shared/LoadingText";
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SelectTab from "./SelectTab";
 import UserInfo from "./UserInfo";
 
@@ -13,6 +13,10 @@ const MyPageClient = () => {
   const router = useRouter();
   const { isLoading, fetchProfile } = useProfileStore();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  const stableFetchProfile = useCallback(async () => {
+    await fetchProfile();
+  }, [fetchProfile]);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -22,7 +26,10 @@ const MyPageClient = () => {
           alert("로그인이 필요한 서비스입니다.");
           router.push("/");
         } else {
-          await fetchProfile();
+          const currentState = useProfileStore.getState();
+          if (!currentState.user && !currentState.isLoading) {
+            await stableFetchProfile();
+          }
           setIsInitialLoad(false);
         }
       } catch (error) {
@@ -32,7 +39,7 @@ const MyPageClient = () => {
     };
 
     checkLoginStatus();
-  }, [router, fetchProfile]);
+  }, [router, stableFetchProfile]);
 
   if (isLoading || isInitialLoad) {
     return (
