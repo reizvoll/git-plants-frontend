@@ -1,8 +1,7 @@
-import { ApiResponse } from "@/lib/types/api/api";
 import { CurrentUpdate, MonthlyPlant, ShopItem } from "@/lib/types/api/public";
 import API from "./api";
 
-export const getMonthlyPlant = async (): Promise<ApiResponse<MonthlyPlant>> => {
+export const getMonthlyPlant = async (): Promise<MonthlyPlant> => {
   try {
     const response = await API.get("/api/public/monthly-plant");
     return response.data;

@@ -5,11 +5,12 @@ export type MonthlyPlant = {
   description: string;
   imageUrls: string[];
   iconUrl: string;
+  cropImageUrl: string;
+  mainImageUrl: string;
   month: number;
   year: number;
   createdAt: string;
   updatedAt: string;
-  updatedById: string;
 };
 
 export type UpdateNote = {
@@ -29,7 +30,6 @@ export type NewItem = {
   price: number;
   createdAt: string;
   updatedAt: string;
-  updatedById: string;
 };
 
 export type ShopItem = {
