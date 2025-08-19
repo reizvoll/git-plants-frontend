@@ -18,7 +18,7 @@ export const useCurrentUpdateStore = create<CurrentUpdateState>((set) => ({
       set({ isLoading: true, error: null });
       const response = await getCurrentUpdate();
 
-      if (response && typeof response === "object" && "month" in response && "year" in response) {
+      if (response && typeof response === "object") {
         set({ data: response as CurrentUpdate, isLoading: false });
       } else {
         console.error("Invalid response format:", response);
