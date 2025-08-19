@@ -45,8 +45,6 @@ export type ShopItem = {
 };
 
 export type CurrentUpdate = {
-  month: number;
-  year: number;
   updateNote: UpdateNote;
   newItems: NewItem[];
 };
