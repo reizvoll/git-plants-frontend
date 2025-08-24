@@ -19,7 +19,7 @@ const UpdateSection = () => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: currentUpdate, fetchCurrentUpdate } = useCurrentUpdateStore();
+  const { data: currentUpdate, fetchCurrentUpdate, error } = useCurrentUpdateStore();
 
   // UpdateSection에서 한 번만 API 호출
   useEffect(() => {
@@ -33,6 +33,17 @@ const UpdateSection = () => {
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
+
+  // 서버 에러가 있을 때는 NewUpdatesCard만 표시
+  if (error) {
+    return (
+      <>
+        <div className="relative mx-auto flex w-full items-center justify-center">
+          <NewUpdatesCard isModalOpen={handleModalOpen} />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
