@@ -11,6 +11,9 @@ interface NewUpdatesCardProps {
 const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
   const { data: currentUpdate, isLoading, error } = useCurrentUpdateStore();
 
+  // 데이터가 없거나 updateNote가 null일 때
+  const hasValidData = currentUpdate && currentUpdate.updateNote && currentUpdate.updateNote.imageUrl;
+
   if (isLoading) {
     return <div>{/* <LoadingSpinner /> */}</div>;
   }
@@ -24,7 +27,7 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
       <div className="w-full text-center text-heading text-primary-default">따끈-한 신상 업데이트</div>
 
       <div className="flex w-full flex-col gap-10">
-        {currentUpdate ? (
+        {currentUpdate && currentUpdate.updateNote && currentUpdate.updateNote.imageUrl ? (
           <div className="flex w-full flex-col gap-10">
             <picture className="flex w-full justify-center">
               <Image
@@ -81,13 +84,21 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
         )}
       </div>
 
-      {/* error overlay */}
-      {error && (
+      {/* error overlay 또는 데이터 없음 오버레이 */}
+      {(error || !hasValidData) && (
         <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
           <div className="text-center text-subtitle text-text-01">
-            정보를 불러올 수 없습니다.
-            <br />
-            잠시 후 다시 시도해주세요.
+            {error ? (
+              <span>
+                정보를 불러올 수 없습니다. <br /> 잠시 후 다시 시도해주세요.
+              </span>
+            ) : (
+              <span>
+                업데이트 노트가 없습니다.
+                <br />
+                추후 업데이트를 기대해주세요.
+              </span>
+            )}
           </div>
         </div>
       )}
