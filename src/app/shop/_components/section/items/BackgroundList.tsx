@@ -53,7 +53,7 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
             {currentBackgroundItems.map((item) => (
               <div key={item.id} className="grid h-[400px] grid-rows-[1fr_auto] items-center gap-6">
                 <div className="flex items-center justify-center">
-                  <picture className="flex justify-center">
+                  <picture className="relative h-[300px] w-[200px] justify-center overflow-hidden">
                     <Image
                       src={item.imageUrl}
                       alt={item.name}
