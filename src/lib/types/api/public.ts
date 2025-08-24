@@ -45,6 +45,6 @@ export type ShopItem = {
 };
 
 export type CurrentUpdate = {
-  updateNote: UpdateNote;
+  updateNote: UpdateNote | null;
   newItems: NewItem[];
 };

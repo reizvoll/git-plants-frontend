@@ -14,16 +14,31 @@ import { Button } from "../ui/Button";
 import Dropdown from "../ui/Dropdown";
 
 const HeaderContent = () => {
-  const { user, login, logout, checkAuth } = useAuthStore();
+  const { user, login, logout, checkAuth, isPending } = useAuthStore();
   const { language, setLanguage } = useLanguageStore();
   const t = useTranslations("navigation");
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    checkAuth();
-    setMounted(true);
-  }, [checkAuth]);
+    const initializeAuth = async () => {
+      setMounted(true);
+
+      // 이미 사용자 정보가 있거나 로딩 중이면 추가 체크 불필요
+      if (user || isPending) {
+        return;
+      }
+
+      // 세션 쿠키 확인
+      const hasSessionCookie = document.cookie.split(";").some((cookie) => cookie.trim().startsWith("session="));
+
+      if (hasSessionCookie) {
+        await checkAuth();
+      }
+    };
+
+    initializeAuth();
+  }, [checkAuth, user, isPending]);
 
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang as "ko" | "en");

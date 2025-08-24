@@ -19,7 +19,12 @@ const NoteSection = () => {
   useEffect(() => {
     getMonthlyPlant()
       .then((data) => {
-        setMonthlyPlant(data);
+        // 데이터 유효성 검사 추가
+        if (data && data.mainImageUrl && data.iconUrl) {
+          setMonthlyPlant(data);
+        } else {
+          setError(true);
+        }
         setIsLoading(false);
       })
       .catch((err) => {
@@ -44,7 +49,7 @@ const NoteSection = () => {
           </div>
         )}
 
-        {monthlyPlant && (
+        {monthlyPlant && monthlyPlant.mainImageUrl && monthlyPlant.iconUrl && (
           <div className="absolute inset-0 flex items-center justify-center px-12 py-20">
             <div className="flex w-full flex-row items-center justify-center gap-20">
               {/* Left Frame - Content Section */}
@@ -66,7 +71,7 @@ const NoteSection = () => {
 
                 {/* Plant Image */}
                 <div className="h-[233px] w-[350px]">
-                  <Image src={monthlyPlant.mainImageUrl} width={350} height={233} alt="corn" />
+                  <Image src={monthlyPlant.mainImageUrl} width={350} height={233} alt="monthly_plant_main" />
                 </div>
               </div>
 
@@ -74,7 +79,7 @@ const NoteSection = () => {
               <div className="flex flex-col items-center justify-center gap-16">
                 {/* Main Character Image */}
                 <div className="h-[196px] w-[196px] rounded-full bg-bg-01">
-                  <Image src={monthlyPlant.iconUrl} width={196} height={196} alt="corn" />
+                  <Image src={monthlyPlant.iconUrl} width={196} height={196} alt="monthly_plant_icon" />
                 </div>
 
                 {/* Content */}

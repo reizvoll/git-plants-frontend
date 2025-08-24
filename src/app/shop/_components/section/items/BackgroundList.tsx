@@ -34,21 +34,34 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
     purchaseItem(item);
   };
 
-  if (loading) {
-    return (
-      <div className="shadow-strong mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]">
-        <div className="text-center text-heading text-primary-default">배경화면</div>
-        <div>로딩 중...</div>
+  // TODO: 리팩토링 필요
+  const SkeletonItem = () => (
+    <div className="grid h-[400px] grid-rows-[1fr_auto] items-center gap-6">
+      <div className="flex items-center justify-center">
+        <div className="h-[300px] w-[200px] animate-pulse rounded-lg bg-gray-300"></div>
       </div>
-    );
-  }
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-row items-center gap-4">
+          <div className="h-[33px] w-[24px] animate-pulse rounded bg-gray-300"></div>
+          <div className="h-6 w-16 animate-pulse rounded bg-gray-300"></div>
+        </div>
+        <div className="h-10 w-24 animate-pulse rounded bg-gray-300"></div>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="shadow-strong mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]">
+    <div className="shadow-strong relative mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]">
       <div className="text-center text-heading text-primary-default">배경화면</div>
 
       <div className="flex w-full flex-col gap-10">
-        {currentBackgroundItems.length > 0 ? (
+        {loading ? (
+          <div className="flex w-full flex-row items-end justify-center gap-10">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SkeletonItem key={index} />
+            ))}
+          </div>
+        ) : currentBackgroundItems.length > 0 ? (
           <div className="flex w-full flex-row items-end justify-center gap-10">
             {currentBackgroundItems.map((item) => (
               <div key={item.id} className="grid h-[400px] grid-rows-[1fr_auto] items-center gap-6">
@@ -84,7 +97,9 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
             ))}
           </div>
         ) : (
-          <div>준비 중입니다.</div>
+          <div className="flex h-[400px] w-full flex-row items-center justify-center">
+            <div className="text-center text-body1 text-text-03">준비 중입니다.</div>
+          </div>
         )}
       </div>
 
@@ -96,6 +111,17 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
           handlePageChange={handlePageChange}
           limit={limit}
         />
+      )}
+
+      {/* 오버레이 적용 */}
+      {!loading && items.length === 0 && (
+        <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
+          <div className="text-center text-subtitle text-text-01">
+            배경화면이 아직 준비되지 않았습니다.
+            <br />
+            추후 업데이트를 기대해주세요!
+          </div>
+        </div>
       )}
     </div>
   );
