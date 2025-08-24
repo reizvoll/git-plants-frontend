@@ -300,13 +300,15 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
         currentSize={customSize}
         onApply={handleApplySize}
       />
-      <PotPositionAdjustModal
-        isOpen={isPotPositionModalOpen}
-        onClose={() => setIsPotPositionModalOpen(false)}
-        currentPotPosition={potPosition}
-        onApply={handleApplyPotPosition}
-        selectedPot={selectedPot.item}
-      />
+      {selectedPot && (
+        <PotPositionAdjustModal
+          isOpen={isPotPositionModalOpen}
+          onClose={() => setIsPotPositionModalOpen(false)}
+          currentPotPosition={potPosition}
+          onApply={handleApplyPotPosition}
+          selectedPot={selectedPot.item}
+        />
+      )}
     </div>
   );
 };
