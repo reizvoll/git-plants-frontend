@@ -19,7 +19,7 @@ const UpdateSection = () => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: currentUpdate, fetchCurrentUpdate, error } = useCurrentUpdateStore();
+  const { data: currentUpdate, fetchCurrentUpdate, error, isLoading } = useCurrentUpdateStore();
 
   // UpdateSection에서 한 번만 API 호출
   useEffect(() => {
@@ -34,8 +34,19 @@ const UpdateSection = () => {
     setIsModalOpen(false);
   };
 
-  // 서버 에러가 있을 때는 NewUpdatesCard만 표시
-  if (error) {
+  // 로딩 중이거나 에러가 있거나 데이터가 없을 때는 NewUpdatesCard만 표시
+  if (isLoading || error || !currentUpdate) {
+    return (
+      <>
+        <div className="relative mx-auto flex w-full items-center justify-center">
+          <NewUpdatesCard isModalOpen={handleModalOpen} />
+        </div>
+      </>
+    );
+  }
+
+  // updateNote가 없거나 newItems가 비어있을 때도 NewUpdatesCard만 표시
+  if (!currentUpdate.updateNote && (!currentUpdate.newItems || currentUpdate.newItems.length === 0)) {
     return (
       <>
         <div className="relative mx-auto flex w-full items-center justify-center">
@@ -85,12 +96,20 @@ const UpdateSection = () => {
           <SwiperSlide className="flex justify-center">
             <NewUpdatesCard isModalOpen={handleModalOpen} />
           </SwiperSlide>
-          <SwiperSlide className="flex justify-center">
-            <BackgroundSectionCard />
-          </SwiperSlide>
-          <SwiperSlide className="flex justify-center">
-            <PotSectionCard />
-          </SwiperSlide>
+
+          {/* newItems가 있을 때만 BackgroundSectionCard 표시 */}
+          {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "background") && (
+            <SwiperSlide className="flex justify-center">
+              <BackgroundSectionCard />
+            </SwiperSlide>
+          )}
+
+          {/* newItems가 있을 때만 PotSectionCard 표시 */}
+          {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "pot") && (
+            <SwiperSlide className="flex justify-center">
+              <PotSectionCard />
+            </SwiperSlide>
+          )}
         </Swiper>
       </div>
 
