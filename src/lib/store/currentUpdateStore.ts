@@ -18,7 +18,9 @@ export const useCurrentUpdateStore = create<CurrentUpdateState>((set) => ({
       set({ isLoading: true, error: null });
       const response = await getCurrentUpdate();
 
-      if (response && typeof response === "object") {
+      // 응답 데이터 구조 검증 - updateNote가 null이어도 유효한 응답으로 처리
+      if (response && typeof response === "object" && "updateNote" in response && "newItems" in response) {
+        // updateNote가 null이거나 newItems가 비어있는 경우도 유효한 응답으로 처리
         set({ data: response as CurrentUpdate, isLoading: false });
       } else {
         console.error("Invalid response format:", response);
