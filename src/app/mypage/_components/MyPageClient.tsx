@@ -1,19 +1,17 @@
 "use client";
 
-import { authApi } from "@/api/auth";
 import LoadingText from "@/components/shared/LoadingText";
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
+import { useAuthGuard } from "@/lib/hooks/auth/useAuthGuard";
 import { useProfileStore } from "@/lib/store/profileStore";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import BadgeNotificationModal from "./BadgeNotificationModal";
 import SelectTab from "./SelectTab";
 import UserInfo from "./UserInfo";
 
 const MyPageClient = () => {
-  const router = useRouter();
+  const { isLoading: authLoading, isAuthenticated } = useAuthGuard();
   const { isLoading, fetchProfile, newBadges } = useProfileStore();
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [showBadgeNotification, setShowBadgeNotification] = useState(false);
   const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
 
@@ -22,34 +20,20 @@ const MyPageClient = () => {
   }, [fetchProfile]);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const response = await authApi.getSession();
-        if (!response.success) {
-          alert("로그인이 필요한 서비스입니다.");
-          router.push("/");
-        } else {
-          const currentState = useProfileStore.getState();
-          if (!currentState.user && !currentState.isLoading) {
-            await stableFetchProfile();
-          }
-          setIsInitialLoad(false);
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
-        router.push("/");
+    if (isAuthenticated && !isLoading) {
+      const currentState = useProfileStore.getState();
+      if (!currentState.user) {
+        stableFetchProfile();
       }
-    };
-
-    checkLoginStatus();
-  }, [router, stableFetchProfile]);
+    }
+  }, [isAuthenticated, isLoading, stableFetchProfile]);
 
   useEffect(() => {
-    if (newBadges && newBadges.length > 0 && !isInitialLoad) {
+    if (newBadges && newBadges.length > 0 && !isLoading) {
       setShowBadgeNotification(true);
       setCurrentBadgeIndex(0);
     }
-  }, [newBadges, isInitialLoad]);
+  }, [newBadges, isLoading]);
 
   const handleCloseBadgeNotification = () => {
     setShowBadgeNotification(false);
@@ -64,7 +48,7 @@ const MyPageClient = () => {
     }
   };
 
-  if (isLoading || isInitialLoad) {
+  if (isLoading || authLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-bg-03">
         <LoadingText text="Loading..." className="text-subHeading text-primary-default" />
