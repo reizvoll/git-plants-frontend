@@ -18,7 +18,7 @@ const BackgroundSectionCard = () => {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[800px] flex-col items-center justify-center gap-10 rounded-2xl bg-secondary-light py-[3.75rem]">
+    <div className="mx-auto flex h-[700px] w-full flex-col items-center justify-center gap-10 rounded-2xl px-[60px] py-12 py-[3.75rem]">
       <div className="w-full text-center text-heading text-primary-default">따끈-한 신상 업데이트</div>
 
       <div className="flex w-full flex-col gap-10">
