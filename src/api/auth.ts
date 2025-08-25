@@ -19,5 +19,6 @@ export const authApi = {
     API.get<ProfileState>("/api/users/profile").then((response) => ({
       success: true,
       data: response.data
-    }))
+    })),
+  equipItem: (userItemId: string, equipped: boolean) => API.put(`/api/garden/user-items/${userItemId}`, { equipped })
 };
