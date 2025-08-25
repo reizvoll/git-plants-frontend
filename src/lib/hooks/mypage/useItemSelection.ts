@@ -1,20 +1,26 @@
+import { Item, UserItem } from "@/lib/types/api/profile";
 import { useEffect, useState } from "react";
 import { useItemEquip } from "./useItemEquip";
 
 interface ItemSelectionParams {
-  items: any[];
+  items: UserItem[];
   currentMode: string;
   category: "background" | "pot";
-  equipped: { backgrounds: any[]; pots: any[] };
+  equipped: { backgrounds: Item[]; pots: Item[] };
 }
 
 export const useItemSelection = ({ items, currentMode, category, equipped }: ItemSelectionParams) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { equipItem, isLoading } = useItemEquip();
 
+  // equipped 객체
+  const isEquipped = equipped || { backgrounds: [], pots: [] };
+
   // 현재 장착된 아이템 찾기
   const equippedItem =
-    category === "background" ? equipped.backgrounds.find((bg) => bg.mode === currentMode) : equipped.pots[0];
+    category === "background"
+      ? isEquipped.backgrounds?.find((bg: Item) => bg.mode === currentMode)
+      : isEquipped.pots?.[0];
 
   // 선택된 아이템 계산
   const selectedItem = equippedItem
@@ -45,11 +51,11 @@ export const useItemSelection = ({ items, currentMode, category, equipped }: Ite
   };
 
   // 아이템 장착 상태 확인
-  const isItemEquipped = (userItem: any) => {
+  const isItemEquipped = (userItem: UserItem) => {
     if (category === "background") {
-      return equipped.backgrounds.some((bg) => bg.id === userItem.item.id && bg.mode === currentMode);
+      return isEquipped.backgrounds?.some((bg: Item) => bg.id === userItem.item.id && bg.mode === currentMode) || false;
     } else {
-      return equipped.pots.some((pot) => pot.id === userItem.item.id);
+      return isEquipped.pots?.some((pot: Item) => pot.id === userItem.item.id) || false;
     }
   };
 

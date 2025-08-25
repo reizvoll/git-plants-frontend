@@ -1,46 +1,64 @@
 "use client";
 
 import inventory from "@/assets/images/inventory.webp";
+import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
+import { useCollectionSort, type CollectionMode, type SortType } from "@/lib/hooks/mypage/useCollectionSort";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { formatDate } from "@/lib/utils/formatDate";
 import { FunnelIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 interface CollectionSectionProps {
-  initialMode?: "CROP" | "BACKGROUND" | "POT";
+  initialMode?: CollectionMode;
 }
 
 const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => {
-  const [currentMode, setCurrentMode] = useState<"CROP" | "BACKGROUND" | "POT">(initialMode);
-  const [currentSort, setCurrentSort] = useState<"LATEST" | "MOST_GROWN" | "A_Z">("LATEST");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [currentMode, setCurrentMode] = useState<CollectionMode>(initialMode);
   const { items, crops } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
 
-  const handleModeChange = (mode: "CROP" | "BACKGROUND" | "POT") => {
+  // URL에서 정렬 상태 가져오기
+  const currentSort = (searchParams.get("sort") as SortType) || "latest";
+
+  const { sortedData, getSortOptions } = useCollectionSort({
+    items,
+    crops,
+    currentSort
+  });
+  const { backgrounds, pots, crops: ownedCrops } = sortedData;
+
+  const handleModeChange = (mode: CollectionMode) => {
     setCurrentMode(mode);
+
+    // 모드 변경 시 현재 정렬이 해당 모드에서 지원되지 않으면 기본값으로 초기화
+    if (mode !== "CROP" && currentSort === "most_grown") {
+      const params = new URLSearchParams(searchParams);
+      params.delete("sort"); // 기본값(latest)으로 초기화
+      router.push(`?${params.toString()}`);
+    }
   };
 
-  const handleSortChange = (sort: "LATEST" | "MOST_GROWN" | "A_Z") => {
-    setCurrentSort(sort);
+  // 정렬 상태 변경 시 URL 업데이트
+  const handleSortChange = (sort: SortType) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("sort", sort);
+    router.push(`?${params.toString()}`);
   };
 
-  const {
-    backgrounds,
-    pots,
-    crops: ownedCrops
-  } = useMemo(() => {
-    if (!items) return { backgrounds: [], pots: [], crops: [] };
-
-    return {
-      backgrounds: items.filter((item) => item.item.category === "background"),
-      pots: items.filter((item) => item.item.category === "pot"),
-      crops: crops || []
-    };
-  }, [items, crops]);
+  // 정렬 초기화 시 URL에서 sort 파라미터 제거
+  const handleResetToDefault = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("sort");
+    router.push(`?${params.toString()}`);
+    addToast("정렬을 초기화했습니다.", "success");
+  };
 
   // update currentMode when initialMode changes
   useEffect(() => {
@@ -51,7 +69,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
 
   useEffect(() => {
     const hasNoItems =
-      (currentMode === "CROP" && crops.length === 0) ||
+      (currentMode === "CROP" && ownedCrops.length === 0) ||
       (currentMode === "BACKGROUND" && backgrounds.length === 0) ||
       (currentMode === "POT" && pots.length === 0);
 
@@ -59,7 +77,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
       hasShownToast.current = true;
       addToast("아이템을 찾을 수 없어요.", "warning");
     }
-  }, [currentMode, backgrounds.length, pots.length, crops.length, addToast]);
+  }, [currentMode, backgrounds.length, pots.length, ownedCrops.length, addToast]);
 
   const renderContent = () => {
     switch (currentMode) {
@@ -68,20 +86,24 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
           <div className="grid auto-rows-min grid-cols-10 items-start gap-[10px] leading-none">
             {ownedCrops.length > 0 &&
               ownedCrops.map((crop) => (
-                <picture key={crop.id} className="group relative size-[74px]">
+                <picture key={crop.id} className="group relative size-[76px]">
                   <Image
                     src={crop.monthlyPlant.cropImageUrl}
                     alt={crop.monthlyPlant.name}
-                    className="object-cover"
-                    width={74}
-                    height={74}
-                    priority
+                    className="object-contain"
+                    fill
                   />
                   <div className="text-border absolute -bottom-1 -right-1 flex items-center justify-center text-title1 text-white">
                     {crop.quantity}
                   </div>
-                  <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
+                  <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] flex -translate-x-1/2 -translate-y-full flex-col items-center justify-center whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
                     <span className="block text-body2 text-primary-default">{crop.monthlyPlant.name}</span>
+                    <span className="text-mini text-brown-500">획득 날짜 : {formatDate(crop.createdAt)}</span>
+                    <span className="text-mini text-brown-500">획득 개수 : {crop.quantity} 개</span>
+                    {/* TODO: 판매가격 필드 추가 필요 */}
+                    <span className="flex items-center gap-1 text-mini text-brown-500">
+                      개당 판매가 : <Image src={seed} alt="seed" width={9} height={9} /> 10
+                    </span>
                   </span>
                 </picture>
               ))}
@@ -156,23 +178,10 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
           />
           <div className="flex flex-row gap-[10px]">
             <Dropdown
-              items={[
-                {
-                  label: "최신순",
-                  onClick: () => handleSortChange("LATEST"),
-                  active: currentSort === "LATEST"
-                },
-                {
-                  label: "보유순",
-                  onClick: () => handleSortChange("MOST_GROWN"),
-                  active: currentSort === "MOST_GROWN"
-                },
-                {
-                  label: "가나다순",
-                  onClick: () => handleSortChange("A_Z"),
-                  active: currentSort === "A_Z"
-                }
-              ]}
+              items={getSortOptions(currentMode).map((option) => ({
+                ...option,
+                onClick: () => handleSortChange(option.value)
+              }))}
               className="font-pretendard text-body1 text-sageGreen-900"
               mode="click"
             />
@@ -180,9 +189,9 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
               variant="primary"
               size="md"
               className="shadow-normal flex items-center gap-2 text-body1"
-              onClick={() => {}}
+              onClick={handleResetToDefault}
             >
-              자동 정렬
+              정렬 초기화
               <FunnelIcon width={20} height={20} />
             </Button>
           </div>
