@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
+import { useItemSelection } from "@/lib/hooks/mypage/useItemSelection";
 import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPositionStore";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { ArrowsOutCardinalIcon, DotsThreeIcon, ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
@@ -13,7 +14,7 @@ interface StyleSectionProps {
 }
 
 const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
-  const { equipped, items, plants } = useProfileStore(); // TODO: equipped 처리 추가
+  const { equipped, items, plants } = useProfileStore();
   const [currentMode, setCurrentMode] = useState("GARDEN");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPotPositionModalOpen, setIsPotPositionModalOpen] = useState(false);
@@ -34,11 +35,25 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
     };
   }, [items]);
 
+  // equipped 를 활용한 defaultMode 계산
   const defaultMode = useMemo(() => {
+    // 현재 장착된 배경화면이 있는지 확인
+    if (equipped && equipped.backgrounds && equipped.backgrounds.length > 0) {
+      // 장착된 배경화면 중 첫 번째의 모드를 기본값으로 사용
+      const equippedBackground = equipped.backgrounds[0];
+      if (equippedBackground.mode === "GARDEN" && availableModes.garden) {
+        return "GARDEN";
+      }
+      if (equippedBackground.mode === "MINI" && availableModes.mini) {
+        return "MINI";
+      }
+    }
+
+    // 장착된 배경화면이 없으면 이용 가능한 모드 중 우선순위대로
     if (availableModes.garden) return "GARDEN";
     if (availableModes.mini) return "MINI";
     return "GARDEN"; // 아무것도 없으면 기본값
-  }, [availableModes]);
+  }, [equipped, availableModes]);
 
   useEffect(() => {
     setCurrentMode(defaultMode);
@@ -52,8 +67,22 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
     items?.filter((item) => item.item.category === "background" && item.item.mode === currentMode) || [];
   const currentPots = items?.filter((item) => item.item.category === "pot") || [];
 
-  const selectedBackground = currentBackgrounds[backgroundIndex] || currentBackgrounds[0] || null;
-  const selectedPot = currentPots[potIndex] || currentPots[0] || null;
+  const backgroundSelection = useItemSelection({
+    items: currentBackgrounds,
+    currentMode,
+    category: "background",
+    equipped
+  });
+
+  const potSelection = useItemSelection({
+    items: currentPots,
+    currentMode,
+    category: "pot",
+    equipped
+  });
+
+  const selectedBackground = backgroundSelection.selectedItem;
+  const selectedPot = potSelection.selectedItem;
   const currentPlant = plants && plants.length > 0 ? plants[0] : null;
 
   const handleModeChange = (selectedMode: string) => {
@@ -70,10 +99,12 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
 
   const handleBackgroundSelect = (index: number) => {
     setIndexes(index, potIndex);
+    backgroundSelection.handleItemSelect(index);
   };
 
   const handlePotSelect = (index: number) => {
     setIndexes(backgroundIndex, index);
+    potSelection.handleItemSelect(index);
   };
 
   return (
@@ -109,10 +140,8 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
           </Button>
         </div>
 
-        {/* Todo : separate contents for each mode */}
         <div className="flex flex-row gap-[60px]">
           <div className="flex flex-shrink-0 flex-col items-center gap-6">
-            {/* display the currently selected background with pot */}
             <div className="flex flex-col items-center gap-2">
               {selectedBackground ? (
                 <div className="relative">
@@ -225,7 +254,9 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                   currentBackgrounds.map((background, index) => (
                     <div
                       key={background.id}
-                      className="relative cursor-pointer transition-all duration-200 hover:opacity-80"
+                      className={`relative cursor-pointer transition-all duration-200 hover:opacity-80 ${
+                        backgroundSelection.isItemEquipped(background) ? "ring-2 ring-primary-default" : ""
+                      } ${backgroundSelection.isLoading ? "pointer-events-none opacity-50" : ""}`}
                       onClick={() => handleBackgroundSelect(index)}
                     >
                       <Image
@@ -235,6 +266,11 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                         width={80}
                         height={80}
                       />
+                      {backgroundSelection.isItemEquipped(background) && (
+                        <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary-default">
+                          <span className="text-xs text-white">✓</span>
+                        </div>
+                      )}
                     </div>
                   ))
                 ) : (
@@ -274,7 +310,9 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                   currentPots.map((pot, index) => (
                     <div
                       key={pot.id}
-                      className="relative cursor-pointer transition-all duration-200 hover:opacity-80"
+                      className={`relative cursor-pointer transition-all duration-200 hover:opacity-80 ${
+                        potSelection.isItemEquipped(pot) ? "ring-2 ring-primary-default" : ""
+                      } ${potSelection.isLoading ? "pointer-events-none opacity-50" : ""}`}
                       onClick={() => handlePotSelect(index)}
                     >
                       <Image
@@ -284,6 +322,11 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                         width={60}
                         height={60}
                       />
+                      {potSelection.isItemEquipped(pot) && (
+                        <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary-default">
+                          <span className="text-xs text-white">✓</span>
+                        </div>
+                      )}
                     </div>
                   ))
                 ) : (
