@@ -36,6 +36,13 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
 
   const handleModeChange = (mode: CollectionMode) => {
     setCurrentMode(mode);
+
+    // 모드 변경 시 현재 정렬이 해당 모드에서 지원되지 않으면 기본값으로 초기화
+    if (mode !== "CROP" && currentSort === "most_grown") {
+      const params = new URLSearchParams(searchParams);
+      params.delete("sort"); // 기본값(latest)으로 초기화
+      router.push(`?${params.toString()}`);
+    }
   };
 
   // 정렬 상태 변경 시 URL 업데이트
