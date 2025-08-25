@@ -1,35 +1,34 @@
 import type { Crop, UserItem } from "@/lib/types/api/profile";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-export type SortType = "LATEST" | "MOST_GROWN" | "A_Z";
+export type SortType = "latest" | "most_grown" | "a_z";
 export type CollectionMode = "CROP" | "BACKGROUND" | "POT";
 
 interface UseCollectionSortParams {
   items: UserItem[] | null;
   crops: Crop[] | null;
+  currentSort: SortType;
 }
 
 const sortFunctions = {
   crops: {
-    LATEST: (a: Crop, b: Crop) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-    MOST_GROWN: (a: Crop, b: Crop) => b.quantity - a.quantity,
-    A_Z: (a: Crop, b: Crop) => a.monthlyPlant.name.localeCompare(b.monthlyPlant.name, "ko")
+    latest: (a: Crop, b: Crop) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+    most_grown: (a: Crop, b: Crop) => b.quantity - a.quantity,
+    a_z: (a: Crop, b: Crop) => a.monthlyPlant.name.localeCompare(b.monthlyPlant.name, "ko")
   },
   items: {
-    LATEST: (a: UserItem, b: UserItem) => new Date(b.acquiredAt).getTime() - new Date(a.acquiredAt).getTime(),
-    A_Z: (a: UserItem, b: UserItem) => a.item.name.localeCompare(b.item.name, "ko")
+    latest: (a: UserItem, b: UserItem) => new Date(b.acquiredAt).getTime() - new Date(a.acquiredAt).getTime(),
+    a_z: (a: UserItem, b: UserItem) => a.item.name.localeCompare(b.item.name, "ko")
   }
 };
 
 const sortOptions = {
-  LATEST: { label: "최신순", value: "LATEST" as const },
-  MOST_GROWN: { label: "보유순", value: "MOST_GROWN" as const },
-  A_Z: { label: "가나다순", value: "A_Z" as const }
+  latest: { label: "최신순", value: "latest" as const },
+  most_grown: { label: "보유순", value: "most_grown" as const },
+  a_z: { label: "가나다순", value: "a_z" as const }
 };
 
-export const useCollectionSort = ({ items, crops }: UseCollectionSortParams) => {
-  const [currentSort, setCurrentSort] = useState<SortType>("LATEST");
-
+export const useCollectionSort = ({ items, crops, currentSort }: UseCollectionSortParams) => {
   const sortedData = useMemo(() => {
     if (!items) return { backgrounds: [], pots: [], crops: [] };
 
@@ -53,20 +52,16 @@ export const useCollectionSort = ({ items, crops }: UseCollectionSortParams) => 
     };
   }, [items, crops, currentSort]);
 
-  const resetToDefault = () => {
-    setCurrentSort("LATEST");
-  };
-
   const getSortOptions = (mode: CollectionMode) => {
-    const options = [sortOptions.LATEST, sortOptions.A_Z] as Array<(typeof sortOptions)[keyof typeof sortOptions]>;
+    const options = [sortOptions.latest, sortOptions.a_z] as Array<(typeof sortOptions)[keyof typeof sortOptions]>;
 
     if (mode === "CROP") {
-      options.splice(1, 0, sortOptions.MOST_GROWN);
+      options.splice(1, 0, sortOptions.most_grown);
     }
 
     return options.map((option) => ({
       label: option.label,
-      onClick: () => setCurrentSort(option.value),
+      value: option.value,
       active: currentSort === option.value
     }));
   };
@@ -74,8 +69,6 @@ export const useCollectionSort = ({ items, crops }: UseCollectionSortParams) => 
   return {
     currentSort,
     sortedData,
-    handleSortChange: setCurrentSort,
-    resetToDefault,
     getSortOptions
   };
 };

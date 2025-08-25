@@ -4,12 +4,13 @@ import inventory from "@/assets/images/inventory.webp";
 import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
-import { useCollectionSort, type CollectionMode } from "@/lib/hooks/mypage/useCollectionSort";
+import { useCollectionSort, type CollectionMode, type SortType } from "@/lib/hooks/mypage/useCollectionSort";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { formatDate } from "@/lib/utils/formatDate";
 import { FunnelIcon } from "@phosphor-icons/react";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 interface CollectionSectionProps {
@@ -17,15 +18,39 @@ interface CollectionSectionProps {
 }
 
 const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentMode, setCurrentMode] = useState<CollectionMode>(initialMode);
   const { items, crops } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
 
-  const { sortedData, getSortOptions, resetToDefault } = useCollectionSort({ items, crops });
+  // URL에서 정렬 상태 가져오기
+  const currentSort = (searchParams.get("sort") as SortType) || "latest";
+
+  const { sortedData, getSortOptions } = useCollectionSort({
+    items,
+    crops,
+    currentSort
+  });
   const { backgrounds, pots, crops: ownedCrops } = sortedData;
 
   const handleModeChange = (mode: CollectionMode) => {
     setCurrentMode(mode);
+  };
+
+  // 정렬 상태 변경 시 URL 업데이트
+  const handleSortChange = (sort: SortType) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("sort", sort);
+    router.push(`?${params.toString()}`);
+  };
+
+  // 정렬 초기화 시 URL에서 sort 파라미터 제거
+  const handleResetToDefault = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("sort");
+    router.push(`?${params.toString()}`);
+    addToast("정렬을 초기화했습니다.", "success");
   };
 
   // update currentMode when initialMode changes
@@ -146,7 +171,10 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
           />
           <div className="flex flex-row gap-[10px]">
             <Dropdown
-              items={getSortOptions(currentMode)}
+              items={getSortOptions(currentMode).map((option) => ({
+                ...option,
+                onClick: () => handleSortChange(option.value)
+              }))}
               className="font-pretendard text-body1 text-sageGreen-900"
               mode="click"
             />
@@ -154,12 +182,9 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
               variant="primary"
               size="md"
               className="shadow-normal flex items-center gap-2 text-body1"
-              onClick={() => {
-                resetToDefault();
-                addToast("정렬을 초기화했습니다.", "success");
-              }}
+              onClick={handleResetToDefault}
             >
-              기본 정렬
+              정렬 초기화
               <FunnelIcon width={20} height={20} />
             </Button>
           </div>
