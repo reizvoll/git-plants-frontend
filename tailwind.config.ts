@@ -5,13 +5,16 @@ const config: Config = {
   theme: {
     fontSize: {
       heading: ["36px", { lineHeight: "150%", letterSpacing: "-0.025em" }], // Heading 36px
+      subHeading: ["28px", { lineHeight: "150%", letterSpacing: "-0.025em" }], // SubHeading 28px
       title1: ["24px", { lineHeight: "150%", letterSpacing: "-0.025em" }], // Title1 24px
       subtitle: ["20px", { lineHeight: "150%", letterSpacing: "-0.015em" }], // Subtitle 20px
+      subtitle2: ["20px", { lineHeight: "200%", letterSpacing: "-0.015em" }], // Subtitle2 20px (for hero subtitle)
       title2: ["18px", { lineHeight: "150%", letterSpacing: "-0.015em" }], // Title2 18px
       body1: ["15px", { lineHeight: "150%", letterSpacing: "0.010em" }], // Body1 15px
       body2: ["15px", { lineHeight: "150%", letterSpacing: "0" }], // Body2 15px (For Galmuri)
       caption: ["13px", { lineHeight: "150%", letterSpacing: "0" }], // Caption 13px
-      small: ["11px", { lineHeight: "150%", letterSpacing: "0" }] // Small1 11px
+      small: ["11px", { lineHeight: "150%", letterSpacing: "0" }], // Small1 11px
+      mini: ["9px", { lineHeight: "150%", letterSpacing: "0" }] // Mini 9px
     },
     extend: {
       fontFamily: {
@@ -22,7 +25,19 @@ const config: Config = {
         primary: {
           default: "#845F4C", // Brown/700
           light: "#BCA386", // Brown/400
-          strong: "#553428", // Brown/900
+          strong: "#553428" // Brown/900
+        },
+        secondary: {
+          default: "#CDD5AE", // SageGreen/500
+          light: "#E9F0DB" // SageGreen/100
+        },
+        status: {
+          success: "#00F050", // Green/600
+          danger: "#ED7373", // Red/400
+          warning: "#FFDA6B", // Yellow/300
+          info: "#71AAFE" // Blue/300
+        },
+        brown: {
           "50": "#FFF9F0",
           "100": "#F4EBDC",
           "200": "#D2C7B6",
@@ -34,16 +49,6 @@ const config: Config = {
           "800": "#6C4839",
           "900": "#553428",
           "950": "#3D241B"
-        },
-        secondary: {
-          default: "#CDD5AE", // SageGreen/500
-          light: "#E9F0DB" // SageGreen/100
-        },
-        status: {
-          success: "#00F050", // Green/600
-          danger: "#ED7373", // Red/400
-          warning: "#FFDA6B", // Yellow/300
-          info: "#71AAFE" // Blue/300
         },
         sageGreen: {
           DEFAULT: "#CDD5AE", // SageGreen/500
@@ -140,8 +145,14 @@ const config: Config = {
       },
       keyframes: {
         fadeIn: {
-          from: { opacity: "0" },
-          to: { opacity: "1" }
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        loadingText: {
+          "0%": { transform: "translateY(0)" },
+          "25%": { transform: "translateY(-10px)" },
+          "50%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(0)" }
         },
         fadeOut: {
           from: { opacity: "1" },
