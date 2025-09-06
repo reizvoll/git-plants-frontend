@@ -32,11 +32,13 @@ export const useAuthStore = create<AuthState>()(
           if (response.success && response.data?.user) {
             set({ user: response.data.user, error: null });
           } else {
-            set({ user: null, error: "인증 정보가 없습니다." });
+            set({ user: null, error: null });
+            localStorage.removeItem("auth-storage");
           }
         } catch (error) {
           console.error("Auth check error:", error);
-          set({ error: "인증 확인에 실패했습니다.", user: null });
+          set({ error: null, user: null });
+          localStorage.removeItem("auth-storage");
         } finally {
           set({ isPending: false });
         }

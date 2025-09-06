@@ -9,11 +9,24 @@ export const authApi = {
   },
   signOut: () => API.post("/api/auth/signout"),
   getSession: async () => {
-    const response = await API.get<SessionResponse>("/api/auth/session");
-    return {
-      success: true,
-      data: response.data
-    };
+    try {
+      const response = await API.get<SessionResponse>("/api/auth/session");
+      if (response.status === 401) {
+        return {
+          success: false,
+          data: null
+        };
+      }
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: null
+      };
+    }
   },
   getProfile: () =>
     API.get<ProfileState>("/api/users/profile").then((response) => ({
