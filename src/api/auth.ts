@@ -29,9 +29,8 @@ export const authApi = {
       };
     }
   },
-  getProfile: (locale?: Locale) => {
-    const url = addLocaleParam("/api/users/profile", locale);
-    return API.get<ProfileState>(url).then((response) => ({
+  getProfile: () => {
+    return API.get<ProfileState>("/api/users/profile").then((response) => ({
       success: true,
       data: response.data
     }));
