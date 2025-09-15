@@ -4,6 +4,7 @@ import { getMonthlyPlant } from "@/api/public";
 import note from "@/assets/images/note.webp";
 import plant from "@/assets/images/plant_icon.png";
 import LoadingText from "@/components/shared/LoadingText";
+import { getTranslated, useLanguageStore } from "@/lib/store/languageStore";
 import { MonthlyPlant } from "@/lib/types/api/public";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -12,12 +13,13 @@ import { useEffect, useState } from "react";
 //Todo : refactoring code, and explore strategies for connecting with the back office.
 const NoteSection = () => {
   const t = useTranslations("plants-note");
+  const { language } = useLanguageStore();
   const [monthlyPlant, setMonthlyPlant] = useState<MonthlyPlant | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    getMonthlyPlant()
+    getMonthlyPlant(language)
       .then((data) => {
         // 데이터 유효성 검사 추가
         if (data && data.mainImageUrl && data.iconUrl) {
@@ -32,7 +34,7 @@ const NoteSection = () => {
         setError(true);
         setIsLoading(false);
       });
-  }, []);
+  }, [language]);
 
   return (
     <div className="flex w-full justify-center">
@@ -40,13 +42,17 @@ const NoteSection = () => {
         <Image src={note} alt="Note" className="object-cover" />
 
         {(isLoading || error || !monthlyPlant) && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50">
+          <>
             {isLoading ? (
-              <LoadingText text="Loading..." className="text-title1 text-text-01" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <LoadingText text="Loading..." className="text-title1 text-primary-default" />
+              </div>
             ) : (
-              <span className="text-title1 text-text-01">준비중입니다.</span>
+              <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50">
+                <span className="text-title1 text-text-01">준비중입니다.</span>
+              </div>
             )}
-          </div>
+          </>
         )}
 
         {monthlyPlant && monthlyPlant.mainImageUrl && monthlyPlant.iconUrl && (
@@ -60,12 +66,12 @@ const NoteSection = () => {
                   <div className="text-center font-galmuri text-title1 text-primary-strong">
                     {t("title")}
                     <br />
-                    {monthlyPlant.name}
+                    {getTranslated(monthlyPlant.name, monthlyPlant.ko?.name, language)}
                   </div>
 
                   {/* Text */}
                   <div className="whitespace-pre-line text-center font-galmuri text-body2 text-primary-strong">
-                    {monthlyPlant?.description}
+                    {getTranslated(monthlyPlant.description, monthlyPlant.ko?.description, language)}
                   </div>
                 </div>
 

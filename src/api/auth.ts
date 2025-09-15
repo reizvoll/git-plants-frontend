@@ -1,3 +1,4 @@
+import { addLocaleParam, Locale } from "@/lib/store/languageStore";
 import { SessionResponse } from "@/lib/types/api/auth";
 import { ProfileState } from "@/lib/types/api/profile";
 import API, { BASE_URL } from "./api";
@@ -28,10 +29,12 @@ export const authApi = {
       };
     }
   },
-  getProfile: () =>
-    API.get<ProfileState>("/api/users/profile").then((response) => ({
+  getProfile: (locale?: Locale) => {
+    const url = addLocaleParam("/api/users/profile", locale);
+    return API.get<ProfileState>(url).then((response) => ({
       success: true,
       data: response.data
-    })),
+    }));
+  },
   equipItem: (userItemId: string, equipped: boolean) => API.put(`/api/garden/user-items/${userItemId}`, { equipped })
 };

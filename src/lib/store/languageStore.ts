@@ -1,25 +1,36 @@
 import { create } from "zustand";
 
-type Language = "ko" | "en";
+export type Locale = "ko" | "en";
 
 interface LanguageState {
-  language: Language;
-  setLanguage: (language: Language) => void;
+  language: Locale;
+  setLanguage: (language: Locale) => void;
 }
 
 // export language from cookie
-const getInitialLanguage = (): Language => {
+const getInitialLanguage = (): Locale => {
   if (typeof window === "undefined") {
-    // 서버 사이드에서는 기본값 'ko' 반환
     return "ko";
   }
 
   // get language from cookie
   const cookie = document.cookie.split("; ").find((row) => row.startsWith("NEXT_LOCALE="));
-  const savedLanguage = cookie?.split("=")[1] as Language;
+  const savedLanguage = cookie?.split("=")[1] as Locale;
 
   // use saved language, if not, use default 'ko'
   return savedLanguage || "ko";
+};
+
+// locale param for api
+export const addLocaleParam = (url: string, locale?: Locale): string => {
+  const currentLocale = locale || getInitialLanguage();
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}locale=${currentLocale}`;
+};
+
+// get translated value
+export const getTranslated = <T>(defaultValue: T, translatedValue: T | undefined, locale: Locale): T => {
+  return locale === "ko" && translatedValue !== undefined ? translatedValue : defaultValue;
 };
 
 export const useLanguageStore = create<LanguageState>((set) => ({
@@ -28,7 +39,7 @@ export const useLanguageStore = create<LanguageState>((set) => ({
     // save language to cookie
     document.cookie = `NEXT_LOCALE=${language}; path=/; max-age=31536000`;
     set({ language });
-    // refresh page
-    window.location.reload();
+    // refresh page (the top of the page)
+    window.location.href = window.location.pathname;
   }
 }));
