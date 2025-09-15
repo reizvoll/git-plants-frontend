@@ -45,7 +45,7 @@ const CtaSection = () => {
               onClick={handleStartButtonClick}
             >
               {/* TODO: 텍스트 추후 적용 */}
-              {isLoggedIn ? "상점 바로가기" : t("startButton")}
+              {isLoggedIn ? t("storeButton") : t("startButton")}
             </Button>
             <Button
               variant="primaryLine"
