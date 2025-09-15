@@ -3,11 +3,13 @@
 import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import { useCurrentUpdateStore } from "@/lib/store/currentUpdateStore";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const PotSectionCard = () => {
   const { data: currentUpdate, isLoading, error } = useCurrentUpdateStore();
   const potItems = currentUpdate?.newItems.filter((item) => item.category === "pot") || [];
+  const t = useTranslations("shop.update");
 
   if (isLoading) {
     return <div>{/* <LoadingSpinner /> */}</div>;
@@ -19,7 +21,7 @@ const PotSectionCard = () => {
 
   return (
     <div className="mx-auto flex h-[700px] w-full flex-col items-center justify-center gap-10 rounded-2xl px-[60px] py-12 py-[3.75rem]">
-      <div className="w-full text-center text-heading text-primary-default">따끈-한 신상 업데이트</div>
+      <div className="w-full text-center text-heading text-primary-default">{t("title")}</div>
 
       <div className="flex w-full flex-col gap-10">
         {potItems.length > 0 ? (
@@ -45,13 +47,13 @@ const PotSectionCard = () => {
                   variant="secondaryLine"
                   className="flex items-center justify-center px-8 text-body1 !font-medium"
                 >
-                  구매하기
+                  {t("purchase")}
                 </Button>
               </div>
             ))}
           </div>
         ) : (
-          <div>추후 업데이트 예정입니다.</div>
+          <div>{t("comingSoon")}</div>
         )}
       </div>
     </div>

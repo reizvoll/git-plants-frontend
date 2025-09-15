@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useShopStore } from "@/lib/store/shopStore";
 import { useToastStore } from "@/lib/store/useToaststore";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const SellCropsSection = () => {
@@ -13,6 +14,7 @@ const SellCropsSection = () => {
   const { selectedCropsForSale, toggleCropSelection, selectAllCrops, clearSelection, sellSelectedCrops } =
     useShopStore();
   const { addToast } = useToastStore();
+  const t = useTranslations("shop.sellCrops");
 
   // 수확된 작물들 (crops 배열을 직접 사용)
   const harvestableCrops = crops || [];
@@ -30,7 +32,7 @@ const SellCropsSection = () => {
 
   const handleSell = () => {
     if (selectedCount === 0) {
-      addToast("판매할 작물을 선택해주세요.", "warning");
+      addToast(t("selectMessage"), "warning");
       return;
     }
     sellSelectedCrops(harvestableCrops);
@@ -42,18 +44,20 @@ const SellCropsSection = () => {
 
   return (
     <div className="shadow-strong mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]">
-      <div className="text-center text-heading text-primary-default">작물 판매하기</div>
+      <div className="text-center text-heading text-primary-default">{t("title")}</div>
 
       <div className="flex w-full flex-col gap-10">
         <div className="flex w-full flex-row items-center justify-between px-[50px]">
           <div className="flex flex-row items-center gap-6">
-            <div className="text-center text-title1 text-text-03">선택된 작물 : {selectedCount}개</div>
+            <div className="text-center text-title1 text-text-03">
+              {t("selectedCrops")} {selectedCount} {t("unit")}
+            </div>
             <Button size="sm" variant="primary" className="text-body1 !font-medium" onClick={handleSelectAll}>
-              전체 선택하기
+              {t("selectAll")}
             </Button>
           </div>
           <div className="flex flex-row items-center gap-4">
-            <div className="text-center text-title1 text-text-03">총 판매가 :</div>
+            <div className="text-center text-title1 text-text-03">{t("totalPrice")} :</div>
             <Image src={seed} alt="seed" width={24} height={33} />
             <small className="text-title1 text-text-03">{totalPrice.toLocaleString()}</small>
           </div>
@@ -92,7 +96,7 @@ const SellCropsSection = () => {
                 ))
               ) : (
                 <div className="col-span-8 flex items-center justify-center rounded-lg bg-black/50 text-center text-subtitle text-text-01">
-                  수확 가능한 작물이 없습니다.
+                  {t("noCrops")}
                 </div>
               )}
             </div>
@@ -106,7 +110,7 @@ const SellCropsSection = () => {
             className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
             onClick={handleSell}
           >
-            판매하기
+            {t("sell")}
           </Button>
           <Button
             size="lg"
@@ -114,7 +118,7 @@ const SellCropsSection = () => {
             className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
             onClick={handleCancel}
           >
-            취소하기
+            {t("cancel")}
           </Button>
         </div>
       </div>

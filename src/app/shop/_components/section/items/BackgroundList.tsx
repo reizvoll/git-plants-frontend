@@ -5,6 +5,7 @@ import Pagination from "@/components/shared/Pagenation";
 import { Button } from "@/components/ui/Button";
 import { useShopStore } from "@/lib/store/shopStore";
 import { ShopItem } from "@/lib/types/api/public";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -16,6 +17,7 @@ interface BackgroundListProps {
 const BackgroundList = ({ items, loading }: BackgroundListProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 6;
+  const t = useTranslations("shop.background");
 
   // shop store에서 구매 관련 기능 가져오기
   const { purchaseItem, isLoading: purchasing } = useShopStore();
@@ -52,7 +54,7 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
 
   return (
     <div className="shadow-strong relative mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]">
-      <div className="text-center text-heading text-primary-default">배경화면</div>
+      <div className="text-center text-heading text-primary-default">{t("title")}</div>
 
       <div className="flex w-full flex-col gap-10">
         {loading ? (
@@ -90,7 +92,7 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
                     onClick={() => handlePurchase(item)}
                     disabled={purchasing}
                   >
-                    {purchasing ? "구매 중..." : "구매하기"}
+                    {purchasing ? t("purchasing") : t("purchase")}
                   </Button>
                 </div>
               </div>
@@ -98,7 +100,7 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
           </div>
         ) : (
           <div className="flex h-[400px] w-full flex-row items-center justify-center">
-            <div className="text-center text-body1 text-text-03">준비 중입니다.</div>
+            <div className="text-center text-body1 text-text-03">{t("notReady")}</div>
           </div>
         )}
       </div>
@@ -116,11 +118,7 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
       {/* 오버레이 적용 */}
       {!loading && items.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
-          <div className="text-center text-subtitle text-text-01">
-            배경화면이 아직 준비되지 않았습니다.
-            <br />
-            추후 업데이트를 기대해주세요!
-          </div>
+          <div className="text-center text-subtitle text-text-01">{t("notReady2")}</div>
         </div>
       )}
     </div>

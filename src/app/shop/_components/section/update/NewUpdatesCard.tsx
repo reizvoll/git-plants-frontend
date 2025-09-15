@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 import { useCurrentUpdateStore } from "@/lib/store/currentUpdateStore";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 interface NewUpdatesCardProps {
@@ -10,6 +11,7 @@ interface NewUpdatesCardProps {
 
 const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
   const { data: currentUpdate, isLoading, error } = useCurrentUpdateStore();
+  const t = useTranslations("shop.update");
 
   // 데이터가 없거나 updateNote가 null일 때
   const hasValidData = currentUpdate && currentUpdate.updateNote && currentUpdate.updateNote.imageUrl;
@@ -24,7 +26,7 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
 
   return (
     <div className="mx-auto flex h-[700px] w-full flex-col items-center justify-center gap-10 rounded-2xl px-[60px] py-12 py-[3.75rem]">
-      <div className="w-full text-center text-heading text-primary-default">따끈-한 신상 업데이트</div>
+      <div className="w-full text-center text-heading text-primary-default">{t("title")}</div>
 
       <div className="flex w-full flex-col gap-10">
         {currentUpdate && currentUpdate.updateNote && currentUpdate.updateNote.imageUrl ? (
@@ -46,21 +48,21 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
                 className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
                 onClick={isModalOpen}
               >
-                상세보기
+                {t("seeInfo")}
               </Button>
               <Button
                 size="lg"
                 variant="secondaryLine"
                 className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
               >
-                사러가기
+                {t("buyNow")}
               </Button>
             </div>
           </div>
         ) : (
           <>
             <div className="mx-auto flex h-[360px] w-[700px] items-center justify-center rounded-lg bg-gray-100">
-              <div className="text-center text-body1 text-text-03">추후 업데이트 예정입니다.</div>
+              <div className="text-center text-body1 text-text-03">{t("comingSoon")}</div>
             </div>
 
             <div className="flex w-full flex-row items-center justify-center gap-10">
@@ -70,14 +72,14 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
                 className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
                 onClick={isModalOpen}
               >
-                상세보기
+                {t("seeInfo")}
               </Button>
               <Button
                 size="lg"
                 variant="secondaryLine"
                 className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
               >
-                사러가기
+                {t("buyNow")}
               </Button>
             </div>
           </>
@@ -87,18 +89,8 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
       {/* error overlay 또는 데이터 없음 오버레이 */}
       {(error || !hasValidData) && (
         <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
-          <div className="text-center text-subtitle text-text-01">
-            {error ? (
-              <span>
-                정보를 불러올 수 없습니다. <br /> 잠시 후 다시 시도해주세요.
-              </span>
-            ) : (
-              <span>
-                업데이트 노트가 없습니다.
-                <br />
-                추후 업데이트를 기대해주세요.
-              </span>
-            )}
+          <div className="whitespace-pre-line text-center text-subtitle text-text-01">
+            {error ? <span>{t("errorMessage")}</span> : <span className="">{t("notReady")}</span>}
           </div>
         </div>
       )}
