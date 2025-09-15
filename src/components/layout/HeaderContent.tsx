@@ -40,12 +40,20 @@ const HeaderContent = () => {
     initializeAuth();
   }, [checkAuth, user, isPending]);
 
+
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang as "ko" | "en");
+
+    // 모든 언어에 대해 URL 파라미터 사용
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', lang);
+
+    // 새로고침으로 서버사이드에서 새 언어로 렌더링
+    window.location.href = url.toString();
   };
 
-  // 서버 사이드 렌더링 시에는 기본값 'ko'를 사용
-  const currentLanguage = mounted ? language : "ko";
+  // 서버 사이드 렌더링 시에는 기본값 'en'을 사용
+  const currentLanguage = mounted ? language : "en";
 
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-white">
