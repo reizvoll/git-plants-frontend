@@ -5,12 +5,9 @@
     "logout": "logout",
     "mypage": "mypage"
   },
-  "cta": {},
   "mypage": {},
   "plants-note": {
     "title": "Monthly Plant Note :",
-    "plant": "Corn",
-    "description": "Corn is the ultimate summer crop — it loves sunshine and \ngrows super fast when it's warm. \nFrom June to August, it's harvest time… and you know what \nthat means — it's popcorn o'clock! 🍿🌽",
     "growth_stage": {
       "title": "Growth Stage",
       "description": "Let's explore \nthe 5 growth stages \n(from seed to harvest!)!"
