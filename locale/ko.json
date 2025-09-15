@@ -1,0 +1,204 @@
+{
+  "auth": {
+    "callback": {
+      "loading": "인증 중...",
+      "processing": "인증 처리 중...",
+      "error": "인증 오류",
+      "errorMessage": "인증 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      "tryAgain": "다시 시도",
+      "goHome": "홈으로 이동",
+      "failMessage": "인증 실패"
+    }
+  },
+  "navigation": {
+    "login": "로그인",
+    "logout": "로그아웃",
+    "mypage": "마이페이지"
+  },
+  "plants-note": {
+    "title": "이달의 식물노트:",
+    "growth_stage": {
+      "title": "성장 단계",
+      "description": "씨앗부터 수확까지,\n총 5단계의 성장 과정을\n함께 살펴봐요!"
+    },
+    "start_now": {
+      "title": "지금 시작해보세요!",
+      "description": "식물을 키우는 즐거움은 물론,\n쏠쏠한 보상도 함께 챙겨봐요!"
+    }
+  },
+  "main-hero": {
+    "title": "코드로 자라는 식물친구,\nGit-Plants",
+    "subtitle": "GitHub활동을 바탕으로 식물을 키우고, 씨앗을 수확해요!",
+    "startButton": "시작하기",
+    "myPageButton": "마이페이지",
+    "storeButton": "상점 바로가기"
+  },
+  "footer": {
+    "description": "본 서비스는 개발자 포트폴리오 및 학습 목적의 비영리 프로젝트입니다.",
+    "feedback": "문의 및 피드백은",
+    "githubIssues": "GitHub Issues",
+    "feedbackEnd": "에 남겨주세요.",
+    "copyright": "창작물에 대한 무단 복제 및 상업적 사용을 금합니다.",
+    "copyrightNotice": "© 2025 reizvoll. All illustrations and UI elements are copyright protected."
+  },
+  "feature": {
+    "mode": {
+      "title": "두 가지 모드로 나만의 정원을 더 따뜻하게, 더 풍성하게!",
+      "miniMode": {
+        "title": "🌿 미니 모드",
+        "description": "작물 하나에 온전히 집중할 수 있는 모드예요.\n차분한 실내 또는 야외 배경 속에서,\n씨앗이 자라나는 모습을 지켜보며 힐링을 느껴보세요."
+      },
+      "gardenMode": {
+        "title": "🏅 정원 모드",
+        "description": "지금까지 키운 작물과 획득한 뱃지를 한눈에!\n성과와 함께 자라난 정원을 바라보며,\n당신의 꾸준함이 만든 이야기들을 즐겨보세요!"
+      }
+    },
+    "reward": {
+      "title": "작물을 수확해 씨앗을 모으고, 나만의 정원을 꾸며보세요!",
+      "description": "열매나 꽃을 수확하면 씨앗을 얻을 수 있어요. \n씨앗은 배경, 화분, 다양한 오브제를 구매하는 데 사용됩니다. \n하나하나 모아가며, 나만의 정원을 더욱 풍성하게 꾸며보세요!"
+    },
+    "system": {
+      "title-left": "모은 씨앗을 활용하여 \n다양한 상품을 구매하세요!",
+      "title-right": "작물 수확, 씨앗 획득 등의 \n다양한 활동을 진행하며 \n뱃지를 찾고, 획득해 보세요!",
+      "storeButton": "상점 바로가기",
+      "badgeButton": "뱃지 확인하기"
+    },
+    "update": {
+      "description": "(🎁 준비 중이니, 조금만 기다려주세요!)"
+    },
+    "how-it-works": {
+      "title": "기여도가 식물 성장에 미치는 영향 알아보기",
+      "description": "GitHub에서 일어나는 모든 기여는 식물의 성장과 정원 가꾸기에 영향을 줍니다. \n기여도를 통해 나만의 정원을 가꿔봐요!",
+      "tab": {
+        "title1": "성장 방식",
+        "description1": "Pull Request나 Commit을 통해\n기여도를 쌓을 수 있습니다.",
+        "title2": "보상 리워드",
+        "description2": "작물을 가꾸고 씨앗을 모아\n새로운 아이템을 잠금 해제해 보세요!",
+        "title3": "지금 바로 참여하세요!",
+        "description3": "GitHub 활동을 통해 멋진 정원을 가꾸고,\n보람 있는 코딩을 즐겨봐요!"
+      }
+    },
+    "cta": {
+      "title": "지금, 당신의 여정을 시작해보세요!",
+      "subtitle": "지금 가입하고, 매일 작은 성장을 함께 기록하며 \n나만의 정원을 가꿔봐요!",
+      "startButton": "시작하기",
+      "storeButton": "상점 바로가기",
+      "moreInfoButton": "더 알아보기"
+    }
+  },
+  "mypage": {
+    "loading": "로딩중...",
+    "userInfo": {
+      "badge": "뱃지",
+      "more": "더 보기",
+      "noBadge": "아직 뱃지가 없어요.",
+      "noBadgeDescription": "다양한 활동을 진행하면서 뱃지를 찾아봐요!"
+    },
+    "badgeNotification": {
+      "title": "새로운 뱃지 획득!",
+      "congratulation": "축하합니다! \n새로운 뱃지를 획득했습니다.",
+      "description": "마이페이지에서 모든 뱃지를 확인할 수 있습니다.",
+      "check": "확인"
+    },
+    "badgeModal": {
+      "title": "뱃지 보관함"
+    },
+    "selectTab": {
+      "style": "꾸미기",
+      "collection": "컬렉션"
+    },
+    "styleSection": {
+      "item_mini": "미니 모드",
+      "item_garden": "정원 모드",
+      "copyLink": "링크 복사하기",
+      "background": "배경화면",
+      "noBackground": "배경화면이 존재하지 않습니다.",
+      "pot": "화분",
+      "noPot": "화분이 존재하지 않습니다.",
+      "more": "더보기",
+      "currentSize": "현재 사이즈",
+      "adjustSize": "사이즈 조정하기",
+      "resetToDefault": "기본값으로 설정",
+      "adjustPotPosition": "위치 조정하기"
+    },
+    "sizeAdjustModal": {
+      "title": "사이즈 조정",
+      "description": "모드에 따라 권장 비율이 달라요! 모드에 맞춰 비율을 설정해 보세요.\n (미니모드: 2:3 /정원 모드: 4:3 or 16:9)",
+      "apply": "적용하기",
+      "cancel": "취소하기"
+    },
+    "potPositionAdjustModal": {
+      "title": "위치 선택",
+      "description": "화분 위치를 선택해주세요.",
+      "selectPotFirst": "화분을 먼저 선택해주세요.",
+      "leftCenter": "왼쪽 가운데",
+      "center": "정중앙",
+      "rightCenter": "오른쪽 가운데",
+      "leftBottom": "왼쪽 아래",
+      "centerBottom": "가운데 아래",
+      "rightBottom": "오른쪽 아래"
+    },
+    "collectionSection": {
+      "sort": {
+        "latest": "최신순",
+        "most_grown": "보유순",
+        "a_z": "가나다순"
+      },
+      "crop": "작물",
+      "background": "배경화면",
+      "pot": "화분",
+      "resetSortMessage": "정렬을 초기화했습니다.",
+      "noItemMessage": "아이템을 찾을 수 없어요.",
+      "createdAt": "획득 날짜 :",
+      "acquiredAt": "획득 날짜 :",
+      "quantity": "획득 개수 :",
+      "price": "개당 판매가 :",
+      "resetSort": "정렬 초기화",
+      "unit": "개"
+    }
+  },
+  "shop": {
+    "hero": {
+      "typingMessage": "어서 오게, 장보러 왔나?",
+      "typingMessage2": "좋은 물건 가져 왔다네.\n보고 가시게나."
+    },
+    "sellCrops": {
+      "title": "작물 판매하기",
+      "selectedCrops": "선택된 작물 :",
+      "unit": "개",
+      "selectAll": "전체 선택하기",
+      "totalPrice": "총 판매가 :",
+      "noCrops": "수확 가능한 작물이 없습니다.",
+      "sell": "판매하기",
+      "cancel": "취소하기",
+      "selectMessage": "판매할 작물을 선택해주세요."
+    },
+    "update": {
+      "title": "따끈-한 신상 업데이트",
+      "seeInfo": "상세 보기",
+      "buyNow": "사러가기",
+      "purchase": "구매하기",
+      "comingSoon": "추후 업데이트 예정입니다.",
+      "notReady": "업데이트 노트가 없습니다.\n 추후 업데이트를 기대해주세요!",
+      "errorMessage": "정보를 불러올 수 없습니다.\n 잠시 후 다시 시도해주세요.",
+      "updateModal": {
+        "modalTitle": "업데이트 노트",
+        "modalClose": "닫기"
+      }
+    },
+    "background": {
+      "title": "배경화면",
+      "purchasing": "구매 중...",
+      "purchase": "구매하기",
+      "notReady": "준비 중입니다.",
+      "notReady2": "배경화면이 아직 준비되지 않았습니다.\n 추후 업데이트를 기대해주세요!"
+    },
+    "pot": {
+      "title": "화분",
+      "purchasing": "구매 중...",
+      "purchase": "구매하기",
+      "notReady": "준비 중입니다.",
+      "notReady2": "화분이 아직 준비되지 않았습니다.\n 추후 업데이트를 기대해주세요!"
+    }
+  }
+}

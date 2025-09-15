@@ -1,0 +1,204 @@
+{
+  "auth": {
+    "callback": {
+      "loading": "Loading...",
+      "processing": "Processing authentication...",
+      "error": "Authentication Error",
+      "errorMessage": "There was a problem with your authentication.\n Please try again later.",
+      "tryAgain": "Try Again",
+      "goHome": "Go Home",
+      "failMessage": "Failed to check auth"
+    }
+  },
+  "navigation": {
+    "login": "Login",
+    "logout": "logout",
+    "mypage": "mypage"
+  },
+  "plants-note": {
+    "title": "Monthly Plant Note :",
+    "growth_stage": {
+      "title": "Growth Stage",
+      "description": "Let's explore \nthe 5 growth stages \n(from seed to harvest!)!"
+    },
+    "start_now": {
+      "title": "Start Now!",
+      "description": "Enjoy growing your plants, \nand don't miss sweet rewards!"
+    }
+  },
+  "main-hero": {
+    "title": "Grow your own little friend,\nGit-Plants",
+    "subtitle": "Plant a commit, harvest a dream.\n(based on your GitHub activity)",
+    "startButton": "Get started",
+    "myPageButton": "Go to my page",
+    "storeButton": "Go to shop"
+  },
+  "footer": {
+    "description": "Git-Plants is a personal project made for learning and portfolio purposes only.",
+    "feedback": "If you have any questions or feedback, feel free to drop an issue on",
+    "githubIssues": "GitHub Issues",
+    "feedbackEnd": ".",
+    "copyright": "Do not reproduce or use for commercial purposes without permission.",
+    "copyrightNotice": "© 2025 reizvoll. All illustrations and UI elements are copyright protected."
+  },
+  "feature": {
+    "mode": {
+      "title": "Grow Your Garden Warm and Full — with Two Unique Modes",
+      "miniMode": {
+        "title": "🌿 Mini Mode",
+        "description": "Care for a single plant, \nwatch your seed grow in a calm & focused space, \nand enjoy a peaceful moment for yourself."
+      },
+      "gardenMode": {
+        "title": "🏅 Garden Mode",
+        "description": "Watch your whole garden come together. \nFrom every plant to every badge, \nit's your journey, grown one commit at a time."
+      }
+    },
+    "reward": {
+      "title": "Harvest crops to collect seeds and decorate your own garden!",
+      "description": "When you pick fruits or flowers, you’ll earn seeds. \nUse them to buy backgrounds, pots, and special items. \nCollect them all and make your garden truly yours!"
+    },
+    "system": {
+      "title-left": "Collect seeds \nto get various items!",
+      "title-right": "Harvest crops, collect seeds, \nand unlock badges!",
+      "storeButton": "Go to shop",
+      "badgeButton": "Check badges"
+    },
+    "update": {
+      "description": "(Big update coming soon, stay tuned!🎁)"
+    },
+    "how-it-works": {
+      "title": "How Your Contributions Help Plants Thrive",
+      "description": "Every contribution you make on GitHub helps grow your garden. \nWatch your plants grow and earn seeds as you engage!",
+      "tab": {
+        "title1": "How Plants Grow",
+        "description1": "Build your contribution through\nPull Requests and Commits.",
+        "title2": "Rewarding Your Efforts",
+        "description2": "Collect seeds to unlock new items \nas you progress in your gardening journey.",
+        "title3": "Join Now!",
+        "description3": "Grow your garden through GitHub activity\nand enjoy a meaningful coding experience!"
+      }
+    },
+    "cta": {
+      "title": "Start your journey today!",
+      "subtitle": "Join us and watch your garden grow, one seed at a time!",
+      "startButton": "Get started",
+      "storeButton": "Go to shop",
+      "moreInfoButton": "More Info"
+    }
+  },
+  "mypage": {
+    "loading": "Loading...",
+    "userInfo": {
+      "badge": "Badge",
+      "more": "More",
+      "noBadge": "No badges yet...",
+      "noBadgeDescription": "(Keep being active — see what surprises show up!)"
+    },
+    "badgeNotification": {
+      "title": "New Badge Unlocked!",
+      "congratulation": "Congratulations! \nYou've got a new badge!",
+      "description": "You can check all badges in my page.",
+      "check": "Confirm"
+    },
+    "badgeModal": {
+      "title": "Badge Inventory"
+    },
+    "selectTab": {
+      "style": "Customize",
+      "collection": "Collection"
+    },
+    "styleSection": {
+      "item_mini": "Mini Mode",
+      "item_garden": "Garden Mode",
+      "copyLink": "Copy Link",
+      "background": "Background",
+      "noBackground": "No background yet.",
+      "pot": "Pot",
+      "noPot": "No pot yet.",
+      "more": "More",
+      "currentSize": "Current Size",
+      "adjustSize": "Adjust Size",
+      "resetToDefault": "Reset to Default",
+      "adjustPotPosition": "Adjust Position"
+    },
+    "sizeAdjustModal": {
+      "title": "Customize Size",
+      "description": "Each mode has a recommended ratio.\n (Mini: 2:3 / Garden: 4:3 or 16:9)",
+      "apply": "Apply",
+      "cancel": "Cancel"
+    },
+    "potPositionAdjustModal": {
+      "title": "Select Position",
+      "description": "Select the position of the pot.",
+      "selectPotFirst": "Select the pot first.",
+      "leftCenter": "Left Center",
+      "center": "Center",
+      "rightCenter": "Right Center",
+      "leftBottom": "Left Bottom",
+      "centerBottom": "Center Bottom",
+      "rightBottom": "Right Bottom"
+    },
+    "collectionSection": {
+      "sort": {
+        "latest": "Latest",
+        "most_grown": "Most Grown",
+        "a_z": "A-Z"
+      },
+      "crop": "Crop",
+      "background": "Background",
+      "pot": "Pot",
+      "resetSortMessage": "Completed reset sort.",
+      "noItemMessage": "No item found.",
+      "createdAt": "Created at :",
+      "acquiredAt": "Acquired at :",
+      "quantity": "Quantity :",
+      "price": "Price :",
+      "resetSort": "Reset Sort",
+      "unit": ""
+    }
+  },
+  "shop": {
+    "hero": {
+      "typingMessage": "Howdy! Welcome to the Shop.",
+      "typingMessage2": "Good things are coming your way.\n Check it out!"
+    },
+    "sellCrops": {
+      "title": "Sell Crops",
+      "selectedCrops": "Selected Crops :",
+      "unit": "",
+      "selectAll": "Select All",
+      "totalPrice": "Total :",
+      "noCrops": "No crops available.",
+      "sell": "Sell",
+      "cancel": "Cancel",
+      "selectMessage": "Select the crops you want to sell."
+    },
+    "update": {
+      "title": "New Drops!",
+      "seeInfo": "See Info",
+      "buyNow": "Buy Now",
+      "purchase": "Purchase",
+      "comingSoon": "Coming Soon",
+      "notReady": "Items are not ready yet.\n We'll update it soon!",
+      "errorMessage": "Failed to load items.\n Please try again later.",
+      "updateModal": {
+        "modalTitle": "Update Note",
+        "modalClose": "Close"
+      }
+    },
+    "background": {
+      "title": "Background",
+      "purchasing": "Purchasing...",
+      "purchase": "Purchase",
+      "notReady": "No backgrounds.",
+      "notReady2": "Background is not ready yet.\n We'll update it soon!"
+    },
+    "pot": {
+      "title": "Pot",
+      "purchasing": "Purchasing...",
+      "purchase": "Purchase",
+      "notReady": "No pots.",
+      "notReady2": "Pot is not ready yet.\n We'll update it soon!"
+    }
+  }
+}
