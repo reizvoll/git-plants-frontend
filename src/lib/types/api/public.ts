@@ -11,6 +11,11 @@ export type MonthlyPlant = {
   year: number;
   createdAt: string;
   updatedAt: string;
+  ko?: {
+    title?: string;
+    name?: string;
+    description?: string;
+  };
 };
 
 export type UpdateNote = {
@@ -18,6 +23,10 @@ export type UpdateNote = {
   title: string;
   description: string;
   imageUrl: string;
+  ko?: {
+    title?: string;
+    description?: string;
+  };
 };
 
 export type NewItem = {
@@ -30,6 +39,9 @@ export type NewItem = {
   price: number;
   createdAt: string;
   updatedAt: string;
+  ko?: {
+    name?: string;
+  };
 };
 
 export type ShopItem = {
@@ -42,6 +54,9 @@ export type ShopItem = {
   price: number;
   createdAt: string;
   updatedAt: string;
+  ko?: {
+    name?: string;
+  };
 };
 
 export type CurrentUpdate = {

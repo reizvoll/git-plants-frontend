@@ -8,6 +8,10 @@ export type Badge = {
     name: string;
     condition: string;
     imageUrl: string;
+    ko?: {
+      name?: string;
+      condition?: string;
+    };
   };
 };
 
@@ -27,6 +31,9 @@ export type Item = {
   createdAt: string;
   updatedAt: string;
   updatedById: string;
+  ko?: {
+    name?: string;
+  };
 };
 
 export type UserItem = {
