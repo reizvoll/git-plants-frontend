@@ -28,13 +28,12 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
-  const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
     <html lang={locale} className={`${pretendard.variable} ${galmuri.variable}`}>
       <TQProviders>
         <body className={`${pretendard.className} ${galmuri.className} overflow-x-hidden`}>
-          <NextIntlClientProvider locale={locale} messages={messages}>
+          <NextIntlClientProvider locale={locale}>
             <Header />
             <main className="relative mx-auto w-full pt-20 tb:pt-0">{children}</main>
             <Footer />
