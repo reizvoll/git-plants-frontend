@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import CollectionSection from "./CollectionSection";
 import StyleSection from "./StyleSection";
@@ -8,6 +9,7 @@ const SelectTab = () => {
   const [filter, setFilter] = useState<"tab1" | "tab2">("tab1");
   const [collectionMode, setCollectionMode] = useState<"CROP" | "BACKGROUND" | "POT">("CROP");
 
+  const t = useTranslations("mypage.selectTab");
   const handleNavigateToCollection = (mode: "CROP" | "BACKGROUND" | "POT") => {
     setCollectionMode(mode);
     setFilter("tab2");
@@ -32,11 +34,11 @@ const SelectTab = () => {
         {[
           {
             key: "tab1",
-            title: "꾸미기"
+            title: t("style")
           },
           {
             key: "tab2",
-            title: "컬렉션"
+            title: t("collection")
           }
         ].map((tab) => (
           <button

@@ -1,4 +1,5 @@
 import type { Crop, UserItem } from "@/lib/types/api/profile";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 export type SortType = "latest" | "most_grown" | "a_z";
@@ -22,13 +23,15 @@ const sortFunctions = {
   }
 };
 
-const sortOptions = {
-  latest: { label: "최신순", value: "latest" as const },
-  most_grown: { label: "보유순", value: "most_grown" as const },
-  a_z: { label: "가나다순", value: "a_z" as const }
-};
-
 export const useCollectionSort = ({ items, crops, currentSort }: UseCollectionSortParams) => {
+  const t = useTranslations("mypage.collectionSection.sort");
+
+  const sortOptions = {
+    latest: { label: t("latest"), value: "latest" as const },
+    most_grown: { label: t("most_grown"), value: "most_grown" as const },
+    a_z: { label: t("a_z"), value: "a_z" as const }
+  };
+
   const sortedData = useMemo(() => {
     if (!items) return { backgrounds: [], pots: [], crops: [] };
 

@@ -4,6 +4,7 @@ import { useItemSelection } from "@/lib/hooks/mypage/useItemSelection";
 import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPositionStore";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { ArrowsOutCardinalIcon, DotsThreeIcon, ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import PotPositionAdjustModal from "./PotPositionAdjustModal";
@@ -20,7 +21,9 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const [isPotPositionModalOpen, setIsPotPositionModalOpen] = useState(false);
   const [showBackgroundTooltip, setShowBackgroundTooltip] = useState(false);
   const [showPotTooltip, setShowPotTooltip] = useState(false);
+  const [showPotAdjustTooltip, setShowPotAdjustTooltip] = useState(false);
 
+  const t = useTranslations("mypage.styleSection");
   const availableModes = useMemo(() => {
     if (!items || items.length === 0) return { garden: false, mini: false };
 
@@ -86,7 +89,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const currentPlant = plants && plants.length > 0 ? plants[0] : null;
 
   const handleModeChange = (selectedMode: string) => {
-    setCurrentMode(selectedMode === "미니 모드" ? "MINI" : "GARDEN");
+    setCurrentMode(selectedMode === t("item_mini") ? "MINI" : "GARDEN");
   };
 
   const handleApplySize = (size: { width: number; height: number }) => {
@@ -114,13 +117,13 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
           <Dropdown
             items={[
               {
-                label: "미니 모드",
-                onClick: () => handleModeChange("미니 모드"),
+                label: t("item_mini"),
+                onClick: () => handleModeChange(t("item_mini")),
                 active: currentMode === "MINI"
               },
               {
-                label: "정원 모드",
-                onClick: () => handleModeChange("정원 모드"),
+                label: t("item_garden"),
+                onClick: () => handleModeChange(t("item_garden")),
                 active: currentMode === "GARDEN"
               }
             ]}
@@ -135,7 +138,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
               navigator.clipboard.writeText(window.location.href);
             }}
           >
-            링크 복사하기
+            {t("copyLink")}
             <ExportIcon width={20} height={20} />
           </Button>
         </div>
@@ -191,14 +194,14 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                 </div>
               ) : (
                 <div className="flex items-center justify-center bg-gray-200">
-                  <div className="text-body3 text-text-04">배경화면이 존재하지 않습니다.</div>
+                  <div className="text-body3 text-text-04">{t("noBackground")}</div>
                 </div>
               )}
             </div>
 
             <div className="flex flex-row items-center gap-4">
               <div className="text-body2 text-text-03">
-                현재 사이즈 <br />
+                {t("currentSize")} <br />
                 {selectedBackground && (
                   <span className="text-body3 text-text-03">
                     {customSize.width} X {customSize.height} px
@@ -206,14 +209,14 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                 )}
               </div>
             </div>
-            <div className={`flex ${currentMode === "MINI" ? "flex-col" : "flex-row"} gap-2`}>
+            <div className={`flex ${currentMode === "MINI" ? "flex-col items-center" : "flex-row items-start"} gap-2`}>
               <Button
                 variant="primary"
                 size="md"
                 className="flex flex-row items-center gap-2 text-body1"
                 onClick={() => setIsModalOpen(true)}
               >
-                사이즈 조정하기
+                {t("adjustSize")}
                 <SlidersHorizontalIcon width={16} height={16} />
               </Button>
               <Button
@@ -225,14 +228,14 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                   setPotPosition({ x: 50, y: 80 });
                 }}
               >
-                기본값으로 설정
+                {t("resetToDefault")}
               </Button>
             </div>
           </div>
           <div className="flex w-full flex-col gap-[60px]">
             <div className="flex w-full flex-col gap-6">
               <div className="flex w-full flex-row items-center justify-between">
-                <div className="text-body2 text-text-03">배경화면</div>
+                <div className="text-body2 text-text-03">{t("background")}</div>
                 <div className="relative">
                   <button
                     className="group text-text-04"
@@ -243,7 +246,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                     <DotsThreeIcon width={20} height={20} />
                     {showBackgroundTooltip && (
                       <span className="group-hover:shadow-emphasize absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
-                        <span className="text-caption text-primary-default">더보기</span>
+                        <span className="text-caption text-primary-default">{t("more")}</span>
                       </span>
                     )}
                   </button>
@@ -274,31 +277,40 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-body3 text-text-04">배경화면이 없습니다.</div>
+                  <div className="text-body3 text-text-04">{t("noBackground")}</div>
                 )}
               </div>
             </div>
             <div className="flex w-full flex-col gap-6">
               <div className="flex w-full flex-row items-center justify-between">
-                <div className="text-body2 text-text-03">화분</div>
+                <div className="text-body2 text-text-03">{t("pot")}</div>
                 <div className="flex flex-row items-center gap-4">
-                  <button
-                    className="flex flex-row items-center text-text-03"
-                    onClick={() => setIsPotPositionModalOpen(true)}
-                  >
-                    <ArrowsOutCardinalIcon width={16} height={16} />
-                  </button>
                   <div className="relative">
                     <button
-                      className="group text-text-04"
+                      className="group flex items-center justify-center text-text-03"
+                      onClick={() => setIsPotPositionModalOpen(true)}
+                      onMouseEnter={() => setShowPotAdjustTooltip(true)}
+                      onMouseLeave={() => setShowPotAdjustTooltip(false)}
+                    >
+                      <ArrowsOutCardinalIcon width={16} height={16} />
+                      {showPotAdjustTooltip && (
+                        <span className="group-hover:shadow-emphasize absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
+                          <span className="text-caption text-primary-default">{t("adjustPotPosition")}</span>
+                        </span>
+                      )}
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <button
+                      className="group flex items-center justify-center text-text-04"
                       onClick={() => onNavigateToCollection("POT")}
                       onMouseEnter={() => setShowPotTooltip(true)}
                       onMouseLeave={() => setShowPotTooltip(false)}
                     >
                       <DotsThreeIcon width={20} height={20} />
                       {showPotTooltip && (
-                        <span className="group-hover:shadow-emphasize absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
-                          <span className="text-caption text-primary-default">더보기</span>
+                        <span className="group-hover:shadow-emphasize absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
+                          <span className="text-caption text-primary-default">{t("more")}</span>
                         </span>
                       )}
                     </button>
@@ -330,7 +342,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-body3 text-text-03">화분이 없습니다.</div>
+                  <div className="text-body3 text-text-03">{t("noPot")}</div>
                 )}
               </div>
             </div>

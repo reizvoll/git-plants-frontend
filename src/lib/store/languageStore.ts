@@ -7,28 +7,28 @@ interface LanguageState {
   setLanguage: (language: Locale) => void;
 }
 
-// export language from cookie
+// export language from URL params
 const getInitialLanguage = (): Locale => {
   if (typeof window === "undefined") {
-    return "ko";
+    return "en"; // default language
   }
 
-  // get language from cookie
-  const cookie = document.cookie.split("; ").find((row) => row.startsWith("NEXT_LOCALE="));
-  const savedLanguage = cookie?.split("=")[1] as Locale;
+  // get language from URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  const langParam = urlParams.get("lang");
 
-  // use saved language, if not, use default 'ko'
-  return savedLanguage || "ko";
+  // use URL param, if not, use default 'en'
+  return (langParam as Locale) || "en";
 };
 
-// locale param for api
+// locale param for backend API calls
 export const addLocaleParam = (url: string, locale?: Locale): string => {
   const currentLocale = locale || getInitialLanguage();
   const separator = url.includes("?") ? "&" : "?";
   return `${url}${separator}locale=${currentLocale}`;
 };
 
-// get translated value
+// get translated value helper function
 export const getTranslated = <T>(defaultValue: T, translatedValue: T | undefined, locale: Locale): T => {
   return locale === "ko" && translatedValue !== undefined ? translatedValue : defaultValue;
 };
@@ -36,10 +36,6 @@ export const getTranslated = <T>(defaultValue: T, translatedValue: T | undefined
 export const useLanguageStore = create<LanguageState>((set) => ({
   language: getInitialLanguage(),
   setLanguage: (language) => {
-    // save language to cookie
-    document.cookie = `NEXT_LOCALE=${language}; path=/; max-age=31536000`;
     set({ language });
-    // refresh page (the top of the page)
-    window.location.href = window.location.pathname;
   }
 }));

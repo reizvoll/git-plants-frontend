@@ -1,5 +1,6 @@
 import Close from "@/assets/icons/Close";
 import ModalItem from "@/components/ui/Modal";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 type BadgeNotificationModalProps = {
@@ -12,12 +13,13 @@ type BadgeNotificationModalProps = {
 };
 
 const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationModalProps) => {
+  const t = useTranslations("mypage.badgeNotification");
   return (
     <ModalItem isOpen={isOpen} onClose={onClose} mode="default">
       <div className="flex flex-col items-center gap-6">
         {/* 헤더 */}
         <div className="flex w-full items-center justify-between">
-          <span className="text-title1 text-primary-default">New 뱃지!</span>
+          <span className="text-title1 text-primary-default">{t("title")}</span>
           <button
             onClick={onClose}
             className="relative p-2 text-heading text-primary-default transition-opacity hover:opacity-70"
@@ -41,16 +43,13 @@ const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationMod
 
         {/* 축하 메시지 */}
         <div className="text-center">
-          <p className="mb-2 text-body1 text-primary-default">
-            축하합니다! <br />
-            새로운 뱃지를 획득했습니다.
-          </p>
-          <p className="text-caption text-primary-light">마이페이지에서 모든 뱃지를 확인할 수 있습니다.</p>
+          <p className="mb-2 text-body1 text-primary-default">{t("congratulation")}</p>
+          <p className="text-caption text-primary-light">{t("description")}</p>
         </div>
 
         {/* 확인 버튼 */}
         <button onClick={onClose} className="w-full rounded-lg bg-primary-default px-6 py-3 font-medium text-white">
-          확인
+          {t("check")}
         </button>
       </div>
     </ModalItem>

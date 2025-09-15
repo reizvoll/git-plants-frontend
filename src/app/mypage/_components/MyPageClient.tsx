@@ -4,6 +4,7 @@ import LoadingText from "@/components/shared/LoadingText";
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import { useAuthGuard } from "@/lib/hooks/auth/useAuthGuard";
 import { useProfileStore } from "@/lib/store/profileStore";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import BadgeNotificationModal from "./BadgeNotificationModal";
 import SelectTab from "./SelectTab";
@@ -14,6 +15,7 @@ const MyPageClient = () => {
   const { isLoading, fetchProfile, newBadges } = useProfileStore();
   const [showBadgeNotification, setShowBadgeNotification] = useState(false);
   const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
+  const t = useTranslations("mypage");
 
   const stableFetchProfile = useCallback(async () => {
     await fetchProfile();
@@ -51,7 +53,7 @@ const MyPageClient = () => {
   if (isLoading || authLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-bg-03">
-        <LoadingText text="Loading..." className="text-subHeading text-primary-default" />
+        <LoadingText text={t("loading")} className="text-subHeading text-primary-default" />
       </div>
     );
   }

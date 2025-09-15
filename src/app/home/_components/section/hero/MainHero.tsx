@@ -37,8 +37,7 @@ const MainHero = () => {
             className="flex items-center justify-center px-8 py-3"
             onClick={handleFirstButtonClick}
           >
-            {/* TODO: */}
-            {isLoggedIn ? "상점 바로가기" : t("startButton")}
+            {isLoggedIn ? t("storeButton") : t("startButton")}
           </Button>
           <Button
             variant="primaryLine"

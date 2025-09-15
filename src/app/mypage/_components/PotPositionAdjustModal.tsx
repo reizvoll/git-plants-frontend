@@ -1,4 +1,6 @@
 import Modal from "@/components/ui/Modal";
+import { useLanguageStore } from "@/lib/store/languageStore";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 interface PotPositionAdjustModalProps {
@@ -20,17 +22,19 @@ const PotPositionAdjustModal = ({
   onApply,
   selectedPot
 }: PotPositionAdjustModalProps) => {
+  const { language } = useLanguageStore();
   const handlePositionSelect = (position: { x: number; y: number }) => {
     onApply(position);
   };
+  const t = useTranslations("mypage.potPositionAdjustModal");
 
   const positionOptions = [
-    { label: "왼쪽 가운데", x: 25, y: 50 },
-    { label: "정중앙", x: 50, y: 50 },
-    { label: "오른쪽 가운데", x: 75, y: 50 },
-    { label: "왼쪽 아래", x: 25, y: 80 },
-    { label: "가운데 아래", x: 50, y: 80 },
-    { label: "오른쪽 아래", x: 75, y: 80 }
+    { label: t("leftCenter"), x: 25, y: 50 },
+    { label: t("center"), x: 50, y: 50 },
+    { label: t("rightCenter"), x: 75, y: 50 },
+    { label: t("leftBottom"), x: 25, y: 80 },
+    { label: t("centerBottom"), x: 50, y: 80 },
+    { label: t("rightBottom"), x: 75, y: 80 }
   ];
 
   useEffect(() => {
@@ -55,15 +59,15 @@ const PotPositionAdjustModal = ({
           <div className="flex flex-col">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <div className="text-center font-pretendard text-subtitle font-bold text-text-03">위치 선택</div>
-                <span className="text-center font-pretendard text-body1 text-text-03">화분 위치를 선택해주세요.</span>
+                <div className="text-center font-pretendard text-subtitle font-bold text-text-03">{t("title")}</div>
+                <span className="text-center font-pretendard text-body1 text-text-03">{t("description")}</span>
               </div>
               <div className="mx-auto grid grid-cols-3 gap-2">
                 {positionOptions.map((pos) => (
                   <button
                     key={`${pos.x}-${pos.y}`}
                     onClick={() => handlePositionSelect({ x: pos.x, y: pos.y })}
-                    className={`min-w-[120px] whitespace-nowrap rounded px-3 py-2 text-center font-pretendard transition-colors ${
+                    className={`w-full ${language === "ko" ? "min-w-[120px]" : "min-w-[140px]"} whitespace-nowrap rounded px-3 py-2 text-center font-pretendard transition-colors ${
                       currentPotPosition.x === pos.x && currentPotPosition.y === pos.y
                         ? "bg-primary-default text-white"
                         : "border border-gray-200 text-gray-600 hover:bg-gray-300"
@@ -77,7 +81,7 @@ const PotPositionAdjustModal = ({
             </div>
           </div>
         ) : (
-          <div className="text-body3 text-center text-text-04">화분을 먼저 선택해주세요.</div>
+          <div className="text-body3 text-center text-text-04">{t("selectPotFirst")}</div>
         )}
       </div>
     </Modal>

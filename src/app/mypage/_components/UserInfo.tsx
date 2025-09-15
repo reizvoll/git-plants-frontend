@@ -4,6 +4,7 @@ import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { CaretRightIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import BadgeModal from "./BadgeModal";
@@ -11,6 +12,7 @@ import BadgeModal from "./BadgeModal";
 const UserInfo = () => {
   const { user, seedCount, badges } = useProfileStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const t = useTranslations("mypage.userInfo");
 
   if (!user) {
     return null;
@@ -36,14 +38,14 @@ const UserInfo = () => {
           </div>
           <div className="flex flex-col gap-6">
             <div className="flex flex-row items-center justify-between">
-              <div className="text-subtitle text-text-03">뱃지</div>
+              <div className="text-subtitle text-text-03">{t("badge")}</div>
               <Button
                 variant="primaryLight"
                 size="mn"
                 className="flex items-center gap-2"
                 onClick={() => setIsModalOpen(true)}
               >
-                더 보기
+                {t("more")}
                 <CaretRightIcon width={16} height={16} weight="bold" />
               </Button>
             </div>
@@ -56,10 +58,8 @@ const UserInfo = () => {
                 ))
               ) : (
                 <div className="flex w-full flex-col items-center justify-center gap-2">
-                  <div className="text-body text-center text-text-03">아직 뱃지가 없어요.</div>
-                  <div className="text-center text-caption text-text-03">
-                    (다양한 활동을 진행하면서 뱃지를 찾아봐요!)
-                  </div>
+                  <div className="text-body text-center text-text-03">{t("noBadge")}</div>
+                  <div className="text-center text-caption text-text-03">{t("noBadgeDescription")}</div>
                 </div>
               )}
             </div>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import ModalItem from "@/components/ui/Modal";
 import type { UpdateNote } from "@/lib/types/api/public";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect } from "react";
 
@@ -11,6 +12,8 @@ interface UpdateNoteModalProps {
 }
 
 const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) => {
+  const t = useTranslations("shop.update.updateModal");
+
   useEffect(() => {
     const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -32,7 +35,7 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
     <ModalItem isOpen={isOpen} onClose={onClose} mode="default">
       <div className="flex w-full flex-col gap-6">
         <div className="flex w-full flex-col items-center gap-4">
-          <div className="font-pretendard text-subHeading font-bold text-text-04">업데이트 노트</div>
+          <div className="font-pretendard text-subHeading font-bold text-text-04">{t("modalTitle")}</div>
           <div className="text-subtitle text-text-03">{updateNote.title}</div>
         </div>
 
@@ -55,7 +58,7 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
             className="w-full text-body1 text-text-01"
             onClick={onClose}
           >
-            닫기
+            {t("modalClose")}
           </Button>
         </div>
       </div>

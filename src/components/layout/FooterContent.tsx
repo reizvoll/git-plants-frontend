@@ -1,8 +1,11 @@
+"use client";
+
 import GithubIcon from "@/assets/icons/github";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const FooterContent = () => {
   const t = useTranslations("footer");
+  const locale = useLocale();
 
   return (
     <div className="flex h-52 w-full items-center bg-gray-700">
@@ -25,7 +28,7 @@ const FooterContent = () => {
               {t("githubIssues")}
             </a>
             {t("feedbackEnd")}
-            &nbsp;
+            {locale === "en" ? <br /> : <span>&nbsp;</span>}
             {t("copyright")}
           </div>
           <div className="font-galmuri text-caption text-text-01">{t("copyrightNotice")}</div>
