@@ -9,6 +9,7 @@ import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { formatDate } from "@/lib/utils/formatDate";
 import { FunnelIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -23,6 +24,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
   const [currentMode, setCurrentMode] = useState<CollectionMode>(initialMode);
   const { items, crops } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
+  const t = useTranslations("mypage.collectionSection");
 
   // URL에서 정렬 상태 가져오기
   const currentSort = (searchParams.get("sort") as SortType) || "latest";
@@ -57,7 +59,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
     const params = new URLSearchParams(searchParams);
     params.delete("sort");
     router.push(`?${params.toString()}`);
-    addToast("정렬을 초기화했습니다.", "success");
+    addToast(t("resetSortMessage"), "success");
   };
 
   // update currentMode when initialMode changes
@@ -75,9 +77,9 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
 
     if (hasNoItems && !hasShownToast.current) {
       hasShownToast.current = true;
-      addToast("아이템을 찾을 수 없어요.", "warning");
+      addToast(t("noItemMessage"), "warning");
     }
-  }, [currentMode, backgrounds.length, pots.length, ownedCrops.length, addToast]);
+  }, [currentMode, backgrounds.length, pots.length, ownedCrops.length, addToast, t]);
 
   const renderContent = () => {
     switch (currentMode) {
@@ -98,11 +100,15 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
                   </div>
                   <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] flex -translate-x-1/2 -translate-y-full flex-col items-center justify-center whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
                     <span className="block text-body2 text-primary-default">{crop.monthlyPlant.name}</span>
-                    <span className="text-mini text-brown-500">획득 날짜 : {formatDate(crop.createdAt)}</span>
-                    <span className="text-mini text-brown-500">획득 개수 : {crop.quantity} 개</span>
+                    <span className="text-mini text-brown-500">
+                      {t("acquiredAt")} {formatDate(crop.createdAt)}
+                    </span>
+                    <span className="text-mini text-brown-500">
+                      {t("quantity")} {crop.quantity} {t("unit")}
+                    </span>
                     {/* TODO: 판매가격 필드 추가 필요 */}
                     <span className="flex items-center gap-1 text-mini text-brown-500">
-                      개당 판매가 : <Image src={seed} alt="seed" width={9} height={9} /> 10
+                      {t("price")} <Image src={seed} alt="seed" width={9} height={9} /> 10
                     </span>
                   </span>
                 </picture>
@@ -125,7 +131,9 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
                   />
                   <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
                     <span className="block text-body2 text-primary-default">{background.item.name}</span>
-                    <span className="text-mini text-brown-500">(획득날짜 : {formatDate(background.acquiredAt)})</span>
+                    <span className="text-mini text-brown-500">
+                      {t("acquiredAt")} {formatDate(background.acquiredAt)}
+                    </span>
                   </span>
                 </picture>
               ))}
@@ -140,7 +148,9 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
                   <Image src={pot.item.iconUrl} alt={pot.item.name} width={66} height={66} className="object-cover" />
                   <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
                     <span className="block text-body2 text-primary-default">{pot.item.name}</span>
-                    <span className="text-mini text-brown-500">(획득날짜 : {formatDate(pot.acquiredAt)})</span>
+                    <span className="text-mini text-brown-500">
+                      {t("acquiredAt")} {formatDate(pot.acquiredAt)}
+                    </span>
                   </span>
                 </picture>
               ))}
@@ -158,17 +168,17 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
           <Dropdown
             items={[
               {
-                label: "작물",
+                label: t("crop"),
                 onClick: () => handleModeChange("CROP"),
                 active: currentMode === "CROP"
               },
               {
-                label: "배경화면",
+                label: t("background"),
                 onClick: () => handleModeChange("BACKGROUND"),
                 active: currentMode === "BACKGROUND"
               },
               {
-                label: "화분",
+                label: t("pot"),
                 onClick: () => handleModeChange("POT"),
                 active: currentMode === "POT"
               }
@@ -191,7 +201,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
               className="shadow-normal flex items-center gap-2 text-body1"
               onClick={handleResetToDefault}
             >
-              정렬 초기화
+              {t("resetSort")}
               <FunnelIcon width={20} height={20} />
             </Button>
           </div>

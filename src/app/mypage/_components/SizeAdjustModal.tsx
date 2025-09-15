@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import ModalItem from "@/components/ui/Modal";
+import { useTranslations } from "next-intl";
 import { useEffect, useState, type KeyboardEvent } from "react";
 
 interface SizeAdjustModalProps {
@@ -11,6 +12,7 @@ interface SizeAdjustModalProps {
 
 const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustModalProps) => {
   const [tempSize, setTempSize] = useState(currentSize);
+  const t = useTranslations("mypage.sizeAdjustModal");
 
   useEffect(() => {
     setTempSize(currentSize);
@@ -60,7 +62,7 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
         tabIndex={-1}
         className="flex flex-col gap-4"
       >
-        <div className="font-pretendard text-subtitle font-bold text-text-04">사이즈 조정</div>
+        <div className="font-pretendard text-subtitle font-bold text-text-04">{t("title")}</div>
         <div className="flex items-center justify-center gap-3">
           <input
             value={tempSize.width}
@@ -77,14 +79,10 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
           />
           <span className="font-pretendard text-title2 text-text-03">px</span>
         </div>
-        <div className="text-center font-pretendard text-caption text-text-03">
-          모드에 따라 권장 비율이 달라요! 모드에 맞춰 비율을 설정해 보세요.
-          <br />
-          (미니모드: 2:3 /정원 모드: 4:3 or 16:9)
-        </div>
+        <div className="text-center font-pretendard text-caption text-text-03">{t("description")}</div>
         <div className="flex gap-3">
           <Button type="submit" variant="primary" size="md" className="w-full text-body1 text-text-01">
-            적용하기
+            {t("apply")}
           </Button>
           <Button
             type="button"
@@ -93,7 +91,7 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
             className="w-full text-body1 text-text-03"
             onClick={handleCancel}
           >
-            취소하기
+            {t("cancel")}
           </Button>
         </div>
       </form>

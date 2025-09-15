@@ -1,6 +1,7 @@
 import Close from "@/assets/icons/Close";
 import badgeSlot from "@/assets/images/badge_slot.webp";
 import ModalItem from "@/components/ui/Modal";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 type Badge = {
@@ -18,11 +19,12 @@ type BadgeModalProps = {
 };
 
 const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
+  const t = useTranslations("mypage.badgeModal");
   return (
     <ModalItem isOpen={isOpen} onClose={onClose} mode="image">
       <div className="flex flex-col items-center gap-9">
         <div className="flex w-full items-center justify-between">
-          <span className="text-subHeading text-text-01">뱃지 보관함</span>
+          <span className="text-subHeading text-text-01">{t("title")}</span>
           <button onClick={onClose} className="relative p-2 text-heading text-text-01">
             <div className="absolute inset-0 z-10" />
             <div className="relative z-0">
