@@ -79,5 +79,9 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
         return restoration ? { ...crop, quantity: crop.quantity + restoration.count } : crop;
       })
     }));
+  },
+
+  clearNewBadges: () => {
+    set({ newBadges: [] });
   }
 }));
