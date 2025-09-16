@@ -3,6 +3,7 @@ import Dropdown from "@/components/ui/Dropdown";
 import { useItemSelection } from "@/lib/hooks/mypage/useItemSelection";
 import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPositionStore";
 import { useProfileStore } from "@/lib/store/profileStore";
+import { useToastStore } from "@/lib/store/useToaststore";
 import { ArrowsOutCardinalIcon, DotsThreeIcon, ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -15,7 +16,8 @@ interface StyleSectionProps {
 }
 
 const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
-  const { equipped, items, plants } = useProfileStore();
+  const { equipped, items, plants, user } = useProfileStore();
+  const { addToast } = useToastStore();
   const [currentMode, setCurrentMode] = useState("GARDEN");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPotPositionModalOpen, setIsPotPositionModalOpen] = useState(false);
@@ -134,8 +136,19 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
             variant="secondaryLine"
             size="md"
             className="shadow-normal flex items-center gap-2 text-body1"
-            onClick={() => {
-              navigator.clipboard.writeText(window.location.href);
+            onClick={async () => {
+              try {
+                if (user?.username) {
+                  const baseUrl = window.location.origin;
+                  const apiUrl = `${baseUrl}/api/mypage/${user.username}?mode=${currentMode}&width=${customSize.width}&height=${customSize.height}&potX=${potPosition.x}&potY=${potPosition.y}`;
+                  await navigator.clipboard.writeText(apiUrl);
+                  addToast(t("copyLinkSuccess"), "success");
+                } else {
+                  await navigator.clipboard.writeText(window.location.href);
+                }
+              } catch (error) {
+                addToast(t("copyLinkError"), "warning");
+              }
             }}
           >
             {t("copyLink")}
@@ -224,7 +237,9 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                 size="md"
                 className="flex flex-row items-center gap-2 text-body1"
                 onClick={() => {
-                  setCustomSize({ width: 400, height: 300 });
+                  const defaultSize =
+                    currentMode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
+                  setCustomSize(defaultSize);
                   setPotPosition({ x: 50, y: 80 });
                 }}
               >
