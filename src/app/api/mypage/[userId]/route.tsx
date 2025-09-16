@@ -127,15 +127,13 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     try {
       console.log("Starting Sharp image composition...");
 
-      // 1. download background image
-      const bgResponse = await fetch(backgroundUrl);
-      if (!bgResponse.ok) throw new Error(`Failed to fetch background: ${bgResponse.status}`);
-      const bgBuffer = await bgResponse.arrayBuffer();
+      // 1&2. download images in parallel
+      const [bgResponse, potResponse] = await Promise.all([fetch(backgroundUrl), fetch(potUrl)]);
 
-      // 2. download pot image
-      const potResponse = await fetch(potUrl);
+      if (!bgResponse.ok) throw new Error(`Failed to fetch background: ${bgResponse.status}`);
       if (!potResponse.ok) throw new Error(`Failed to fetch pot: ${potResponse.status}`);
-      const potBuffer = await potResponse.arrayBuffer();
+
+      const [bgBuffer, potBuffer] = await Promise.all([bgResponse.arrayBuffer(), potResponse.arrayBuffer()]);
 
       console.log("Downloaded images, starting composition...");
 
