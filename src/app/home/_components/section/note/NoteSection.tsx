@@ -19,6 +19,9 @@ const NoteSection = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
+    setError(false);
+
     getMonthlyPlant(language)
       .then((data) => {
         // 데이터 유효성 검사 추가
