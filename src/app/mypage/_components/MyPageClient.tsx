@@ -5,30 +5,26 @@ import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import { useAuthGuard } from "@/lib/hooks/auth/useAuthGuard";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BadgeNotificationModal from "./BadgeNotificationModal";
 import SelectTab from "./SelectTab";
 import UserInfo from "./UserInfo";
 
 const MyPageClient = () => {
   const { isLoading: authLoading, isAuthenticated } = useAuthGuard();
-  const { isLoading, fetchProfile, newBadges } = useProfileStore();
+  const { isLoading, newBadges } = useProfileStore();
   const [showBadgeNotification, setShowBadgeNotification] = useState(false);
   const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
   const t = useTranslations("mypage");
-
-  const stableFetchProfile = useCallback(async () => {
-    await fetchProfile();
-  }, [fetchProfile]);
 
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
       const currentState = useProfileStore.getState();
       if (!currentState.user) {
-        stableFetchProfile();
+        currentState.fetchProfile();
       }
     }
-  }, [isAuthenticated, isLoading, stableFetchProfile]);
+  }, [isAuthenticated, isLoading]);
 
   useEffect(() => {
     if (newBadges && newBadges.length > 0 && !isLoading) {
@@ -45,7 +41,8 @@ const MyPageClient = () => {
         setShowBadgeNotification(true);
       }, 100);
     } else {
-      fetchProfile();
+      const profileState = useProfileStore.getState();
+      profileState.clearNewBadges();
       setCurrentBadgeIndex(0);
     }
   };

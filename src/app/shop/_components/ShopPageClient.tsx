@@ -13,18 +13,19 @@ import UpdateSection from "./section/update/UpdateSection";
 
 const ShopPageClient = () => {
   const { user } = useAuthStore();
-  const { fetchProfile } = useProfileStore();
-  const { backgroundItems, potItems, isLoading, fetchShopItems } = useShopStore();
+  const { backgroundItems, potItems, isLoading } = useShopStore();
 
   useEffect(() => {
-    fetchShopItems();
-  }, [fetchShopItems]);
+    const shopState = useShopStore.getState();
+    shopState.fetchShopItems();
+  }, []);
 
   useEffect(() => {
     if (user) {
-      fetchProfile();
+      const profileState = useProfileStore.getState();
+      profileState.fetchProfile();
     }
-  }, [user, fetchProfile]);
+  }, [user]);
 
   return (
     <>

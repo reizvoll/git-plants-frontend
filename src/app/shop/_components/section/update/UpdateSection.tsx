@@ -19,12 +19,13 @@ const UpdateSection = () => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: currentUpdate, fetchCurrentUpdate, error, isLoading } = useCurrentUpdateStore();
+  const { data: currentUpdate, error, isLoading } = useCurrentUpdateStore();
 
   // UpdateSection에서 한 번만 API 호출
   useEffect(() => {
-    fetchCurrentUpdate();
-  }, [fetchCurrentUpdate]);
+    const updateState = useCurrentUpdateStore.getState();
+    updateState.fetchCurrentUpdate();
+  }, []);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
