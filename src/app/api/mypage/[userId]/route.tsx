@@ -60,6 +60,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     console.log("URLs from backend:", { backgroundUrl, potUrl, plantUrl });
 
+    // validate URLs
+    if (!backgroundUrl) throw new Error("Background URL is missing");
+    if (!potUrl) throw new Error("Pot URL is missing");
+    if (!plantUrl) throw new Error("Plant URL is missing");
+
     // calculate pot position using URL parameters
     const potPosition = { x: potX, y: potY };
     const calculatedPotX = Math.round((potPosition.x / 100) * customSize.width);
@@ -127,15 +132,21 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     try {
       console.log("Starting Sharp image composition...");
 
-      // 1. download background image
-      const bgResponse = await fetch(backgroundUrl);
-      if (!bgResponse.ok) throw new Error(`Failed to fetch background: ${bgResponse.status}`);
-      const bgBuffer = await bgResponse.arrayBuffer();
+      // 1&2. download images in parallel
+      console.log("Fetching images in parallel...");
+      const [bgResponse, potResponse] = await Promise.all([fetch(backgroundUrl), fetch(potUrl)]);
 
-      // 2. download pot image
-      const potResponse = await fetch(potUrl);
-      if (!potResponse.ok) throw new Error(`Failed to fetch pot: ${potResponse.status}`);
-      const potBuffer = await potResponse.arrayBuffer();
+      console.log("Fetch responses:", {
+        bgStatus: bgResponse.status,
+        potStatus: potResponse.status
+      });
+
+      if (!bgResponse.ok) throw new Error(`Failed to fetch background: ${bgResponse.status} from ${backgroundUrl}`);
+      if (!potResponse.ok) throw new Error(`Failed to fetch pot: ${potResponse.status} from ${potUrl}`);
+
+      console.log("Converting to buffers...");
+      const [bgBuffer, potBuffer] = await Promise.all([bgResponse.arrayBuffer(), potResponse.arrayBuffer()]);
+      console.log("Buffer sizes:", { bgSize: bgBuffer.byteLength, potSize: potBuffer.byteLength });
 
       console.log("Downloaded images, starting composition...");
 
@@ -221,7 +232,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   } catch (error) {
     console.error("Error generating image:", error);
 
-    return new Response("Error generating image", {
+    return new Response(`Error generating image: ${error instanceof Error ? error.message : 'Unknown error'}`, {
       status: 500,
       headers: {
         "Content-Type": "text/plain"
