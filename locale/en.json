@@ -111,6 +111,8 @@
       "item_mini": "Mini Mode",
       "item_garden": "Garden Mode",
       "copyLink": "Copy Link",
+      "copyLinkSuccess": "Link copied to clipboard!",
+      "copyLinkError": "Failed to copy link.",
       "background": "Background",
       "noBackground": "No background yet.",
       "pot": "Pot",
