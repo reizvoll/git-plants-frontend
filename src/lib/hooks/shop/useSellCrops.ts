@@ -1,5 +1,5 @@
 import { shopApi } from "@/api/user";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { Crop } from "@/lib/types/api/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,10 +11,10 @@ interface SellCropsParams {
 
 export const useSellCrops = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuthStore();
+  const { user } = useAuth();
   const addToast = useToastStore((state) => state.addToast);
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: async ({ selectedCropsForSale }: SellCropsParams) => {
       if (!user) {
         throw new Error("로그인이 필요합니다.");
@@ -47,4 +47,17 @@ export const useSellCrops = () => {
       addToast(errorMessage, "warning");
     }
   });
+
+  const handleSell = (selectedCropsForSale: Array<{ plantId: string; count: number }>, crops: Crop[]) => {
+    if (selectedCropsForSale.length === 0) {
+      addToast("판매할 작물을 선택해주세요.", "warning");
+      return;
+    }
+    mutation.mutate({ selectedCropsForSale, crops });
+  };
+
+  return {
+    ...mutation,
+    handleSell
+  };
 };

@@ -1,5 +1,5 @@
 import { shopApi } from "@/api/user";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { ShopItem } from "@/lib/types/api/public";
 import { ERROR_MESSAGES } from "@/lib/utils/constant";
@@ -18,10 +18,10 @@ const getErrorMessage = (backendMessage: string): string => {
 // TODO: update translations message
 export const usePurchaseItem = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuthStore();
+  const { user } = useAuth();
   const addToast = useToastStore((state) => state.addToast);
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: async (item: ShopItem) => {
       if (!user) {
         throw new Error("로그인이 필요합니다.");
@@ -54,4 +54,13 @@ export const usePurchaseItem = () => {
       addToast(errorMessage, "warning");
     }
   });
+
+  const handlePurchase = (item: ShopItem) => {
+    mutation.mutate(item);
+  };
+
+  return {
+    ...mutation,
+    handlePurchase
+  };
 };
