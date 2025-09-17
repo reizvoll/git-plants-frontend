@@ -3,7 +3,7 @@
 import seed from "@/assets/images/seed.webp";
 import Pagination from "@/components/shared/Pagenation";
 import { Button } from "@/components/ui/Button";
-import { useShopStore } from "@/lib/store/shopStore";
+import { usePurchaseItem } from "@/lib/hooks/shop/usePurchaseItem";
 import { ShopItem } from "@/lib/types/api/public";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -19,8 +19,8 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
   const limit = 6;
   const t = useTranslations("shop.background");
 
-  // shop store에서 구매 관련 기능 가져오기
-  const { purchaseItem, isLoading: purchasing } = useShopStore();
+  // 구매 훅 사용
+  const { handlePurchase, isPending: purchasing } = usePurchaseItem();
 
   // 현재 페이지에 해당하는 아이템들
   const startIndex = (currentPage - 1) * limit;
@@ -31,10 +31,6 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
     setCurrentPage(newPage);
   };
 
-  // 구매 핸들러 추가
-  const handlePurchase = (item: ShopItem) => {
-    purchaseItem(item);
-  };
 
   // TODO: 리팩토링 필요
   const SkeletonItem = () => (

@@ -1,13 +1,13 @@
 "use client";
 
+import { useCurrentUpdate } from "@/lib/hooks/update/useCurrentUpdate";
 import { CaretCircleLeftIcon, CaretCircleRightIcon } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import NewUpdatesCard from "./NewUpdatesCard";
 
 // Import Swiper styles
-import { useCurrentUpdateStore } from "@/lib/store/currentUpdateStore";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -19,13 +19,7 @@ const UpdateSection = () => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: currentUpdate, error, isLoading } = useCurrentUpdateStore();
-
-  // UpdateSection에서 한 번만 API 호출
-  useEffect(() => {
-    const updateState = useCurrentUpdateStore.getState();
-    updateState.fetchCurrentUpdate();
-  }, []);
+  const { data: currentUpdate, error, isLoading } = useCurrentUpdate();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);

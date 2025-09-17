@@ -1,10 +1,11 @@
 "use client";
 
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useProfile } from "@/lib/hooks/mypage/useProfile";
+import { useShopItems } from "@/lib/hooks/shop/useShopItems";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useProfileStore } from "@/lib/store/profileStore";
-import { useShopStore } from "@/lib/store/shopStore";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import ShopHero from "./section/hero/ShopHero";
 import BackgroundList from "./section/items/BackgroundList";
 import PotList from "./section/items/PotList";
@@ -12,20 +13,27 @@ import SellCropsSection from "./section/sell-crops/SellCropsSection";
 import UpdateSection from "./section/update/UpdateSection";
 
 const ShopPageClient = () => {
-  const { user } = useAuthStore();
-  const { backgroundItems, potItems, isLoading } = useShopStore();
+  const { user } = useAuth();
+  const { data: shopItems, isLoading } = useShopItems();
+  const { data: profileData } = useProfile();
+  const { setProfileData } = useProfileStore();
 
-  useEffect(() => {
-    const shopState = useShopStore.getState();
-    shopState.fetchShopItems();
-  }, []);
+  // shopItems를 카테고리별로 분리
+  const { backgroundItems, potItems } = useMemo(() => {
+    if (!shopItems) return { backgroundItems: [], potItems: [] };
 
+    return {
+      backgroundItems: shopItems.filter((item) => item?.category === "background") || [],
+      potItems: shopItems.filter((item) => item?.category === "pot") || []
+    };
+  }, [shopItems]);
+
+  // 프로필 데이터를 Zustand store에 동기화
   useEffect(() => {
-    if (user) {
-      const profileState = useProfileStore.getState();
-      profileState.fetchProfile();
+    if (profileData) {
+      setProfileData(profileData);
     }
-  }, [user]);
+  }, [profileData, setProfileData]);
 
   return (
     <>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { useCurrentUpdateStore } from "@/lib/store/currentUpdateStore";
+import { useCurrentUpdate } from "@/lib/hooks/update/useCurrentUpdate";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -10,7 +10,7 @@ interface NewUpdatesCardProps {
 }
 
 const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
-  const { data: currentUpdate, isLoading, error } = useCurrentUpdateStore();
+  const { data: currentUpdate, isLoading, error } = useCurrentUpdate();
   const t = useTranslations("shop.update");
 
   // 데이터가 없거나 updateNote가 null일 때

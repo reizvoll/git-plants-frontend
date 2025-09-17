@@ -2,14 +2,14 @@
 
 import { LoadingDots } from "@/components/shared/LoadingDots";
 import LoadingText from "@/components/shared/LoadingText";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 export default function CallbackClient({ error }: { error?: string }) {
   const router = useRouter();
-  const { checkAuth } = useAuthStore();
+  const { user, isLoading } = useAuth();
   const hasRun = useRef(false);
   const t = useTranslations("auth.callback");
 
@@ -22,15 +22,15 @@ export default function CallbackClient({ error }: { error?: string }) {
       return;
     }
 
-    checkAuth()
-      .then(() => {
+    // useAuth will handle authentication automatically
+    if (!isLoading) {
+      if (user) {
         router.push("/");
-      })
-      .catch((err: Error) => {
-        console.error("FetchSession error:", err);
+      } else {
         router.push(`/error?message=${encodeURIComponent(t("failMessage"))}`);
-      });
-  }, [error, router, checkAuth, t]);
+      }
+    }
+  }, [error, router, user, isLoading, t]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-bg-01 p-8 text-center">

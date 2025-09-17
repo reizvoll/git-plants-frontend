@@ -1,48 +1,20 @@
-import { authApi } from "@/api/auth";
-import { AuthState } from "@/lib/types/api/auth";
+import { UserProfile } from "@/lib/types/api/auth";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export const useAuthStore = create<AuthState>()(
+// now Zustand, UI State only (user info is handled by TanStack Query)
+interface AuthUIState {
+  user: (UserProfile & { isAdmin?: boolean }) | null;
+  setUser: (user: AuthUIState["user"]) => void;
+  clearUser: () => void;
+}
+
+export const useAuthStore = create<AuthUIState>()(
   persist(
     (set) => ({
       user: null,
-      isPending: false,
-      error: null,
-      login: () => {
-        authApi.signInWithGithub();
-      },
-      logout: async () => {
-        set({ isPending: true });
-        try {
-          await authApi.signOut();
-          set({ user: null, error: null });
-          window.location.href = "/";
-        } catch (error) {
-          set({ error: "로그아웃에 실패했습니다." });
-        } finally {
-          set({ isPending: false });
-        }
-      },
-      checkAuth: async () => {
-        set({ isPending: true });
-        try {
-          const response = await authApi.getSession();
-
-          if (response.success && response.data?.user) {
-            set({ user: response.data.user, error: null });
-          } else {
-            set({ user: null, error: null });
-            localStorage.removeItem("auth-storage");
-          }
-        } catch (error) {
-          console.error("Auth check error:", error);
-          set({ error: null, user: null });
-          localStorage.removeItem("auth-storage");
-        } finally {
-          set({ isPending: false });
-        }
-      }
+      setUser: (user) => set({ user }),
+      clearUser: () => set({ user: null })
     }),
     {
       name: "auth-storage",
