@@ -29,16 +29,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const fullUrl = `${apiUrl}/api/public/profile/${userId}`;
 
-    console.log("Trying to fetch from:", fullUrl);
-
     const profileResponse = await fetch(fullUrl, {
       headers: {
         Accept: "application/json"
       }
     });
-
-    console.log("Response status:", profileResponse.status);
-    console.log("Response ok:", profileResponse.ok);
 
     if (!profileResponse.ok) {
       throw new Error(`Failed to fetch profile: ${profileResponse.status} ${profileResponse.statusText}`);
@@ -47,9 +42,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const result = await profileResponse.json();
     const profileData = result.data || result;
 
-    console.log("Profile data from backend:", profileData);
-    console.log("Settings from URL:", { potX, potY, width, height });
-
     // set size from URL parameters
     const customSize = { width, height };
 
@@ -57,8 +49,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const backgroundUrl = profileData.equipped?.backgrounds[0]?.imageUrl;
     const potUrl = profileData.equipped?.pots[0]?.iconUrl;
     const plantUrl = profileData.plants[0]?.currentImageUrl;
-
-    console.log("URLs from backend:", { backgroundUrl, potUrl, plantUrl });
 
     // validate URLs
     if (!backgroundUrl) throw new Error("Background URL is missing");
@@ -104,21 +94,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     // compose image using Sharp
     try {
-      console.log("Starting Sharp image composition...");
-
       // 1&2&3. download images in parallel (including plant GIF)
-      console.log("Fetching images in parallel...");
       const [bgResponse, potResponse, plantResponse] = await Promise.all([
         fetch(backgroundUrl),
         fetch(potUrl),
         fetch(plantUrl)
       ]);
-
-      console.log("Fetch responses:", {
-        bgStatus: bgResponse.status,
-        potStatus: potResponse.status,
-        plantStatus: plantResponse.status
-      });
 
       if (!bgResponse.ok) throw new Error(`Failed to fetch background: ${bgResponse.status} from ${backgroundUrl}`);
       if (!potResponse.ok) throw new Error(`Failed to fetch pot: ${potResponse.status} from ${potUrl}`);
@@ -135,8 +116,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         potSize: potBuffer.byteLength,
         plantSize: plantBuffer.byteLength
       });
-
-      console.log("Downloaded images, starting composition...");
 
       // 3. compose image using Sharp
       const compositeImage = await sharp(Buffer.from(bgBuffer))
