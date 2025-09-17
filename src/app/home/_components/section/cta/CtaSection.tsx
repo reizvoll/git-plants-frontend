@@ -2,7 +2,7 @@
 
 import farmer from "@/assets/images/farmer.webp";
 import { Button } from "@/components/ui/Button";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 const CtaSection = () => {
   const t = useTranslations("feature.cta");
   const router = useRouter();
-  const { user, login } = useAuthStore();
+  const { user, login } = useAuth();
 
   // 로그인 상태 확인
   const isLoggedIn = !!user;

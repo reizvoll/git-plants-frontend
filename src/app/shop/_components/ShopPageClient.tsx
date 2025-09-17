@@ -3,7 +3,7 @@
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import { useProfile } from "@/lib/hooks/mypage/useProfile";
 import { useShopItems } from "@/lib/hooks/shop/useShopItems";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useEffect, useMemo } from "react";
 import ShopHero from "./section/hero/ShopHero";
@@ -13,7 +13,7 @@ import SellCropsSection from "./section/sell-crops/SellCropsSection";
 import UpdateSection from "./section/update/UpdateSection";
 
 const ShopPageClient = () => {
-  const { user } = useAuthStore();
+  const { user } = useAuth();
   const { data: shopItems, isLoading } = useShopItems();
   const { data: profileData } = useProfile();
   const { setProfileData } = useProfileStore();
