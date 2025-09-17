@@ -5,15 +5,14 @@ import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useShopStore } from "@/lib/store/shopStore";
-import { useToastStore } from "@/lib/store/useToaststore";
+import { useSellCrops } from "@/lib/hooks/shop/useSellCrops";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const SellCropsSection = () => {
   const { crops } = useProfileStore();
-  const { selectedCropsForSale, toggleCropSelection, selectAllCrops, clearSelection, sellSelectedCrops } =
-    useShopStore();
-  const { addToast } = useToastStore();
+  const { selectedCropsForSale, toggleCropSelection, selectAllCrops, clearSelection } = useShopStore();
+  const { handleSell, isPending: selling } = useSellCrops();
   const t = useTranslations("shop.sellCrops");
 
   // 수확된 작물들 (crops 배열을 직접 사용)
@@ -30,12 +29,9 @@ const SellCropsSection = () => {
     selectAllCrops(harvestableCrops);
   };
 
-  const handleSell = () => {
-    if (selectedCount === 0) {
-      addToast(t("selectMessage"), "warning");
-      return;
-    }
-    sellSelectedCrops(harvestableCrops);
+  const handleSellCrops = () => {
+    handleSell(selectedCropsForSale, harvestableCrops);
+    clearSelection();
   };
 
   const handleCancel = () => {
@@ -108,7 +104,7 @@ const SellCropsSection = () => {
             size="lg"
             variant="primary"
             className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
-            onClick={handleSell}
+            onClick={handleSellCrops}
           >
             {t("sell")}
           </Button>
