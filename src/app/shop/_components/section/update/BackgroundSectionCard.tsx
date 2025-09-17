@@ -2,12 +2,12 @@
 
 import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
-import { useCurrentUpdateStore } from "@/lib/store/currentUpdateStore";
+import { useCurrentUpdate } from "@/lib/hooks/update/useCurrentUpdate";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const BackgroundSectionCard = () => {
-  const { data: currentUpdate, isLoading, error } = useCurrentUpdateStore();
+  const { data: currentUpdate, isLoading, error } = useCurrentUpdate();
   const backgroundItems = currentUpdate?.newItems.filter((item) => item.category === "background") || [];
   const t = useTranslations("shop.update");
 
@@ -16,7 +16,7 @@ const BackgroundSectionCard = () => {
   }
 
   if (error) {
-    return <div>에러: {error}</div>;
+    return <div>에러: {error.message}</div>;
   }
 
   return (
