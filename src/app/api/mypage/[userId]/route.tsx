@@ -75,54 +75,28 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       console.log("Using cached image");
       const cachedImage = imageCache.get(cacheKey)!;
 
+      // download plant GIF for base64 encoding
+      const plantResponse = await fetch(plantUrl);
+      if (!plantResponse.ok) throw new Error(`Failed to fetch plant: ${plantResponse.status} from ${plantUrl}`);
+      const plantBuffer = await plantResponse.arrayBuffer();
+
       // calculate plant position
       const plantX = calculatedPotX;
       const plantY = calculatedPotY - 70;
 
       // encode to Base64
       const base64Image = Buffer.from(cachedImage).toString("base64");
+      const base64Plant = Buffer.from(plantBuffer).toString("base64");
 
-      // create HTML page
-      const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>${userId}'s Garden</title>
-  <style>
-    body { margin: 0; padding: 0; }
-    .garden-container {
-      position: relative;
-      width: ${customSize.width}px;
-      height: ${customSize.height}px;
-      overflow: hidden;
-    }
-    .background {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .plant {
-      position: absolute;
-      left: ${plantX - 50}px;
-      top: ${plantY - 50}px;
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-    }
-  </style>
-</head>
-<body>
-  <div class="garden-container">
-    <img class="background" src="data:image/jpeg;base64,${base64Image}" alt="Garden Background">
-    <img class="plant" src="${plantUrl}" alt="Plant">
-  </div>
-</body>
-</html>`;
+      // create SVG with base64 encoded GIF
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${customSize.width}" height="${customSize.height}">
+  <image href="data:image/jpeg;base64,${base64Image}" width="${customSize.width}" height="${customSize.height}" />
+  <image href="data:image/gif;base64,${base64Plant}" x="${plantX - 50}" y="${plantY - 50}" width="100" height="100" />
+</svg>`;
 
-      return new Response(html, {
+      return new Response(svg, {
         headers: {
-          "Content-Type": "text/html",
+          "Content-Type": "image/svg+xml",
           "Cache-Control": "public, max-age=7200" // 2hr
         }
       });
@@ -132,21 +106,35 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     try {
       console.log("Starting Sharp image composition...");
 
-      // 1&2. download images in parallel
+      // 1&2&3. download images in parallel (including plant GIF)
       console.log("Fetching images in parallel...");
-      const [bgResponse, potResponse] = await Promise.all([fetch(backgroundUrl), fetch(potUrl)]);
+      const [bgResponse, potResponse, plantResponse] = await Promise.all([
+        fetch(backgroundUrl),
+        fetch(potUrl),
+        fetch(plantUrl)
+      ]);
 
       console.log("Fetch responses:", {
         bgStatus: bgResponse.status,
-        potStatus: potResponse.status
+        potStatus: potResponse.status,
+        plantStatus: plantResponse.status
       });
 
       if (!bgResponse.ok) throw new Error(`Failed to fetch background: ${bgResponse.status} from ${backgroundUrl}`);
       if (!potResponse.ok) throw new Error(`Failed to fetch pot: ${potResponse.status} from ${potUrl}`);
+      if (!plantResponse.ok) throw new Error(`Failed to fetch plant: ${plantResponse.status} from ${plantUrl}`);
 
       console.log("Converting to buffers...");
-      const [bgBuffer, potBuffer] = await Promise.all([bgResponse.arrayBuffer(), potResponse.arrayBuffer()]);
-      console.log("Buffer sizes:", { bgSize: bgBuffer.byteLength, potSize: potBuffer.byteLength });
+      const [bgBuffer, potBuffer, plantBuffer] = await Promise.all([
+        bgResponse.arrayBuffer(),
+        potResponse.arrayBuffer(),
+        plantResponse.arrayBuffer()
+      ]);
+      console.log("Buffer sizes:", {
+        bgSize: bgBuffer.byteLength,
+        potSize: potBuffer.byteLength,
+        plantSize: plantBuffer.byteLength
+      });
 
       console.log("Downloaded images, starting composition...");
 
@@ -176,52 +164,21 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
       // encode to Base64
       const base64Image = Buffer.from(compositeImage).toString("base64");
+      const base64Plant = Buffer.from(plantBuffer).toString("base64");
 
       // calculate plant position
       const plantX = calculatedPotX;
       const plantY = calculatedPotY - 70;
 
-      // create HTML page
-      const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-    <title>${userId}'s Garden</title>
-    <style>
-    body { margin: 0; padding: 0; }
-    .garden-container {
-      position: relative;
-      width: ${customSize.width}px;
-      height: ${customSize.height}px;
-      overflow: hidden;
-    }
-    .background {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .plant {
-      position: absolute;
-      left: ${plantX - 50}px;
-      top: ${plantY - 50}px;
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-    }
-  </style>
-</head>
-<body>
-  <div class="garden-container">
-    <img class="background" src="data:image/jpeg;base64,${base64Image}" alt="Garden Background">
-    <img class="plant" src="${plantUrl}" alt="Plant">
-  </div>
-</body>
-</html>`;
+      // create SVG with base64 encoded GIF
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${customSize.width}" height="${customSize.height}">
+  <image href="data:image/jpeg;base64,${base64Image}" width="${customSize.width}" height="${customSize.height}" />
+  <image href="data:image/gif;base64,${base64Plant}" x="${plantX - 50}" y="${plantY - 50}" width="100" height="100" />
+</svg>`;
 
-      return new Response(html, {
+      return new Response(svg, {
         headers: {
-          "Content-Type": "text/html",
+          "Content-Type": "image/svg+xml",
           "Cache-Control": "public, max-age=3600"
         }
       });
@@ -232,7 +189,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   } catch (error) {
     console.error("Error generating image:", error);
 
-    return new Response(`Error generating image: ${error instanceof Error ? error.message : 'Unknown error'}`, {
+    return new Response(`Error generating image: ${error instanceof Error ? error.message : "Unknown error"}`, {
       status: 500,
       headers: {
         "Content-Type": "text/plain"
