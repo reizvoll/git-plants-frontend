@@ -35,7 +35,7 @@ const ErrorScreen = ({ error, reset }: Props) => {
             }
             className="min-w-40"
           >
-            다시 시도
+            Retry
           </Button>
         </div>
       </article>
