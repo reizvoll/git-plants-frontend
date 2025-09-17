@@ -143,7 +143,8 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                 if (user?.username) {
                   const baseUrl = window.location.origin;
                   const apiUrl = `${baseUrl}/api/mypage/${user.username}?mode=${currentMode}&width=${customSize.width}&height=${customSize.height}&potX=${potPosition.x}&potY=${potPosition.y}`;
-                  await navigator.clipboard.writeText(apiUrl);
+                  const mdx = `[![${user.username}'s Garden](${apiUrl})](${baseUrl})`;
+                  await navigator.clipboard.writeText(mdx);
                   addToast(t("copyLinkSuccess"), "success");
                 } else {
                   await navigator.clipboard.writeText(window.location.href);
