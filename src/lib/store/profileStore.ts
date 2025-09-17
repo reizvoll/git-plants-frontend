@@ -1,4 +1,3 @@
-import { authApi } from "@/api/auth";
 import { ProfileState } from "@/lib/types/api/profile";
 import { create } from "zustand";
 
@@ -16,25 +15,11 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   plants: [],
   isLoading: false,
   error: null,
-  fetchProfile: async () => {
-    set({ isLoading: true, error: null });
 
-    try {
-      const response = await authApi.getProfile();
-
-      if (response.success && response.data) {
-        const { user, seedCount, badges, newBadges, items, crops, equipped, plants } = response.data;
-        set({ user, seedCount, badges, newBadges, items, crops, equipped, plants, isLoading: false });
-      } else {
-        throw new Error("No profile data received");
-      }
-    } catch (error) {
-      console.error("Profile API Exception:", error);
-      set({
-        error: error instanceof Error ? error.message : "Failed to fetch profile",
-        isLoading: false
-      });
-    }
+  // TanStack Query에서 받은 데이터로 store 업데이트
+  setProfileData: (data: any) => {
+    const { user, seedCount, badges, newBadges, items, crops, equipped, plants } = data;
+    set({ user, seedCount, badges, newBadges, items, crops, equipped, plants });
   },
 
   updateItemEquipStatus: (changes: Array<{ userItemId: string; equipped: boolean }>) => {
