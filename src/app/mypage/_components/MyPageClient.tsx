@@ -2,7 +2,8 @@
 
 import LoadingText from "@/components/shared/LoadingText";
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
-import { useAuthGuard } from "@/lib/hooks/auth/useAuthGuard";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
+import { useProfile } from "@/lib/hooks/mypage/useProfile";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -11,27 +12,26 @@ import SelectTab from "./SelectTab";
 import UserInfo from "./UserInfo";
 
 const MyPageClient = () => {
-  const { isLoading: authLoading, isAuthenticated } = useAuthGuard();
-  const { isLoading, newBadges } = useProfileStore();
+  const { isLoading: authLoading, isAuthenticated } = useAuth(true); // requireAuth: true
+  const { data: profileData, isLoading: profileLoading, error } = useProfile(isAuthenticated);
+  const { newBadges, setProfileData, clearNewBadges } = useProfileStore();
   const [showBadgeNotification, setShowBadgeNotification] = useState(false);
   const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
   const t = useTranslations("mypage");
 
+  // TanStack Query 데이터를 Zustand store에 동기화
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      const currentState = useProfileStore.getState();
-      if (!currentState.user) {
-        currentState.fetchProfile();
-      }
+    if (profileData && isAuthenticated) {
+      setProfileData(profileData);
     }
-  }, [isAuthenticated, isLoading]);
+  }, [profileData, isAuthenticated, setProfileData]);
 
   useEffect(() => {
-    if (newBadges && newBadges.length > 0 && !isLoading) {
+    if (newBadges && newBadges.length > 0 && !profileLoading) {
       setShowBadgeNotification(true);
       setCurrentBadgeIndex(0);
     }
-  }, [newBadges, isLoading]);
+  }, [newBadges, profileLoading]);
 
   const handleCloseBadgeNotification = () => {
     setShowBadgeNotification(false);
@@ -41,18 +41,21 @@ const MyPageClient = () => {
         setShowBadgeNotification(true);
       }, 100);
     } else {
-      const profileState = useProfileStore.getState();
-      profileState.clearNewBadges();
+      clearNewBadges();
       setCurrentBadgeIndex(0);
     }
   };
 
-  if (isLoading || authLoading) {
+  if (profileLoading || authLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-bg-03">
         <LoadingText text={t("loading")} className="text-subHeading text-primary-default" />
       </div>
     );
+  }
+
+  if (error) {
+    throw error; // pass to the global error
   }
 
   const currentBadge = newBadges && newBadges.length > 0 ? newBadges[currentBadgeIndex] : null;

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useItemSelection } from "@/lib/hooks/mypage/useItemSelection";
 import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPositionStore";
 import { useProfileStore } from "@/lib/store/profileStore";
@@ -16,7 +17,8 @@ interface StyleSectionProps {
 }
 
 const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
-  const { equipped, items, plants, user } = useProfileStore();
+  const { user } = useAuth();
+  const { equipped, items, plants } = useProfileStore();
   const { addToast } = useToastStore();
   const [currentMode, setCurrentMode] = useState("GARDEN");
   const [isModalOpen, setIsModalOpen] = useState(false);
