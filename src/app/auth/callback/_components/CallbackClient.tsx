@@ -14,9 +14,6 @@ export default function CallbackClient({ error }: { error?: string }) {
   const t = useTranslations("auth.callback");
 
   useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
-
     if (error) {
       router.push(`/error?message=${encodeURIComponent(error)}`);
       return;
@@ -24,6 +21,9 @@ export default function CallbackClient({ error }: { error?: string }) {
 
     // useAuth will handle authentication automatically
     if (!isLoading) {
+      if (hasRun.current) return;
+      hasRun.current = true;
+
       if (user) {
         router.push("/");
       } else {
