@@ -1,10 +1,16 @@
 import sharp from "sharp";
-const GIFEncoder = require("gifencoder");
+import { GifEncoder } from "@skyra/gifenc";
 const gifFrames = require("gif-frames") as any;
+
+// Constants
+const CACHE_DURATION = 2 * 60 * 60 * 1000; // 2hr
+const PLANT_SIZE = 100;
+const POT_OFFSET = 40;
+const PLANT_OFFSET_X = 50;
+const PLANT_OFFSET_Y = 70 + 50;
 
 // Frame cache for better performance
 const frameCache = new Map<string, Buffer[]>();
-const CACHE_DURATION = 2 * 60 * 60 * 1000; // 2hr
 
 interface GifGenerationOptions {
   bgBuffer: Buffer;
@@ -13,6 +19,83 @@ interface GifGenerationOptions {
   customSize: { width: number; height: number };
   calculatedPotX: number;
   calculatedPotY: number;
+}
+
+// Extract and process frames from plant GIF
+async function extractPlantFrames(plantUrl: string): Promise<Buffer[]> {
+  const frameCacheKey = `frames-${plantUrl}`;
+
+  if (frameCache.has(frameCacheKey)) {
+    return frameCache.get(frameCacheKey)!;
+  }
+
+  const frameData = await gifFrames({
+    url: plantUrl,
+    frames: "all",
+    outputType: "png",
+    cumulative: false
+  });
+
+  if (!frameData || frameData.length === 0) {
+    throw new Error("Failed to extract GIF frames");
+  }
+
+  const extractedFrames = await Promise.all(
+    frameData.map(async (frame: any, i: number) => {
+      const frameStream = await frame.getImage();
+      const frameBuffer = frameStream.data;
+      const frameWidth = frameStream.width;
+      const frameHeight = frameStream.height;
+
+      if (!frameBuffer) {
+        throw new Error(`Could not extract frame buffer from PNG stream for frame ${i}`);
+      }
+
+      return await sharp(frameBuffer, {
+        raw: {
+          width: frameWidth,
+          height: frameHeight,
+          channels: 4 // RGBA
+        }
+      })
+        .resize(PLANT_SIZE, PLANT_SIZE, {
+          kernel: sharp.kernel.nearest,
+          fastShrinkOnLoad: false
+        })
+        .png({ quality: 80, compressionLevel: 6 })
+        .toBuffer();
+    })
+  );
+
+  // Cache the processed frames
+  frameCache.set(frameCacheKey, extractedFrames);
+  setTimeout(() => {
+    frameCache.delete(frameCacheKey);
+  }, CACHE_DURATION);
+
+  return extractedFrames;
+}
+
+// Create base composite (background + pot)
+async function createBaseComposite(
+  bgBuffer: Buffer,
+  potBuffer: Buffer,
+  customSize: { width: number; height: number },
+  calculatedPotX: number,
+  calculatedPotY: number
+): Promise<Buffer> {
+  return await sharp(bgBuffer)
+    .resize(customSize.width, customSize.height)
+    .composite([
+      {
+        input: potBuffer,
+        left: calculatedPotX - POT_OFFSET,
+        top: calculatedPotY - POT_OFFSET,
+        blend: "over"
+      }
+    ])
+    .png()
+    .toBuffer();
 }
 
 export async function createAnimatedGIF({
@@ -24,125 +107,51 @@ export async function createAnimatedGIF({
   calculatedPotY
 }: GifGenerationOptions): Promise<Buffer> {
   try {
-    // Create base composite (background + pot)
-    const baseComposite = await sharp(bgBuffer)
-      .resize(customSize.width, customSize.height)
-      .composite([
-        {
-          input: potBuffer,
-          left: calculatedPotX - 40,
-          top: calculatedPotY - 40,
-          blend: "over"
-        }
-      ])
-      .png()
-      .toBuffer();
+    // Create base composite and extract plant frames
+    const [baseComposite, extractedFrames] = await Promise.all([
+      createBaseComposite(bgBuffer, potBuffer, customSize, calculatedPotX, calculatedPotY),
+      extractPlantFrames(plantUrl)
+    ]);
 
-    // Check if frames are already cached
-    const frameCacheKey = `frames-${plantUrl}`;
-    let extractedFrames: Buffer[];
+    // Setup GIF encoder
+    const encoder = new GifEncoder(customSize.width, customSize.height);
+    encoder
+      .setRepeat(0)
+      .setDelay(500)
+      .setQuality(20)
+      .setDispose(2);
 
-    if (frameCache.has(frameCacheKey)) {
-      console.log("Using cached frames");
-      extractedFrames = frameCache.get(frameCacheKey)!;
-    } else {
-      console.log("Extracting frames from GIF...");
-      // Extract frames from GIF using URL (cumulative: false to get independent frames)
-      const frameData = await gifFrames({ url: plantUrl, frames: "all", outputType: "png", cumulative: false });
+    const chunks: Buffer[] = [];
+    const stream = encoder.createReadStream();
+    stream.on('data', (chunk: Buffer) => chunks.push(chunk));
 
-      if (!frameData || frameData.length === 0) {
-        throw new Error("Failed to extract GIF frames");
-      }
-
-      console.log("Number of frames extracted:", frameData.length);
-
-      // Pre-process frames in parallel and cache them
-      console.log("Processing frames in parallel...");
-      extractedFrames = await Promise.all(
-        frameData.map(async (frame: any, i: number) => {
-          const frameStream = await frame.getImage();
-          const frameBuffer = frameStream.data;
-          const frameWidth = frameStream.width;
-          const frameHeight = frameStream.height;
-
-          if (!frameBuffer) {
-            throw new Error(`Could not extract frame buffer from PNG stream for frame ${i}`);
-          }
-
-          // Convert and resize frame once
-          return await sharp(frameBuffer, {
-            raw: {
-              width: frameWidth,
-              height: frameHeight,
-              channels: 4 // RGBA
-            }
-          })
-            .resize(100, 100, {
-              kernel: sharp.kernel.nearest,
-              fastShrinkOnLoad: false
-            })
-            .png({ quality: 80, compressionLevel: 6 })
-            .toBuffer();
-        })
-      );
-
-      // Cache the processed frames
-      frameCache.set(frameCacheKey, extractedFrames);
-      setTimeout(() => {
-        frameCache.delete(frameCacheKey);
-      }, CACHE_DURATION);
-    }
-
-    // Create GIF encoder
-    const encoder = new GIFEncoder(customSize.width, customSize.height);
-    encoder.start();
-    encoder.setRepeat(0); // 0 for repeat, -1 for no-repeat
-    encoder.setDelay(500); // frame delay in ms (faster animation)
-    encoder.setQuality(20); // Lower quality for much faster processing
-    encoder.setDispose(2); // disposal method: 2 = restore to background color (clear previous frame)
-
-    // Process cached frames in parallel and add to GIF
-    console.log("Compositing frames in parallel...");
+    // Composite plant frames with base
     const compositeFrames = await Promise.all(
-      extractedFrames.map(async (framePng: Buffer, i: number) => {
-        try {
-          // Composite frame with background + pot (optimized for speed)
-          return await sharp(bgBuffer)
-            .resize(customSize.width, customSize.height, {
-              kernel: sharp.kernel.nearest, // Faster for pixel art
-              fastShrinkOnLoad: false
-            })
-            .composite([
-              {
-                input: potBuffer,
-                left: calculatedPotX - 40,
-                top: calculatedPotY - 40,
-                blend: "over"
-              },
-              {
-                input: framePng,
-                left: calculatedPotX - 50, // Same as Chrome SVG (plantX - 50)
-                top: calculatedPotY - 70 - 50, // Same as Chrome SVG (plantY - 50)
-                blend: "over"
-              }
-            ])
-            .raw({ depth: 'uchar' }) // 8-bit depth for GIF
-            .toBuffer();
-        } catch (frameError) {
-          console.error(`Error processing frame ${i}:`, frameError);
-          throw frameError;
-        }
+      extractedFrames.map(async (framePng: Buffer) => {
+        return await sharp(baseComposite)
+          .composite([
+            {
+              input: framePng,
+              left: calculatedPotX - PLANT_OFFSET_X,
+              top: calculatedPotY - PLANT_OFFSET_Y,
+              blend: "over"
+            }
+          ])
+          .raw({ depth: 'uchar' })
+          .toBuffer();
       })
     );
 
-    // Add all frames to GIF encoder
-    console.log("Adding frames to GIF encoder...");
+    // Generate GIF
+    encoder.start();
     for (const compositeFrame of compositeFrames) {
-      encoder.addFrame(compositeFrame);
+      encoder.addFrame(new Uint8ClampedArray(compositeFrame));
     }
-
     encoder.finish();
-    return encoder.out.getData();
+
+    return new Promise<Buffer>((resolve) => {
+      stream.on('end', () => resolve(Buffer.concat(chunks)));
+    });
   } catch (error) {
     console.error("Error creating animated GIF:", error);
     throw error;
