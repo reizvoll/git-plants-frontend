@@ -1,3 +1,4 @@
+import { createAnimatedGIF } from "@/lib/utils/gifGenerator";
 import { NextRequest } from "next/server";
 import sharp from "sharp";
 
@@ -22,8 +23,15 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const width = parseInt(searchParams.get("width") || defaultWidth.toString());
     const height = parseInt(searchParams.get("height") || defaultHeight.toString());
 
-    // create cache key
-    const cacheKey = `${userId}-${potX}-${potY}-${width}-${height}`;
+    // detect Safari browser
+    const userAgent = request.headers.get("user-agent") || "";
+    const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
+
+    console.log("User-Agent:", userAgent);
+    console.log("Is Safari:", isSafari);
+
+    // create cache key including Safari detection
+    const cacheKey = `${userId}-${potX}-${potY}-${width}-${height}-${isSafari ? "gif" : "svg"}`;
 
     // fetch profile data from backend
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -65,6 +73,17 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       console.log("Using cached image");
       const cachedImage = imageCache.get(cacheKey)!;
 
+      // For Safari, return cached GIF directly
+      if (isSafari) {
+        return new Response(new Uint8Array(cachedImage), {
+          headers: {
+            "Content-Type": "image/gif",
+            "Cache-Control": "public, max-age=7200" // 2hr
+          }
+        });
+      }
+
+      // For other browsers, create SVG with cached composite image
       // download plant GIF for base64 encoding
       const plantResponse = await fetch(plantUrl);
       if (!plantResponse.ok) throw new Error(`Failed to fetch plant: ${plantResponse.status} from ${plantUrl}`);
@@ -117,6 +136,35 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         plantSize: plantBuffer.byteLength
       });
 
+      // For Safari devices, create animated GIF with all elements composited
+      if (isSafari) {
+        console.log("Creating animated GIF for Safari...");
+        const animatedGIF = await createAnimatedGIF({
+          bgBuffer: Buffer.from(bgBuffer),
+          potBuffer: Buffer.from(potBuffer),
+          plantUrl,
+          customSize,
+          calculatedPotX,
+          calculatedPotY
+        });
+
+        // save to cache
+        imageCache.set(cacheKey, animatedGIF);
+
+        // remove from cache after 2hr
+        setTimeout(() => {
+          imageCache.delete(cacheKey);
+        }, CACHE_DURATION);
+
+        return new Response(new Uint8Array(animatedGIF), {
+          headers: {
+            "Content-Type": "image/gif",
+            "Cache-Control": "public, max-age=3600"
+          }
+        });
+      }
+
+      // For other browsers, use SVG method
       // 3. compose image using Sharp
       const compositeImage = await sharp(Buffer.from(bgBuffer))
         .resize(customSize.width, customSize.height)
