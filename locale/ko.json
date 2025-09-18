@@ -113,6 +113,7 @@
       "copyLink": "링크 복사하기",
       "copyLinkSuccess": "링크가 복사되었습니다!",
       "copyLinkError": "링크 복사에 실패했습니다.",
+      "haveEquipped": "배경화면과 화분을 모두 장착해주세요.",
       "background": "배경화면",
       "noBackground": "배경화면이 존재하지 않습니다.",
       "pot": "화분",

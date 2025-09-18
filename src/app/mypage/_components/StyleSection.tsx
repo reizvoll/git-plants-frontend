@@ -141,8 +141,17 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
             onClick={async () => {
               try {
                 if (user?.username) {
+                  // Check if background and pot are equipped
+                  const hasEquippedBackground = equipped?.backgrounds && equipped.backgrounds.length > 0;
+                  const hasEquippedPot = equipped?.pots && equipped.pots.length > 0;
+
+                  if (!hasEquippedBackground || !hasEquippedPot) {
+                    addToast(t("haveEquipped"), "warning");
+                    return;
+                  }
+
                   const baseUrl = window.location.origin;
-                  const apiUrl = `${baseUrl}/api/mypage/${user.username}?mode=${currentMode}&width=${customSize.width}&height=${customSize.height}&potX=${potPosition.x}&potY=${potPosition.y}`;
+                  const apiUrl = `${baseUrl}/api/mypage/${user.username}?format=gif&mode=${currentMode}&width=${customSize.width}&height=${customSize.height}&potX=${potPosition.x}&potY=${potPosition.y}`;
                   const mdx = `[![${user.username}'s Garden](${apiUrl})](${baseUrl})`;
                   await navigator.clipboard.writeText(mdx);
                   addToast(t("copyLinkSuccess"), "success");

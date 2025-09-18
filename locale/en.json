@@ -113,6 +113,7 @@
       "copyLink": "Copy Link",
       "copyLinkSuccess": "Link copied to clipboard!",
       "copyLinkError": "Failed to copy link.",
+      "haveEquipped": "Please equip both background and pot.",
       "background": "Background",
       "noBackground": "No background yet.",
       "pot": "Pot",
