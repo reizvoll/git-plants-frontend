@@ -23,15 +23,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const width = parseInt(searchParams.get("width") || defaultWidth.toString());
     const height = parseInt(searchParams.get("height") || defaultHeight.toString());
 
-    // detect Safari browser
-    const userAgent = request.headers.get("user-agent") || "";
-    const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
-
-    console.log("User-Agent:", userAgent);
-    console.log("Is Safari:", isSafari);
-
-    // create cache key including Safari detection
-    const cacheKey = `${userId}-${potX}-${potY}-${width}-${height}-${isSafari ? "gif" : "svg"}`;
+    // create cache key for GIF
+    const cacheKey = `${userId}-${potX}-${potY}-${width}-${height}-gif`;
 
     // fetch profile data from backend
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -70,42 +63,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     // check cache
     if (imageCache.has(cacheKey)) {
-      console.log("Using cached image");
-      const cachedImage = imageCache.get(cacheKey)!;
+      console.log("Using cached GIF");
+      const cachedGif = imageCache.get(cacheKey)!;
 
-      // For Safari, return cached GIF directly
-      if (isSafari) {
-        return new Response(new Uint8Array(cachedImage), {
-          headers: {
-            "Content-Type": "image/gif",
-            "Cache-Control": "public, max-age=7200" // 2hr
-          }
-        });
-      }
-
-      // For other browsers, create SVG with cached composite image
-      // download plant GIF for base64 encoding
-      const plantResponse = await fetch(plantUrl);
-      if (!plantResponse.ok) throw new Error(`Failed to fetch plant: ${plantResponse.status} from ${plantUrl}`);
-      const plantBuffer = await plantResponse.arrayBuffer();
-
-      // calculate plant position
-      const plantX = calculatedPotX;
-      const plantY = calculatedPotY - 70;
-
-      // encode to Base64
-      const base64Image = Buffer.from(cachedImage).toString("base64");
-      const base64Plant = Buffer.from(plantBuffer).toString("base64");
-
-      // create SVG with base64 encoded GIF
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${customSize.width}" height="${customSize.height}">
-  <image href="data:image/jpeg;base64,${base64Image}" width="${customSize.width}" height="${customSize.height}" />
-  <image href="data:image/gif;base64,${base64Plant}" x="${plantX - 50}" y="${plantY - 50}" width="100" height="100" />
-</svg>`;
-
-      return new Response(svg, {
+      return new Response(new Uint8Array(cachedGif), {
         headers: {
-          "Content-Type": "image/svg+xml",
+          "Content-Type": "image/gif",
           "Cache-Control": "public, max-age=7200" // 2hr
         }
       });
@@ -136,76 +99,28 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         plantSize: plantBuffer.byteLength
       });
 
-      // For Safari devices, create animated GIF with all elements composited
-      if (isSafari) {
-        console.log("Creating animated GIF for Safari...");
-        const animatedGIF = await createAnimatedGIF({
-          bgBuffer: Buffer.from(bgBuffer),
-          potBuffer: Buffer.from(potBuffer),
-          plantUrl,
-          customSize,
-          calculatedPotX,
-          calculatedPotY
-        });
-
-        // save to cache
-        imageCache.set(cacheKey, animatedGIF);
-
-        // remove from cache after 2hr
-        setTimeout(() => {
-          imageCache.delete(cacheKey);
-        }, CACHE_DURATION);
-
-        return new Response(new Uint8Array(animatedGIF), {
-          headers: {
-            "Content-Type": "image/gif",
-            "Cache-Control": "public, max-age=3600"
-          }
-        });
-      }
-
-      // For other browsers, use SVG method
-      // 3. compose image using Sharp
-      const compositeImage = await sharp(Buffer.from(bgBuffer))
-        .resize(customSize.width, customSize.height)
-        .composite([
-          {
-            input: Buffer.from(potBuffer),
-            left: calculatedPotX - 40,
-            top: calculatedPotY - 40,
-            blend: "over"
-          }
-        ])
-        .jpeg({ quality: 90 })
-        .toBuffer();
-
-      console.log("Sharp composition success! Buffer size:", compositeImage.length);
+      // Create animated GIF with all elements composited
+      console.log("Creating animated GIF...");
+      const animatedGIF = await createAnimatedGIF({
+        bgBuffer: Buffer.from(bgBuffer),
+        potBuffer: Buffer.from(potBuffer),
+        plantUrl,
+        customSize,
+        calculatedPotX,
+        calculatedPotY
+      });
 
       // save to cache
-      imageCache.set(cacheKey, compositeImage);
+      imageCache.set(cacheKey, animatedGIF);
 
       // remove from cache after 2hr
       setTimeout(() => {
         imageCache.delete(cacheKey);
       }, CACHE_DURATION);
 
-      // encode to Base64
-      const base64Image = Buffer.from(compositeImage).toString("base64");
-      const base64Plant = Buffer.from(plantBuffer).toString("base64");
-
-      // calculate plant position
-      const plantX = calculatedPotX;
-      const plantY = calculatedPotY - 70;
-
-      // create SVG with base64 encoded GIF
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${customSize.width}" height="${customSize.height}">
-  <image href="data:image/jpeg;base64,${base64Image}" width="${customSize.width}" height="${customSize.height}" />
-  <image href="data:image/gif;base64,${base64Plant}" x="${plantX - 50}" y="${plantY - 50}" width="100" height="100" />
-</svg>`;
-
-      return new Response(svg, {
+      return new Response(new Uint8Array(animatedGIF), {
         headers: {
-          "Content-Type": "image/svg+xml",
+          "Content-Type": "image/gif",
           "Cache-Control": "public, max-age=3600"
         }
       });
