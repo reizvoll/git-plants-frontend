@@ -15,6 +15,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const mode = searchParams.get("mode") || "GARDEN"; // default is garden
     const potX = parseFloat(searchParams.get("potX") || "50");
     const potY = parseFloat(searchParams.get("potY") || "80");
+    const format = searchParams.get("format") || "gif"; // default is gif
 
     // set default size based on mode
     const defaultWidth = mode === "MINI" ? 267 : 400; // 267px for mini, 400px for garden
@@ -23,8 +24,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const width = parseInt(searchParams.get("width") || defaultWidth.toString());
     const height = parseInt(searchParams.get("height") || defaultHeight.toString());
 
-    // create cache key for GIF
-    const cacheKey = `${userId}-${potX}-${potY}-${width}-${height}-gif`;
+    // create cache key including format
+    const cacheKey = `${userId}-${potX}-${potY}-${width}-${height}-${format}`;
 
     // fetch profile data from backend
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
