@@ -97,7 +97,7 @@ export interface ProfileState {
   plants: Plant[];
   isLoading: boolean;
   error: string | null;
-  setProfileData: (data: any) => void;
+  setProfileData: (data: ProfileState) => void;
   updateItemEquipStatus: (changes: Array<{ userItemId: string; equipped: boolean }>) => void;
   decrementCropQuantity: (cropId: string) => void;
   restoreCropQuantity: (restorations: Array<{ cropId: string; count: number }>) => void;
