@@ -1,4 +1,3 @@
-import { addLocaleParam, Locale } from "@/lib/store/languageStore";
 import { SessionResponse } from "@/lib/types/api/auth";
 import { ProfileState } from "@/lib/types/api/profile";
 import API, { BASE_URL } from "./api";
@@ -22,7 +21,7 @@ export const authApi = {
         success: true,
         data: response.data
       };
-    } catch (error) {
+    } catch {
       return {
         success: false,
         data: null
