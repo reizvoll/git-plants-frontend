@@ -25,6 +25,10 @@ const nextConfig = {
       test: /\.json$/,
       type: "json"
     });
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
     return config;
   }
 };

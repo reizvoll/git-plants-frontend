@@ -1,73 +1,55 @@
 "use client";
 
-import { CaretCircleLeftIcon, CaretCircleRightIcon } from "@phosphor-icons/react";
-import { useState } from "react";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import CaretCircleLeft from "@/assets/icons/caret-circle-left.svg";
+import CaretCircleRight from "@/assets/icons/caret-circle-right.svg";
+import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
 import ModeSectionCard from "./ModeSectionCard";
 import RewardSectionCard from "./RewardSectionCard";
 import SystemSectionCard from "./SystemSectionCard";
 import UpdateSectionCard from "./UpdateSecionCard";
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-
 const FeatureSection = () => {
-  const [isBeginning, setIsBeginning] = useState(true);
-  const [isEnd, setIsEnd] = useState(false);
+  const { emblaRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useEmblaNavigation({ loop: false });
 
   return (
-    <div className="relative mx-auto flex w-full max-w-[1000px] items-center justify-center">
-      {/* Custom Navigation Buttons */}
+    <section className="relative mx-auto flex w-full max-w-[1000px] items-center justify-center" aria-label="기능 소개">
       <button
-        className={`feature-swiper-prev absolute left-0 z-10 text-text-03 ${
-          isBeginning ? "pointer-events-none opacity-0" : "opacity-100"
+        className={`absolute left-0 z-10 text-text-03 transition-opacity ${
+          !canScrollPrev ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
         aria-label="이전 슬라이드"
-        disabled={isBeginning}
+        disabled={!canScrollPrev}
+        onClick={scrollPrev}
       >
-        <CaretCircleLeftIcon size={48} />
+        <CaretCircleLeft className="h-12 w-12" />
       </button>
       <button
-        className={`feature-swiper-next absolute right-0 z-10 text-text-03 ${
-          isEnd ? "pointer-events-none opacity-0" : "opacity-100"
+        className={`absolute right-0 z-10 text-text-03 transition-opacity ${
+          !canScrollNext ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
         aria-label="다음 슬라이드"
-        disabled={isEnd}
+        disabled={!canScrollNext}
+        onClick={scrollNext}
       >
-        <CaretCircleRightIcon size={48} />
+        <CaretCircleRight className="h-12 w-12" />
       </button>
-      <Swiper
-        modules={[Navigation]}
-        slidesPerView={1}
-        navigation={{
-          prevEl: ".feature-swiper-prev",
-          nextEl: ".feature-swiper-next"
-        }}
-        onReachBeginning={() => setIsBeginning(true)}
-        onReachEnd={() => setIsEnd(true)}
-        onFromEdge={() => {
-          setIsBeginning(false);
-          setIsEnd(false);
-        }}
-        className="feature-swiper w-full"
-      >
-        <SwiperSlide className="flex justify-center">
-          <ModeSectionCard />
-        </SwiperSlide>
-        <SwiperSlide className="flex justify-center">
-          <RewardSectionCard />
-        </SwiperSlide>
-        <SwiperSlide className="flex justify-center">
-          <SystemSectionCard />
-        </SwiperSlide>
-        <SwiperSlide className="flex justify-center">
-          <UpdateSectionCard />
-        </SwiperSlide>
-      </Swiper>
-    </div>
+      <div className="w-full overflow-hidden" ref={emblaRef} role="region" aria-label="기능 카드 슬라이더">
+        <div className="flex">
+          <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+            <ModeSectionCard />
+          </div>
+          <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+            <RewardSectionCard />
+          </div>
+          <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+            <SystemSectionCard />
+          </div>
+          <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+            <UpdateSectionCard />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

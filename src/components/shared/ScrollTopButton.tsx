@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpIcon } from "@phosphor-icons/react";
+import ArrowUp from "@/assets/icons/arrow-up.svg";
 import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 
@@ -81,7 +81,7 @@ const ScrollTopButton = ({
         )}
         aria-label="최상단으로 이동"
       >
-        <ArrowUpIcon size={24} weight="bold" />
+        <ArrowUp className="h-6 w-6" strokeWidth={3} />
       </button>
     </div>
   );

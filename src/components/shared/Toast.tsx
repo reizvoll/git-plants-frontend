@@ -1,7 +1,9 @@
 "use client";
 
+import Check from "@/assets/icons/check.svg";
+import ExclamationMark from "@/assets/icons/exclamation-mark.svg";
+import X from "@/assets/icons/x.svg";
 import { useToastStore } from "@/lib/store/useToaststore";
-import { CheckIcon, ExclamationMarkIcon, X } from "@phosphor-icons/react";
 import clsx from "clsx";
 
 const Toast = () => {
@@ -24,12 +26,12 @@ const Toast = () => {
               }
             )}
           >
-            {toast.type === "warning" && <ExclamationMarkIcon size={14} weight="bold" />}
-            {toast.type === "success" && <CheckIcon size={14} weight="bold" />}
+            {toast.type === "warning" && <ExclamationMark className="h-[14px] w-[14px]" strokeWidth={3} />}
+            {toast.type === "success" && <Check className="h-[14px] w-[14px]" strokeWidth={3} />}
           </i>
           <p className="py-3">{toast.message}</p>
           <button onClick={() => removeToast(index)} className="absolute right-4">
-            <X size={20} weight="bold" className="text-text-03" />
+            <X className="h-5 w-5 text-text-03" strokeWidth={3} />
           </button>
         </div>
       ))}

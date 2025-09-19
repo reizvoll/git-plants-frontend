@@ -1,9 +1,9 @@
 "use client";
 
+import CaretRight from "@/assets/icons/caret-right.svg";
 import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import { useProfileStore } from "@/lib/store/profileStore";
-import { CaretRightIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
@@ -46,7 +46,7 @@ const UserInfo = () => {
                 onClick={() => setIsModalOpen(true)}
               >
                 {t("more")}
-                <CaretRightIcon width={16} height={16} weight="bold" />
+                <CaretRight className="h-4 w-4" strokeWidth={3} />
               </Button>
             </div>
             <div className="flex w-full flex-row gap-4">

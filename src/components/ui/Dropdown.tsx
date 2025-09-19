@@ -1,4 +1,4 @@
-import { CaretDownIcon } from "@phosphor-icons/react";
+import CaretDown from "@/assets/icons/caret-down.svg";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
 type DropdownItem = {
@@ -39,10 +39,9 @@ const Dropdown = ({
       >
         {activeItem.label}
         {mode === "click" && (
-          <CaretDownIcon
-            size={16}
-            className={`transition-transform duration-200 ${isOpen ? "-rotate-180" : ""}`}
-            weight="fill"
+          <CaretDown
+            className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "-rotate-180" : ""}`}
+            strokeWidth={3}
           />
         )}
       </button>

@@ -1,3 +1,7 @@
+import ArrowsOutCardinal from "@/assets/icons/arrows-out-cardinal.svg";
+import DotsThree from "@/assets/icons/dots-three.svg";
+import Export from "@/assets/icons/export.svg";
+import SlidersHorizontal from "@/assets/icons/sliders-horizontal.svg";
 import { Button } from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
@@ -5,7 +9,6 @@ import { useItemSelection } from "@/lib/hooks/mypage/useItemSelection";
 import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPositionStore";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
-import { ArrowsOutCardinalIcon, DotsThreeIcon, ExportIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
@@ -164,7 +167,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
             }}
           >
             {t("copyLink")}
-            <ExportIcon width={20} height={20} />
+            <Export className="h-5 w-5" />
           </Button>
         </div>
 
@@ -242,7 +245,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                 onClick={() => setIsModalOpen(true)}
               >
                 {t("adjustSize")}
-                <SlidersHorizontalIcon width={16} height={16} />
+                <SlidersHorizontal className="h-4 w-4" />
               </Button>
               <Button
                 variant="primaryLine"
@@ -270,7 +273,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                     onMouseEnter={() => setShowBackgroundTooltip(true)}
                     onMouseLeave={() => setShowBackgroundTooltip(false)}
                   >
-                    <DotsThreeIcon width={20} height={20} />
+                    <DotsThree className="h-5 w-5" />
                     {showBackgroundTooltip && (
                       <span className="group-hover:shadow-emphasize absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
                         <span className="text-caption text-primary-default">{t("more")}</span>
@@ -319,7 +322,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                       onMouseEnter={() => setShowPotAdjustTooltip(true)}
                       onMouseLeave={() => setShowPotAdjustTooltip(false)}
                     >
-                      <ArrowsOutCardinalIcon width={16} height={16} />
+                      <ArrowsOutCardinal className="h-4 w-4" />
                       {showPotAdjustTooltip && (
                         <span className="group-hover:shadow-emphasize absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
                           <span className="text-caption text-primary-default">{t("adjustPotPosition")}</span>
@@ -334,7 +337,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                       onMouseEnter={() => setShowPotTooltip(true)}
                       onMouseLeave={() => setShowPotTooltip(false)}
                     >
-                      <DotsThreeIcon width={20} height={20} />
+                      <DotsThree className="h-5 w-5" />
                       {showPotTooltip && (
                         <span className="group-hover:shadow-emphasize absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
                           <span className="text-caption text-primary-default">{t("more")}</span>
