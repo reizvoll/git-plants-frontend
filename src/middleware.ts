@@ -1,16 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 
-export function middleware(request: NextRequest) {
-  // i18n에서 필요한 쿼리 파라미터만 헤더에 전달
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-search", request.nextUrl.search);
-
-  return NextResponse.next({
-    request: {
-      headers: requestHeaders
-    }
-  });
-}
+export default createMiddleware(routing);
 
 export const config = {
   matcher: [
