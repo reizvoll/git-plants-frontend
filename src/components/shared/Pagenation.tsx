@@ -1,6 +1,7 @@
 "use client";
 
-import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
+import CaretLeft from "@/assets/icons/caret-left.svg";
+import CaretRight from "@/assets/icons/caret-right.svg";
 import clsx from "clsx";
 
 type PaginationProps = {
@@ -34,7 +35,7 @@ const Pagination = ({ Results, page, handlePageChange, limit = 6 }: PaginationPr
         onClick={() => handlePageChange(page - 1)}
         className="flex h-7 w-7 items-center justify-center disabled:text-text-02"
       >
-        <CaretLeftIcon size={16} weight="bold" className="tb:w-[13px]" />
+        <CaretLeft className="h-4 w-4 tb:w-[13px]" strokeWidth={3} />
       </button>
 
       {Array.from({ length: endPage - startPage + 1 }, (_, idx) => startPage + idx).map((pageNumber) => (
@@ -58,7 +59,7 @@ const Pagination = ({ Results, page, handlePageChange, limit = 6 }: PaginationPr
         onClick={() => handlePageChange(page + 1)}
         className="flex h-7 w-7 items-center justify-center disabled:text-text-02"
       >
-        <CaretRightIcon size={16} weight="bold" className="tb:w-[13px]" />
+        <CaretRight className="h-4 w-4 tb:w-[13px]" strokeWidth={3} />
       </button>
 
       {/* <button

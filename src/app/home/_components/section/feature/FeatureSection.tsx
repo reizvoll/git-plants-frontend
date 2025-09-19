@@ -1,7 +1,8 @@
 "use client";
 
+import CaretCircleLeft from "@/assets/icons/caret-circle-left.svg";
+import CaretCircleRight from "@/assets/icons/caret-circle-right.svg";
 import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
-import { CaretCircleLeftIcon, CaretCircleRightIcon } from "@phosphor-icons/react";
 import ModeSectionCard from "./ModeSectionCard";
 import RewardSectionCard from "./RewardSectionCard";
 import SystemSectionCard from "./SystemSectionCard";
@@ -20,7 +21,7 @@ const FeatureSection = () => {
         disabled={!canScrollPrev}
         onClick={scrollPrev}
       >
-        <CaretCircleLeftIcon size={48} />
+        <CaretCircleLeft className="h-12 w-12" />
       </button>
       <button
         className={`absolute right-0 z-10 text-text-03 transition-opacity ${
@@ -30,7 +31,7 @@ const FeatureSection = () => {
         disabled={!canScrollNext}
         onClick={scrollNext}
       >
-        <CaretCircleRightIcon size={48} />
+        <CaretCircleRight className="h-12 w-12" />
       </button>
       <div className="w-full overflow-hidden" ref={emblaRef} role="region" aria-label="기능 카드 슬라이더">
         <div className="flex">

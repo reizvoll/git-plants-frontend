@@ -1,5 +1,6 @@
 "use client";
 
+import Funnel from "@/assets/icons/funnel.svg";
 import inventory from "@/assets/images/inventory.webp";
 import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
@@ -8,7 +9,6 @@ import { useCollectionSort, type CollectionMode, type SortType } from "@/lib/hoo
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { formatDate } from "@/lib/utils/formatDate";
-import { FunnelIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -202,7 +202,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
               onClick={handleResetToDefault}
             >
               {t("resetSort")}
-              <FunnelIcon width={20} height={20} />
+              <Funnel className="h-5 w-5" />
             </Button>
           </div>
         </div>

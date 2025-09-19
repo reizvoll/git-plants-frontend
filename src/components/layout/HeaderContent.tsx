@@ -1,10 +1,10 @@
 "use client";
 
+import GearSix from "@/assets/icons/gear-six.svg";
 import GithubIcon from "@/assets/icons/github";
 import StoreIcon from "@/assets/icons/store";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useLanguageStore } from "@/lib/store/languageStore";
-import { GearSixIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,13 +24,12 @@ const HeaderContent = () => {
     setMounted(true);
   }, []);
 
-
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang as "ko" | "en");
 
     // 모든 언어에 대해 URL 파라미터 사용
     const url = new URL(window.location.href);
-    url.searchParams.set('lang', lang);
+    url.searchParams.set("lang", lang);
 
     // 새로고침으로 서버사이드에서 새 언어로 렌더링
     window.location.href = url.toString();
@@ -94,7 +93,7 @@ const HeaderContent = () => {
               ]}
               trigger={
                 <button className="flex h-[1.875rem] w-[1.875rem] items-center justify-center" aria-label="설정">
-                  <GearSixIcon size={30} className="[stroke-width:3]" />
+                  <GearSix className="h-[30px] w-[30px]" strokeWidth={3} />
                 </button>
               }
               className="font-galmuri text-body1 text-text-04"
