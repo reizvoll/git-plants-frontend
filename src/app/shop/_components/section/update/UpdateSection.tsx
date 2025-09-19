@@ -1,23 +1,16 @@
 "use client";
 
 import { useCurrentUpdate } from "@/lib/hooks/update/useCurrentUpdate";
+import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
 import { CaretCircleLeftIcon, CaretCircleRightIcon } from "@phosphor-icons/react";
 import { useState } from "react";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import NewUpdatesCard from "./NewUpdatesCard";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import BackgroundSectionCard from "./BackgroundSectionCard";
+import NewUpdatesCard from "./NewUpdatesCard";
 import PotSectionCard from "./PotSectionCard";
 import UpdateNoteModal from "./UpdateNoteModal";
 
 const UpdateSection = () => {
-  const [isBeginning, setIsBeginning] = useState(true);
-  const [isEnd, setIsEnd] = useState(false);
+  const { emblaRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useEmblaNavigation({ loop: false });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: currentUpdate, error, isLoading } = useCurrentUpdate();
 
@@ -54,61 +47,50 @@ const UpdateSection = () => {
   return (
     <>
       <div className="relative mx-auto flex w-full items-center justify-center">
-        {/* Custom Navigation Buttons */}
         <button
-          className={`feature-swiper-prev absolute left-0 z-10 text-text-03 ${
-            isBeginning ? "pointer-events-none opacity-0" : "opacity-100"
+          className={`absolute left-0 z-10 text-text-03 transition-opacity ${
+            !canScrollPrev ? "pointer-events-none opacity-0" : "opacity-100"
           }`}
           aria-label="이전 슬라이드"
-          disabled={isBeginning}
+          disabled={!canScrollPrev}
+          onClick={scrollPrev}
         >
           <CaretCircleLeftIcon size={48} />
         </button>
         <button
-          className={`feature-swiper-next absolute right-0 z-10 text-text-03 ${
-            isEnd ? "pointer-events-none opacity-0" : "opacity-100"
+          className={`absolute right-0 z-10 text-text-03 transition-opacity ${
+            !canScrollNext ? "pointer-events-none opacity-0" : "opacity-100"
           }`}
           aria-label="다음 슬라이드"
-          disabled={isEnd}
+          disabled={!canScrollNext}
+          onClick={scrollNext}
         >
           <CaretCircleRightIcon size={48} />
         </button>
-        <Swiper
-          modules={[Navigation]}
-          slidesPerView={1}
-          navigation={{
-            prevEl: ".feature-swiper-prev",
-            nextEl: ".feature-swiper-next"
-          }}
-          onReachBeginning={() => setIsBeginning(true)}
-          onReachEnd={() => setIsEnd(true)}
-          onFromEdge={() => {
-            setIsBeginning(false);
-            setIsEnd(false);
-          }}
-          className="feature-swiper w-full"
-        >
-          <SwiperSlide className="flex justify-center">
-            <NewUpdatesCard isModalOpen={handleModalOpen} />
-          </SwiperSlide>
+        <div className="w-full overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+              <NewUpdatesCard isModalOpen={handleModalOpen} />
+            </div>
 
-          {/* newItems가 있을 때만 BackgroundSectionCard 표시 */}
-          {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "background") && (
-            <SwiperSlide className="flex justify-center">
-              <BackgroundSectionCard />
-            </SwiperSlide>
-          )}
+            {/* newItems가 있을 때만 BackgroundSectionCard 표시 */}
+            {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "background") && (
+              <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+                <BackgroundSectionCard />
+              </div>
+            )}
 
-          {/* newItems가 있을 때만 PotSectionCard 표시 */}
-          {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "pot") && (
-            <SwiperSlide className="flex justify-center">
-              <PotSectionCard />
-            </SwiperSlide>
-          )}
-        </Swiper>
+            {/* newItems가 있을 때만 PotSectionCard 표시 */}
+            {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "pot") && (
+              <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+                <PotSectionCard />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Modal rendered outside Swiper container */}
+      {/* Modal rendered outside carousel container */}
       {currentUpdate?.updateNote && (
         <UpdateNoteModal updateNote={currentUpdate.updateNote} isOpen={isModalOpen} onClose={handleModalClose} />
       )}
