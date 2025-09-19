@@ -12,7 +12,7 @@ import Image from "next/image";
 const SellCropsSection = () => {
   const { crops } = useProfileStore();
   const { selectedCropsForSale, toggleCropSelection, selectAllCrops, clearSelection } = useShopStore();
-  const { handleSell, isPending: selling } = useSellCrops();
+  const { handleSell } = useSellCrops();
   const t = useTranslations("shop.sellCrops");
 
   // 수확된 작물들 (crops 배열을 직접 사용)

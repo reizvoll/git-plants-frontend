@@ -1,6 +1,5 @@
 import { createAnimatedGIF } from "@/lib/utils/gifGenerator";
 import { NextRequest } from "next/server";
-import sharp from "sharp";
 
 // image caching for 2hr
 const imageCache = new Map<string, Buffer>();

@@ -30,7 +30,7 @@ const ErrorScreen = ({ error, reset }: Props) => {
             onClick={() =>
               startTransition(() => {
                 router.refresh();
-                reset && reset();
+                reset?.();
               })
             }
             className="min-w-40"

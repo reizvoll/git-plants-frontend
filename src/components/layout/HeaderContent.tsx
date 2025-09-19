@@ -14,7 +14,7 @@ import { Button } from "../ui/Button";
 import Dropdown from "../ui/Dropdown";
 
 const HeaderContent = () => {
-  const { user, login, logout, isAuthenticated } = useAuth();
+  const { user, login, logout } = useAuth();
   const { language, setLanguage } = useLanguageStore();
   const t = useTranslations("navigation");
   const router = useRouter();

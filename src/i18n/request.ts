@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 
 export default getRequestConfig(async () => {
   // 미들웨어에서 전달받은 URL 쿼리 파라미터 사용
-  const headersList = headers();
+  const headersList = await headers();
   const search = headersList.get('x-search') || '';
 
   // lang 파라미터 추출

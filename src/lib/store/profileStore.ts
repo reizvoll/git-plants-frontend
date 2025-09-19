@@ -17,7 +17,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   error: null,
 
   // TanStack Query에서 받은 데이터로 store 업데이트
-  setProfileData: (data: any) => {
+  setProfileData: (data: ProfileState) => {
     const { user, seedCount, badges, newBadges, items, crops, equipped, plants } = data;
     set({ user, seedCount, badges, newBadges, items, crops, equipped, plants });
   },

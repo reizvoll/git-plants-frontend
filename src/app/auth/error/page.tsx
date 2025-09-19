@@ -1,9 +1,10 @@
 import ErrorClient from "./_components/ErrorClient";
 
 type AuthErrorProps = {
-  searchParams: { [key: string]: string | undefined };
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
-export default function AuthError({ searchParams }: AuthErrorProps) {
-  return <ErrorClient error={searchParams.error} />;
+export default async function AuthError({ searchParams }: AuthErrorProps) {
+  const params = await searchParams;
+  return <ErrorClient error={params.error} />;
 }

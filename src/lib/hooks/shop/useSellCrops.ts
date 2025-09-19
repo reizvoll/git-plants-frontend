@@ -34,7 +34,7 @@ export const useSellCrops = () => {
       const response = await shopApi.sellCrops(plantIds, totalCount);
       return { response, totalCount };
     },
-    onSuccess: ({ response, totalCount }) => {
+    onSuccess: ({ response }) => {
       // invalidate profile (refresh)
       queryClient.invalidateQueries({ queryKey: ["profile"] });
 
@@ -42,7 +42,7 @@ export const useSellCrops = () => {
       const { soldCropsCount, seeds } = response.data;
       addToast(`작물 ${soldCropsCount}개를 판매했습니다! (+${seeds.count} 시드)`, "success");
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       const errorMessage = error instanceof Error ? error.message : "판매에 실패했습니다.";
       addToast(errorMessage, "warning");
     }

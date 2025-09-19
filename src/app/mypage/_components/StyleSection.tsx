@@ -161,7 +161,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                 } else {
                   await navigator.clipboard.writeText(window.location.href);
                 }
-              } catch (error) {
+              } catch {
                 addToast(t("copyLinkError"), "warning");
               }
             }}
