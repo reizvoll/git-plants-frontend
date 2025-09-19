@@ -15,13 +15,13 @@ const getInitialLanguage = (): Locale => {
 
   // get language from URL params
   const urlParams = new URLSearchParams(window.location.search);
-  const langParam = urlParams.get("lang");
+  const localeParam = urlParams.get("locale");
 
   console.log("Language store - URL params:", window.location.search);
-  console.log("Language store - lang param:", langParam);
+  console.log("Language store - locale param:", localeParam);
 
   // use URL param, if not, use default 'en'
-  const result = (langParam === "ko" || langParam === "en") ? langParam : "en";
+  const result = (localeParam === "ko" || localeParam === "en") ? localeParam : "en";
   console.log("Language store - final language:", result);
 
   return result;
