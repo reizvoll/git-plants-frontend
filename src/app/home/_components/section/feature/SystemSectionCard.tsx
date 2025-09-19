@@ -12,7 +12,7 @@ const SystemSectionCard = () => {
         <div className="flex flex-col items-center justify-center gap-10">
           <div className="whitespace-pre-line text-center font-galmuri text-body2 text-text-04">{t("title-left")}</div>
           <div className="w-[250px]">
-            <Image src={seedRewards} alt="seedRewards" />
+            <Image src={seedRewards} alt="seedRewards" loading="lazy" />
           </div>
           <Button
             variant="secondaryStrong"
@@ -26,7 +26,7 @@ const SystemSectionCard = () => {
         <div className="flex flex-col items-center justify-center gap-10">
           <div className="whitespace-pre-line text-center font-galmuri text-body2 text-text-04">{t("title-right")}</div>
           <div className="w-[200px]">
-            <Image src={badges} alt="badges" />
+            <Image src={badges} alt="badges" loading="lazy" />
           </div>
           <Button
             variant="secondaryStrong"

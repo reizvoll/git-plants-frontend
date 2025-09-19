@@ -9,7 +9,7 @@ const RewardSectionCard = () => {
       <div className="w-full text-center font-galmuri text-subtitle text-text-04">{t("title")}</div>
 
       <div className="h-auto w-[200px]">
-        <Image src={sysflow} alt="systemFlow" />
+        <Image src={sysflow} alt="systemFlow" loading="lazy" />
       </div>
 
       <div className="w-full whitespace-pre-line text-center font-galmuri text-body2 text-text-03">

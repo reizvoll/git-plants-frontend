@@ -15,7 +15,7 @@ const UpdateSectionCard = () => {
 
         <div className="flex flex-col items-center justify-center">
           <div className="w-[250px]">
-            <Image src={upcomingEvent} alt="upcomingEvent" />
+            <Image src={upcomingEvent} alt="upcomingEvent" loading="lazy" />
           </div>
         </div>
       </div>

@@ -13,17 +13,17 @@ const ContributionsTab = () => {
     //Todo : add images
     tab1: (
       <div className="flex w-full flex-col items-center justify-center pt-10">
-        <Image src={noimage} alt="tab1" width={500} />
+        <Image src={noimage} alt="tab1" width={500} loading="lazy" />
       </div>
     ),
     tab2: (
       <div className="flex flex-col items-center justify-center pt-10">
-        <Image src={noimage} alt="tab1" width={500} />
+        <Image src={noimage} alt="tab1" width={500} loading="lazy" />
       </div>
     ),
     tab3: (
       <div className="flex flex-col items-center justify-center pt-10">
-        <Image src={noimage} alt="tab1" width={500} />
+        <Image src={noimage} alt="tab1" width={500} loading="lazy" />
       </div>
     )
   };

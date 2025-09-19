@@ -42,7 +42,7 @@ const NoteSection = () => {
   return (
     <div className="flex w-full justify-center">
       <div className="relative h-[634px] w-[1000px]">
-        <Image src={note} alt="Note" className="object-cover" />
+        <Image src={note} alt="Note" className="object-cover" loading="lazy" />
 
         {(isLoading || error || !monthlyPlant) && (
           <>
@@ -80,7 +80,14 @@ const NoteSection = () => {
 
                 {/* Plant Image */}
                 <div className="h-[233px] w-[350px]">
-                  <Image src={monthlyPlant.mainImageUrl} width={350} height={233} alt="monthly_plant_main" />
+                  <Image
+                    src={monthlyPlant.mainImageUrl}
+                    width={350}
+                    height={233}
+                    alt="monthly_plant_main"
+                    quality={75}
+                    className="object-cover"
+                  />
                 </div>
               </div>
 
@@ -88,7 +95,14 @@ const NoteSection = () => {
               <div className="flex flex-col items-center justify-center gap-16">
                 {/* Main Character Image */}
                 <div className="h-[196px] w-[196px] rounded-full bg-bg-01">
-                  <Image src={monthlyPlant.iconUrl} width={196} height={196} alt="monthly_plant_icon" />
+                  <Image
+                    src={monthlyPlant.iconUrl}
+                    width={196}
+                    height={196}
+                    alt="monthly_plant_icon"
+                    quality={75}
+                    className="object-cover rounded-full"
+                  />
                 </div>
 
                 {/* Content */}
@@ -99,7 +113,7 @@ const NoteSection = () => {
                     <div className="flex w-auto flex-grow flex-col items-start gap-4">
                       {/* Icon */}
                       <div className="h-[43px] w-12">
-                        <Image src={plant} alt="icon" />
+                        <Image src={plant} alt="icon" loading="lazy" />
                       </div>
 
                       {/* Subheading */}
@@ -117,7 +131,7 @@ const NoteSection = () => {
                     <div className="flex w-auto flex-grow flex-col items-start gap-4">
                       {/* Icon */}
                       <div className="h-[43px] w-12">
-                        <Image src={plant} alt="icon" />
+                        <Image src={plant} alt="icon" loading="lazy" />
                       </div>
 
                       {/* Subheading */}
