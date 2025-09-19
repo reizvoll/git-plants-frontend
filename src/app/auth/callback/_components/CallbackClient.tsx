@@ -32,7 +32,14 @@ export default function CallbackClient(props: CallbackClientProps) {
       hasRun.current = true;
 
       if (user) {
-        router.push("/");
+        // 저장된 리다이렉트 경로 확인
+        const redirectPath = sessionStorage.getItem("redirectAfterLogin");
+        if (redirectPath) {
+          sessionStorage.removeItem("redirectAfterLogin");
+          router.push(redirectPath);
+        } else {
+          router.push("/home");
+        }
       } else {
         router.push(`/error?message=${encodeURIComponent(t("failMessage"))}`);
       }

@@ -1,6 +1,6 @@
 import { authApi } from "@/api/auth";
 import { useAuthStore } from "@/lib/store/authStore";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -10,7 +10,11 @@ export const useAuth = (requireAuth: boolean = false) => {
   const queryClient = useQueryClient();
 
   // 세션 조회
-  const { data: sessionUser, isLoading, error } = useQuery({
+  const {
+    data: sessionUser,
+    isLoading,
+    error
+  } = useQuery({
     queryKey: ["auth", "session"],
     queryFn: async () => {
       const response = await authApi.getSession();
@@ -30,7 +34,19 @@ export const useAuth = (requireAuth: boolean = false) => {
       queryClient.clear();
       clearUser();
       localStorage.removeItem("auth-storage");
-      window.location.href = "/";
+
+      // check current path is auth required path
+      const currentPath = window.location.pathname;
+      const authRequiredPaths = ["/mypage"];
+      const needsAuth = authRequiredPaths.some((path) => currentPath.startsWith(path));
+
+      if (needsAuth) {
+        // redirect to home
+        window.location.href = "/";
+      } else {
+        // reload current page
+        window.location.reload();
+      }
     },
     onError: (error) => {
       console.error("로그아웃 실패:", error);
@@ -58,7 +74,13 @@ export const useAuth = (requireAuth: boolean = false) => {
     isLoading,
 
     // 액션
-    login: () => authApi.signInWithGithub(),
+    login: () => {
+      // save current path
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("redirectAfterLogin", window.location.pathname + window.location.search);
+      }
+      authApi.signInWithGithub();
+    },
     logout: () => logoutMutation.mutate(),
     isLoggingOut: logoutMutation.isPending
   };
