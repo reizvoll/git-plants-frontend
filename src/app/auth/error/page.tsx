@@ -1,5 +1,9 @@
 import ErrorClient from "./_components/ErrorClient";
 
-export default function AuthError({ searchParams }: { searchParams: { [key: string]: string | undefined } }) {
+type AuthErrorProps = {
+  searchParams: { [key: string]: string | undefined };
+};
+
+export default function AuthError({ searchParams }: AuthErrorProps) {
   return <ErrorClient error={searchParams.error} />;
 }
