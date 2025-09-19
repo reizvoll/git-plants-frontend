@@ -1,19 +1,16 @@
 import { getRequestConfig } from "next-intl/server";
+import { hasLocale } from "next-intl";
+import { routing } from "./routing";
 
 export default getRequestConfig(async ({ requestLocale }) => {
-  // Next.js 15 방식: requestLocale 사용
-  let locale = await requestLocale;
-
-  // 기본값 및 유효성 검사
-  if (!locale || !["ko", "en"].includes(locale)) {
-    locale = "en";
-  }
-
-  // 로컬 JSON 파일에서 번역 데이터 로드
-  const messages = (await import(`../../locale/${locale}.json`)).default;
+  // requestLocale을 기다리고 유효성 검사
+  const requested = await requestLocale;
+  const locale = hasLocale(routing.locales, requested)
+    ? requested
+    : routing.defaultLocale;
 
   return {
     locale,
-    messages
+    messages: (await import(`../../locale/${locale}.json`)).default
   };
 });
