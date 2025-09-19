@@ -1,5 +1,6 @@
-import sharp from "sharp";
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any */
 import { GifEncoder } from "@skyra/gifenc";
+import sharp from "sharp";
 const gifFrames = require("gif-frames") as any;
 
 // Constants
@@ -115,15 +116,11 @@ export async function createAnimatedGIF({
 
     // Setup GIF encoder
     const encoder = new GifEncoder(customSize.width, customSize.height);
-    encoder
-      .setRepeat(0)
-      .setDelay(500)
-      .setQuality(20)
-      .setDispose(2);
+    encoder.setRepeat(0).setDelay(500).setQuality(20).setDispose(2);
 
     const chunks: Buffer[] = [];
     const stream = encoder.createReadStream();
-    stream.on('data', (chunk: Buffer) => chunks.push(chunk));
+    stream.on("data", (chunk: Buffer) => chunks.push(chunk));
 
     // Composite plant frames with base
     const compositeFrames = await Promise.all(
@@ -137,7 +134,7 @@ export async function createAnimatedGIF({
               blend: "over"
             }
           ])
-          .raw({ depth: 'uchar' })
+          .raw({ depth: "uchar" })
           .toBuffer();
       })
     );
@@ -150,7 +147,7 @@ export async function createAnimatedGIF({
     encoder.finish();
 
     return new Promise<Buffer>((resolve) => {
-      stream.on('end', () => resolve(Buffer.concat(chunks)));
+      stream.on("end", () => resolve(Buffer.concat(chunks)));
     });
   } catch (error) {
     console.error("Error creating animated GIF:", error);
