@@ -41,7 +41,7 @@ const getDefaultSize = (mode: string): CustomSize =>
 
 export const useStyleStore = create<StyleState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       potPositions: {},
       customSizes: {},
       selectedIndexes: {},
