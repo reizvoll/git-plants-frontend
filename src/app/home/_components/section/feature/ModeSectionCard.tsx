@@ -13,7 +13,7 @@ const ModeSectionCard = () => {
       <div className="flex w-full flex-col gap-10">
         <div className="flex w-full flex-row items-center justify-center gap-10">
           <div className="h-[160px] w-[107px]">
-            <Image src={miniMode} alt="miniMode" />
+            <Image src={miniMode} alt="miniMode" loading="lazy" />
           </div>
           <div className="flex flex-col items-center">
             <div className="text-center font-galmuri text-body2 text-text-04">{t("miniMode.title")}</div>
@@ -33,7 +33,7 @@ const ModeSectionCard = () => {
             </div>
           </div>
           <div className="h-[160px] w-[240px]">
-            <Image src={gardenMode} alt="gardenMode" />
+            <Image src={gardenMode} alt="gardenMode" loading="lazy" />
           </div>
         </div>
       </div>

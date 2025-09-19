@@ -44,7 +44,6 @@ const CtaSection = () => {
               className="flex items-center justify-center px-8 py-3"
               onClick={handleStartButtonClick}
             >
-              {/* TODO: 텍스트 추후 적용 */}
               {isLoggedIn ? t("storeButton") : t("startButton")}
             </Button>
             <Button
@@ -59,7 +58,7 @@ const CtaSection = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center">
-          <Image src={farmer} alt="cta" />
+          <Image src={farmer} alt="cta" loading="lazy" />
         </div>
       </div>
     </div>
