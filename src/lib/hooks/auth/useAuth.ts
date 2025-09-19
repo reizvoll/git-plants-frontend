@@ -9,7 +9,16 @@ export const useAuth = (requireAuth: boolean = false) => {
   const { user, setUser, clearUser } = useAuthStore();
   const queryClient = useQueryClient();
 
-  // 세션 조회 - 인증이 필요한 페이지에서만 실행
+  // 쿠키에서 세션 존재 여부 확인
+  const hasSessionCookie = () => {
+    if (typeof document === "undefined") return false;
+    return document.cookie.includes("access_token");
+  };
+
+  // auth callback 페이지 확인
+  const isAuthCallback = typeof window !== "undefined" && window.location.pathname === "/auth/callback";
+
+  // 세션 조회 - 쿠키가 있거나 auth callback일 때 API 호출
   const {
     data: sessionUser,
     isLoading,
@@ -23,8 +32,9 @@ export const useAuth = (requireAuth: boolean = false) => {
       }
       return null;
     },
-    enabled: requireAuth, // 인증이 필요한 경우에만 세션 체크
-    refetchOnWindowFocus: requireAuth // 인증이 필요한 경우에만 포커스 시 체크
+    enabled: isAuthCallback || hasSessionCookie(), // auth callback이거나 세션 쿠키가 있을 때 API 호출
+    retry: false, // 401 에러 시 재시도하지 않음
+    refetchOnWindowFocus: true // 인증은 포커스 시 체크 필요
     // 나머지는 전역 설정 사용 (5분 staleTime, 15분 gcTime)
   });
 
