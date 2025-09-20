@@ -1,16 +1,20 @@
 import { getRequestConfig } from "next-intl/server";
-import { hasLocale } from "next-intl";
-import { routing } from "./routing";
+import { headers } from "next/headers";
 
-export default getRequestConfig(async ({ requestLocale }) => {
-  // requestLocale을 기다리고 유효성 검사
-  const requested = await requestLocale;
-  const locale = hasLocale(routing.locales, requested)
-    ? requested
-    : routing.defaultLocale;
+export default getRequestConfig(async () => {
+  // 미들웨어에서 전달받은 URL 쿼리 파라미터 사용
+  const headersList = await headers();
+  const search = headersList.get("x-search") || "";
+
+  // lang 파라미터 추출
+  const urlParams = new URLSearchParams(search);
+  const locale = (urlParams.get("lang") || "en") as "ko" | "en";
+
+  // 로컬 JSON 파일에서 번역 데이터 로드
+  const messages = (await import(`../../locale/${locale}.json`)).default;
 
   return {
     locale,
-    messages: (await import(`../../locale/${locale}.json`)).default
+    messages
   };
 });
