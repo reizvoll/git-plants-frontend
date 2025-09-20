@@ -21,8 +21,7 @@ export const useAuth = (requireAuth: boolean = false) => {
   // 세션 조회 - 쿠키가 있거나 auth callback이거나 localStorage에 user가 있을 때 API 호출
   const {
     data: sessionUser,
-    isLoading,
-    error
+    isLoading
   } = useQuery({
     queryKey: ["auth", "session"],
     queryFn: async () => {
