@@ -18,7 +18,7 @@ export const useAuth = (requireAuth: boolean = false) => {
   // auth callback 페이지 확인
   const isAuthCallback = typeof window !== "undefined" && window.location.pathname === "/auth/callback";
 
-  // 세션 조회 - 쿠키가 있거나 auth callback일 때 API 호출
+  // 세션 조회 - 쿠키가 있거나 auth callback이거나 localStorage에 user가 있을 때 API 호출
   const {
     data: sessionUser,
     isLoading,
@@ -32,7 +32,7 @@ export const useAuth = (requireAuth: boolean = false) => {
       }
       return null;
     },
-    enabled: isAuthCallback || hasSessionCookie(), // auth callback이거나 세션 쿠키가 있을 때 API 호출
+    enabled: isAuthCallback || hasSessionCookie() || !!user, // auth callback이거나 세션 쿠키가 있거나 localStorage에 user가 있을 때 API 호출
     retry: false, // 401 에러 시 재시도하지 않음
     refetchOnWindowFocus: true // 인증은 포커스 시 체크 필요
     // 나머지는 전역 설정 사용 (5분 staleTime, 15분 gcTime)
@@ -68,13 +68,14 @@ export const useAuth = (requireAuth: boolean = false) => {
   useEffect(() => {
     if (sessionUser) {
       setUser(sessionUser);
-    } else if (error || (!isLoading && !sessionUser)) {
+    } else if (!isLoading && !sessionUser && !hasSessionCookie() && user) {
+      // 쿠키도 없고 세션도 없으면서 localStorage에는 user가 있는 경우 = 세션 만료
       clearUser();
       if (requireAuth) {
         router.push("/");
       }
     }
-  }, [sessionUser, error, isLoading, setUser, clearUser, router, requireAuth]);
+  }, [sessionUser, isLoading, setUser, clearUser, router, requireAuth, user]);
 
   return {
     // 사용자 정보
