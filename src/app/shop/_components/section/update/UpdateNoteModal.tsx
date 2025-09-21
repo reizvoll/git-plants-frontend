@@ -16,16 +16,12 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
+      if (e.key === "Escape") onClose();
     };
 
     if (isOpen) {
       document.addEventListener("keydown", handleGlobalKeyDown);
-      return () => {
-        document.removeEventListener("keydown", handleGlobalKeyDown);
-      };
+      return () => document.removeEventListener("keydown", handleGlobalKeyDown);
     }
   }, [isOpen, onClose]);
 
@@ -35,11 +31,11 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
     <Modal isOpen={isOpen} onClose={onClose} mode="default">
       <div className="flex w-full flex-col gap-6">
         <div className="flex w-full flex-col items-center gap-4">
-          <div className="font-pretendard text-subHeading font-bold text-text-04">{t("modalTitle")}</div>
-          <div className="text-subtitle text-text-03">{updateNote.title}</div>
+          <h2 className="font-pretendard text-subHeading font-bold text-text-04">{t("modalTitle")}</h2>
+          <p className="text-subtitle text-text-03">{updateNote.title}</p>
         </div>
 
-        <picture className="flex w-full justify-center">
+        <figure className="flex w-full justify-center">
           <Image
             src={updateNote.imageUrl}
             alt="update note"
@@ -48,11 +44,14 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
             className="object-cover"
             priority
           />
-        </picture>
-        <div className="whitespace-pre-wrap text-center text-caption text-text-03">{updateNote.description}</div>
+          <figcaption className="sr-only">update note</figcaption>
+        </figure>
+
+        <p className="whitespace-pre-wrap text-center text-caption text-text-03">{updateNote.description}</p>
+
         <div className="flex gap-3">
           <Button
-            type="submit"
+            type="button"
             variant="primary"
             size="md"
             className="w-full text-body1 text-text-01"

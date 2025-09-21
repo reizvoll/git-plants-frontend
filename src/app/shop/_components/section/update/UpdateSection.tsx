@@ -15,39 +15,40 @@ const UpdateSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: currentUpdate, error, isLoading } = useCurrentUpdate();
 
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => setIsModalOpen(false);
 
   // 로딩 중이거나 에러가 있거나 데이터가 없을 때는 NewUpdatesCard만 표시
   if (isLoading || error || !currentUpdate) {
     return (
-      <>
-        <div className="relative mx-auto flex w-full items-center justify-center">
-          <NewUpdatesCard isModalOpen={handleModalOpen} />
-        </div>
-      </>
+      <section aria-labelledby="updates-title" className="relative mx-auto flex w-full items-center justify-center">
+        <h2 id="updates-title" className="sr-only">
+          Updates Section
+        </h2>
+        <NewUpdatesCard isModalOpen={handleModalOpen} />
+      </section>
     );
   }
 
   // updateNote가 없거나 newItems가 비어있을 때도 NewUpdatesCard만 표시
   if (!currentUpdate.updateNote && (!currentUpdate.newItems || currentUpdate.newItems.length === 0)) {
     return (
-      <>
-        <div className="relative mx-auto flex w-full items-center justify-center">
-          <NewUpdatesCard isModalOpen={handleModalOpen} />
-        </div>
-      </>
+      <section aria-labelledby="updates-title" className="relative mx-auto flex w-full items-center justify-center">
+        <h2 id="updates-title" className="sr-only">
+          Updates Section
+        </h2>
+        <NewUpdatesCard isModalOpen={handleModalOpen} />
+      </section>
     );
   }
 
   return (
     <>
-      <div className="relative mx-auto flex w-full items-center justify-center">
+      <section aria-labelledby="updates-section" className="relative mx-auto flex w-full items-center justify-center">
+        <h2 id="updates-section" className="sr-only">
+          Updates Section
+        </h2>
+
         <button
           className={`absolute left-0 z-10 text-text-03 transition-opacity ${
             !canScrollPrev ? "pointer-events-none opacity-0" : "opacity-100"
@@ -58,6 +59,7 @@ const UpdateSection = () => {
         >
           <CaretCircleLeft className="h-12 w-12" />
         </button>
+
         <button
           className={`absolute right-0 z-10 text-text-03 transition-opacity ${
             !canScrollNext ? "pointer-events-none opacity-0" : "opacity-100"
@@ -68,28 +70,33 @@ const UpdateSection = () => {
         >
           <CaretCircleRight className="h-12 w-12" />
         </button>
-        <div className="w-full overflow-hidden" ref={emblaRef}>
+
+        <div
+          className="w-full overflow-hidden"
+          ref={emblaRef}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="업데이트 슬라이더"
+        >
           <div className="flex">
-            <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+            <div className="flex shrink-0 basis-full justify-center">
               <NewUpdatesCard isModalOpen={handleModalOpen} />
             </div>
 
-            {/* newItems가 있을 때만 BackgroundSectionCard 표시 */}
             {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "background") && (
-              <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+              <div className="flex shrink-0 basis-full justify-center">
                 <BackgroundSectionCard />
               </div>
             )}
 
-            {/* newItems가 있을 때만 PotSectionCard 표시 */}
             {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "pot") && (
-              <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+              <div className="flex shrink-0 basis-full justify-center">
                 <PotSectionCard />
               </div>
             )}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Modal rendered outside carousel container */}
       {currentUpdate?.updateNote && (

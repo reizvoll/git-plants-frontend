@@ -13,34 +13,31 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
   const { data: currentUpdate, isLoading, error } = useCurrentUpdate();
   const t = useTranslations("shop.update");
 
-  // 데이터가 없거나 updateNote가 null일 때
   const hasValidData = currentUpdate && currentUpdate.updateNote && currentUpdate.updateNote.imageUrl;
 
   if (isLoading) {
     return <div>{/* <LoadingSpinner /> */}</div>;
   }
 
-  {
-    /* 에러처리, 오버레이로 대체 */
-  }
-
   return (
     <div className="mx-auto flex h-[700px] w-full flex-col items-center justify-center gap-10 rounded-2xl px-[60px] py-12 py-[3.75rem]">
-      <div className="w-full text-center text-heading text-primary-default">{t("title")}</div>
+      <h2 className="w-full text-center text-heading text-primary-default">{t("title")}</h2>
 
       <div className="flex w-full flex-col gap-10">
-        {currentUpdate && currentUpdate.updateNote && currentUpdate.updateNote.imageUrl ? (
+        {hasValidData ? (
           <div className="flex w-full flex-col gap-10">
-            <picture className="flex w-full justify-center">
+            <figure className="flex w-full justify-center">
               <Image
-                src={currentUpdate.updateNote.imageUrl}
-                alt="update note"
+                src={currentUpdate!.updateNote!.imageUrl}
+                alt="Update note"
                 width={700}
                 height={360}
                 className="object-cover"
                 priority
               />
-            </picture>
+              <figcaption className="sr-only">{t("title")}</figcaption>
+            </figure>
+
             <div className="flex w-full flex-row items-center justify-center gap-10">
               <Button
                 size="lg"
@@ -86,11 +83,10 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
         )}
       </div>
 
-      {/* error overlay 또는 데이터 없음 오버레이 */}
       {(error || !hasValidData) && (
         <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
           <div className="whitespace-pre-line text-center text-subtitle text-text-01">
-            {error ? <span>{t("errorMessage")}</span> : <span className="">{t("notReady")}</span>}
+            {error ? <span>{t("errorMessage")}</span> : <span>{t("notReady")}</span>}
           </div>
         </div>
       )}
