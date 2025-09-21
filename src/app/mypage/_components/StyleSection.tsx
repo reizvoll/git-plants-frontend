@@ -1,3 +1,5 @@
+"use client";
+
 import ArrowsOutCardinal from "@/assets/icons/arrows-out-cardinal.svg";
 import DotsThree from "@/assets/icons/dots-three.svg";
 import Export from "@/assets/icons/export.svg";
@@ -15,6 +17,8 @@ import { useEffect, useMemo, useState } from "react";
 import PotPositionAdjustModal from "./PotPositionAdjustModal";
 import SizeAdjustModal from "./SizeAdjustModal";
 
+type Mode = "GARDEN" | "MINI";
+
 interface StyleSectionProps {
   onNavigateToCollection: (mode: "CROP" | "BACKGROUND" | "POT") => void;
 }
@@ -23,7 +27,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const { user } = useAuth();
   const { equipped, items, plants } = useProfileStore();
   const { addToast } = useToastStore();
-  const [currentMode, setCurrentMode] = useState("GARDEN");
+  const [currentMode, setCurrentMode] = useState<Mode>("GARDEN");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPotPositionModalOpen, setIsPotPositionModalOpen] = useState(false);
   const [showBackgroundTooltip, setShowBackgroundTooltip] = useState(false);
@@ -46,23 +50,15 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   }, [items]);
 
   // equipped 를 활용한 defaultMode 계산
-  const defaultMode = useMemo(() => {
-    // 현재 장착된 배경화면이 있는지 확인
-    if (equipped && equipped.backgrounds && equipped.backgrounds.length > 0) {
-      // 장착된 배경화면 중 첫 번째의 모드를 기본값으로 사용
+  const defaultMode: Mode = useMemo(() => {
+    if (equipped?.backgrounds?.length) {
       const equippedBackground = equipped.backgrounds[0];
-      if (equippedBackground.mode === "GARDEN" && availableModes.garden) {
-        return "GARDEN";
-      }
-      if (equippedBackground.mode === "MINI" && availableModes.mini) {
-        return "MINI";
-      }
+      if (equippedBackground.mode === "GARDEN" && availableModes.garden) return "GARDEN";
+      if (equippedBackground.mode === "MINI" && availableModes.mini) return "MINI";
     }
-
-    // 장착된 배경화면이 없으면 이용 가능한 모드 중 우선순위대로
     if (availableModes.garden) return "GARDEN";
     if (availableModes.mini) return "MINI";
-    return "GARDEN"; // 아무것도 없으면 기본값
+    return "GARDEN";
   }, [equipped, availableModes]);
 
   useEffect(() => {
@@ -95,8 +91,8 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const selectedPot = potSelection.selectedItem;
   const currentPlant = plants && plants.length > 0 ? plants[0] : null;
 
-  const handleModeChange = (selectedMode: string) => {
-    setCurrentMode(selectedMode === t("item_mini") ? "MINI" : "GARDEN");
+  const handleModeChange = (selectedLabel: string) => {
+    setCurrentMode(selectedLabel === t("item_mini") ? "MINI" : "GARDEN");
   };
 
   const handleApplySize = (size: { width: number; height: number }) => {
@@ -118,7 +114,11 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   };
 
   return (
-    <div className="flex w-full justify-center">
+    <section aria-labelledby="style-editor" className="flex w-full justify-center">
+      <h2 id="style-editor" className="sr-only">
+        style editor
+      </h2>
+
       <div className="relative flex w-full flex-col gap-6 rounded-2xl bg-brown-100 px-12 py-12">
         <div className="flex h-12 w-full flex-row items-start justify-end gap-[10px]">
           <Dropdown
@@ -137,22 +137,21 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
             className="font-pretendard text-body1 text-sageGreen-900"
             mode="click"
           />
+
           <Button
             variant="secondaryLine"
             size="md"
             className="shadow-normal flex items-center gap-2 text-body1"
+            aria-label="copyLink"
             onClick={async () => {
               try {
                 if (user?.username) {
-                  // Check if background and pot are equipped
                   const hasEquippedBackground = equipped?.backgrounds && equipped.backgrounds.length > 0;
                   const hasEquippedPot = equipped?.pots && equipped.pots.length > 0;
-
                   if (!hasEquippedBackground || !hasEquippedPot) {
                     addToast(t("haveEquipped"), "warning");
                     return;
                   }
-
                   const baseUrl = window.location.origin;
                   const apiUrl = `${baseUrl}/api/mypage/${user.username}?format=gif&mode=${currentMode}&width=${customSize.width}&height=${customSize.height}&potX=${potPosition.x}&potY=${potPosition.y}`;
                   const mdx = `[![${user.username}'s Garden](${apiUrl})](${baseUrl})`;
@@ -175,51 +174,69 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
           <div className="flex flex-shrink-0 flex-col items-center gap-6">
             <div className="flex flex-col items-center gap-2">
               {selectedBackground ? (
-                <div className="relative">
-                  <Image
-                    src={selectedBackground.item.imageUrl}
-                    alt={selectedBackground.item.name}
-                    style={{
-                      width: `${customSize.width}px`,
-                      height: `${customSize.height}px`
-                    }}
-                    width={customSize.width}
-                    height={customSize.height}
-                  />
+                <figure className="relative" aria-label="preview">
+                  <div
+                    className="relative"
+                    style={{ width: `${customSize.width}px`, height: `${customSize.height}px` }}
+                  >
+                    <Image
+                      src={selectedBackground.item.imageUrl}
+                      alt={selectedBackground.item.name || "Background"}
+                      fill
+                      className="object-cover"
+                      sizes={`${customSize.width}px`}
+                      priority={false}
+                    />
 
-                  {selectedPot && (
-                    <div
-                      className="absolute cursor-move"
-                      style={{
-                        left: `${potPosition.x}%`,
-                        top: `${potPosition.y}%`,
-                        transform: "translate(-50%, -80%)"
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Image src={selectedPot.item.iconUrl} alt={selectedPot.item.name} width={80} height={80} />
+                    {selectedPot && (
+                      <div
+                        className="absolute cursor-move"
+                        style={{
+                          left: `${potPosition.x}%`,
+                          top: `${potPosition.y}%`,
+                          transform: "translate(-50%, -80%)"
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label="potPosition"
+                      >
+                        <Image
+                          src={selectedPot.item.iconUrl}
+                          alt={selectedPot.item.name || "Pot"}
+                          width={80}
+                          height={80}
+                        />
 
-                      {currentPlant && (
-                        <picture
-                          className="absolute size-[100px]"
-                          style={{
-                            left: "50%",
-                            top: "-70px",
-                            transform: "translateX(-50%)",
-                            zIndex: 10
-                          }}
-                        >
-                          <Image
-                            src={currentPlant.currentImageUrl}
-                            alt={currentPlant.monthlyPlant.name}
-                            fill
-                            className="object-contain"
-                          />
-                        </picture>
-                      )}
-                    </div>
-                  )}
-                </div>
+                        {currentPlant && (
+                          <div
+                            className="absolute"
+                            style={{
+                              left: "50%",
+                              top: "-70px",
+                              transform: "translateX(-50%)",
+                              zIndex: 10,
+                              width: "100px",
+                              height: "100px",
+                              position: "absolute"
+                            }}
+                          >
+                            <div className="relative h-full w-full">
+                              <Image
+                                src={currentPlant.currentImageUrl}
+                                alt={currentPlant.monthlyPlant.name || "Plant"}
+                                fill
+                                className="object-contain"
+                                sizes="100px"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <figcaption className="sr-only">
+                    {t("currentSize")} {customSize.width}×{customSize.height}px
+                  </figcaption>
+                </figure>
               ) : (
                 <div className="flex items-center justify-center bg-gray-200">
                   <div className="text-body3 text-text-04">{t("noBackground")}</div>
@@ -229,24 +246,28 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
 
             <div className="flex flex-row items-center gap-4">
               <div className="text-body2 text-text-03">
-                {t("currentSize")} <br />
+                {t("currentSize")}
+                <br />
                 {selectedBackground && (
                   <span className="text-body3 text-text-03">
-                    {customSize.width} X {customSize.height} px
+                    {customSize.width} × {customSize.height} px
                   </span>
                 )}
               </div>
             </div>
+
             <div className={`flex ${currentMode === "MINI" ? "flex-col items-center" : "flex-row items-start"} gap-2`}>
               <Button
                 variant="primary"
                 size="md"
                 className="flex flex-row items-center gap-2 text-body1"
                 onClick={() => setIsModalOpen(true)}
+                aria-haspopup="dialog"
               >
                 {t("adjustSize")}
                 <SlidersHorizontal className="h-4 w-4" />
               </Button>
+
               <Button
                 variant="primaryLine"
                 size="md"
@@ -262,58 +283,83 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
               </Button>
             </div>
           </div>
+
           <div className="flex w-full flex-col gap-[60px]">
-            <div className="flex w-full flex-col gap-6">
+            <section aria-labelledby="bg-heading" className="flex w-full flex-col gap-6">
               <div className="flex w-full flex-row items-center justify-between">
-                <div className="text-body2 text-text-03">{t("background")}</div>
+                <h3 id="bg-heading" className="text-body2 text-text-03">
+                  {t("background")}
+                </h3>
                 <div className="relative">
                   <button
                     className="group text-text-04"
                     onClick={() => onNavigateToCollection("BACKGROUND")}
                     onMouseEnter={() => setShowBackgroundTooltip(true)}
                     onMouseLeave={() => setShowBackgroundTooltip(false)}
+                    onFocus={() => setShowBackgroundTooltip(true)}
+                    onBlur={() => setShowBackgroundTooltip(false)}
+                    aria-describedby="bg-tooltip"
+                    aria-label="more"
                   >
                     <DotsThree className="h-5 w-5" />
-                    {showBackgroundTooltip && (
-                      <span className="group-hover:shadow-emphasize absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
-                        <span className="text-caption text-primary-default">{t("more")}</span>
-                      </span>
-                    )}
                   </button>
+                  <span
+                    id="bg-tooltip"
+                    role="tooltip"
+                    aria-hidden={!showBackgroundTooltip}
+                    className={`shadow-emphasize pointer-events-none absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity ${
+                      showBackgroundTooltip ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    <span className="text-caption text-primary-default">{t("more")}</span>
+                  </span>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-4">
+
+              <ul className="flex flex-wrap gap-4">
                 {currentBackgrounds.length > 0 ? (
-                  currentBackgrounds.map((background, index) => (
-                    <div
-                      key={background.id}
-                      className={`relative cursor-pointer transition-all duration-200 hover:opacity-80 ${
-                        backgroundSelection.isItemEquipped(background) ? "ring-2 ring-primary-default" : ""
-                      } ${backgroundSelection.isLoading ? "pointer-events-none opacity-50" : ""}`}
-                      onClick={() => handleBackgroundSelect(index)}
-                    >
-                      <Image
-                        src={background.item.iconUrl}
-                        alt={background.item.name}
-                        className="rounded object-cover"
-                        width={80}
-                        height={80}
-                      />
-                      {backgroundSelection.isItemEquipped(background) && (
-                        <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary-default">
-                          <span className="text-xs text-white">✓</span>
-                        </div>
-                      )}
-                    </div>
-                  ))
+                  currentBackgrounds.map((background, index) => {
+                    const isEquipped = backgroundSelection.isItemEquipped(background);
+                    return (
+                      <li key={background.id}>
+                        <button
+                          type="button"
+                          onClick={() => handleBackgroundSelect(index)}
+                          disabled={backgroundSelection.isLoading}
+                          className={`relative block cursor-pointer rounded transition-all duration-200 hover:opacity-80 ${
+                            isEquipped ? "ring-2 ring-primary-default" : ""
+                          } ${backgroundSelection.isLoading ? "pointer-events-none opacity-50" : ""}`}
+                          aria-pressed={isEquipped}
+                          aria-label={background.item.name}
+                        >
+                          <Image
+                            src={background.item.iconUrl}
+                            alt={background.item.name || "Background"}
+                            className="rounded object-cover"
+                            width={80}
+                            height={80}
+                          />
+                          {isEquipped && (
+                            <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary-default text-[10px] text-white">
+                              ✓
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                    );
+                  })
                 ) : (
-                  <div className="text-body3 text-text-04">{t("noBackground")}</div>
+                  <li className="text-body3 text-text-04">{t("noBackground")}</li>
                 )}
-              </div>
-            </div>
-            <div className="flex w-full flex-col gap-6">
+              </ul>
+            </section>
+
+            {/* 화분 목록 */}
+            <section aria-labelledby="pot-heading" className="flex w-full flex-col gap-6">
               <div className="flex w-full flex-row items-center justify-between">
-                <div className="text-body2 text-text-03">{t("pot")}</div>
+                <h3 id="pot-heading" className="text-body2 text-text-03">
+                  {t("pot")}
+                </h3>
                 <div className="flex flex-row items-center gap-4">
                   <div className="relative">
                     <button
@@ -321,70 +367,100 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
                       onClick={() => setIsPotPositionModalOpen(true)}
                       onMouseEnter={() => setShowPotAdjustTooltip(true)}
                       onMouseLeave={() => setShowPotAdjustTooltip(false)}
+                      onFocus={() => setShowPotAdjustTooltip(true)}
+                      onBlur={() => setShowPotAdjustTooltip(false)}
+                      aria-describedby="pot-adj-tooltip"
+                      aria-label="adjustPotPosition"
                     >
                       <ArrowsOutCardinal className="h-4 w-4" />
-                      {showPotAdjustTooltip && (
-                        <span className="group-hover:shadow-emphasize absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
-                          <span className="text-caption text-primary-default">{t("adjustPotPosition")}</span>
-                        </span>
-                      )}
                     </button>
+                    <span
+                      id="pot-adj-tooltip"
+                      role="tooltip"
+                      aria-hidden={!showPotAdjustTooltip}
+                      className={`shadow-emphasize pointer-events-none absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity ${
+                        showPotAdjustTooltip ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <span className="text-caption text-primary-default">{t("adjustPotPosition")}</span>
+                    </span>
                   </div>
+
                   <div className="relative">
                     <button
                       className="group flex items-center justify-center text-text-04"
                       onClick={() => onNavigateToCollection("POT")}
                       onMouseEnter={() => setShowPotTooltip(true)}
                       onMouseLeave={() => setShowPotTooltip(false)}
+                      onFocus={() => setShowPotTooltip(true)}
+                      onBlur={() => setShowPotTooltip(false)}
+                      aria-describedby="pot-tooltip"
+                      aria-label="more"
                     >
                       <DotsThree className="h-5 w-5" />
-                      {showPotTooltip && (
-                        <span className="group-hover:shadow-emphasize absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center">
-                          <span className="text-caption text-primary-default">{t("more")}</span>
-                        </span>
-                      )}
                     </button>
+                    <span
+                      id="pot-tooltip"
+                      role="tooltip"
+                      aria-hidden={!showPotTooltip}
+                      className={`shadow-emphasize pointer-events-none absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity ${
+                        showPotTooltip ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <span className="text-caption text-primary-default">{t("more")}</span>
+                    </span>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-4">
+
+              <ul className="flex flex-wrap gap-4">
                 {currentPots.length > 0 ? (
-                  currentPots.map((pot, index) => (
-                    <div
-                      key={pot.id}
-                      className={`relative cursor-pointer transition-all duration-200 hover:opacity-80 ${
-                        potSelection.isItemEquipped(pot) ? "ring-2 ring-primary-default" : ""
-                      } ${potSelection.isLoading ? "pointer-events-none opacity-50" : ""}`}
-                      onClick={() => handlePotSelect(index)}
-                    >
-                      <Image
-                        src={pot.item.iconUrl}
-                        alt={pot.item.name}
-                        className="rounded object-cover"
-                        width={60}
-                        height={60}
-                      />
-                      {potSelection.isItemEquipped(pot) && (
-                        <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary-default">
-                          <span className="text-xs text-white">✓</span>
-                        </div>
-                      )}
-                    </div>
-                  ))
+                  currentPots.map((pot, index) => {
+                    const isEquipped = potSelection.isItemEquipped(pot);
+                    return (
+                      <li key={pot.id}>
+                        <button
+                          type="button"
+                          onClick={() => handlePotSelect(index)}
+                          disabled={potSelection.isLoading}
+                          className={`relative block cursor-pointer rounded transition-all duration-200 hover:opacity-80 ${
+                            isEquipped ? "ring-2 ring-primary-default" : ""
+                          } ${potSelection.isLoading ? "pointer-events-none opacity-50" : ""}`}
+                          aria-pressed={isEquipped}
+                          aria-label={pot.item.name}
+                        >
+                          <Image
+                            src={pot.item.iconUrl}
+                            alt={pot.item.name || "Pot"}
+                            className="rounded object-cover"
+                            width={60}
+                            height={60}
+                          />
+                          {isEquipped && (
+                            <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary-default text-[10px] text-white">
+                              ✓
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                    );
+                  })
                 ) : (
-                  <div className="text-body3 text-text-03">{t("noPot")}</div>
+                  <li className="text-body3 text-text-03">{t("noPot")}</li>
                 )}
-              </div>
-            </div>
+              </ul>
+            </section>
           </div>
         </div>
       </div>
+
       <SizeAdjustModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         currentSize={customSize}
         onApply={handleApplySize}
       />
+
       {selectedPot && (
         <PotPositionAdjustModal
           isOpen={isPotPositionModalOpen}
@@ -394,7 +470,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
           selectedPot={selectedPot.item}
         />
       )}
-    </div>
+    </section>
   );
 };
 
