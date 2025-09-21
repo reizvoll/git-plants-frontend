@@ -17,35 +17,35 @@ const ModeSectionCard = () => {
         {t("title")}
       </h3>
 
-      <dl className="flex w-full flex-col gap-10">
+      <div className="flex w-full flex-col gap-10">
         <div className="flex w-full flex-row items-center justify-center gap-10">
           <figure className="h-[160px] w-[107px]">
             <Image src={miniMode} alt="Mini mode preview" loading="lazy" className="h-full w-auto" />
             <figcaption className="sr-only">{t("miniMode.title")}</figcaption>
           </figure>
 
-          <div className="flex flex-col items-center">
+          <dl className="flex flex-col items-center">
             <dt className="text-center text-body2 text-text-04">{t("miniMode.title")}</dt>
             <dd className="mt-3 whitespace-pre-line text-center text-caption text-text-04">
               {t("miniMode.description")}
             </dd>
-          </div>
+          </dl>
         </div>
 
         <div className="flex w-full flex-row items-center justify-center gap-10">
-          <div className="flex flex-col items-center">
+          <dl className="flex flex-col items-center">
             <dt className="text-center text-body2 text-text-04">{t("gardenMode.title")}</dt>
             <dd className="mt-3 whitespace-pre-line text-center text-caption text-text-04">
               {t("gardenMode.description")}
             </dd>
-          </div>
+          </dl>
 
           <figure className="h-[160px] w-[240px]">
             <Image src={gardenMode} alt="Garden mode preview" loading="lazy" className="h-full w-auto" />
             <figcaption className="sr-only">{t("gardenMode.title")}</figcaption>
           </figure>
         </div>
-      </dl>
+      </div>
     </article>
   );
 };

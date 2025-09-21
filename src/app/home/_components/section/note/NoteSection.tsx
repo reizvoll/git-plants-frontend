@@ -103,29 +103,31 @@ const NoteSection = () => {
 
                 <div className="flex flex-col items-center gap-4">
                   <div className="flex flex-row gap-8">
-                    <dl className="m-0 grid grid-cols-2 gap-8">
-                      <div className="flex w-auto flex-grow flex-col items-start gap-4">
-                        <div className="h-[43px] w-12">
-                          <Image src={plant} alt="" role="presentation" loading="lazy" />
-                        </div>
+                    <div className="flex w-auto flex-grow flex-col items-start gap-4">
+                      <div className="h-[43px] w-12">
+                        <Image src={plant} alt="" role="presentation" loading="lazy" />
+                      </div>
+                      <dl className="m-0">
                         <dt className="font-pretendard text-title2 font-bold text-text-04">
                           {t("growth_stage.title")}
                         </dt>
                         <dd className="whitespace-pre-line font-pretendard text-caption text-text-04">
                           {t("growth_stage.description")}
                         </dd>
-                      </div>
+                      </dl>
+                    </div>
 
-                      <div className="flex w-auto flex-grow flex-col items-start gap-4">
-                        <div className="h-[43px] w-12">
-                          <Image src={plant} alt="" role="presentation" loading="lazy" />
-                        </div>
+                    <div className="flex w-auto flex-grow flex-col items-start gap-4">
+                      <div className="h-[43px] w-12">
+                        <Image src={plant} alt="" role="presentation" loading="lazy" />
+                      </div>
+                      <dl className="m-0">
                         <dt className="font-pretendard text-title2 font-bold text-text-04">{t("start_now.title")}</dt>
                         <dd className="whitespace-pre-line font-pretendard text-caption text-text-04">
                           {t("start_now.description")}
                         </dd>
-                      </div>
-                    </dl>
+                      </dl>
+                    </div>
                   </div>
                 </div>
               </div>
