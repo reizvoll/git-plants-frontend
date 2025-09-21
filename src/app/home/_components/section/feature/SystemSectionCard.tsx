@@ -2,22 +2,40 @@
 
 import badges from "@/assets/images/badges.webp";
 import seedRewards from "@/assets/images/seed_rewards.webp";
+import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
 import { Button } from "@/components/ui/Button";
-
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const SystemSectionCard = () => {
+interface SystemSectionCardProps {
+  onLoginRequired: () => void;
+}
+
+const SystemSectionCard = ({ onLoginRequired }: SystemSectionCardProps) => {
   const t = useTranslations("feature.system");
   const router = useRouter();
+  const { user } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleStoreButtonClick = () => {
     router.push("/shop");
   };
 
   const handleBadgeButtonClick = () => {
-    router.push("/mypage");
+    console.log("Badge button clicked, user:", user);
+    if (!user) {
+      console.log("Opening login modal");
+      onLoginRequired?.();
+    } else {
+      router.push("/mypage");
+    }
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
   };
 
   return (
@@ -67,6 +85,7 @@ const SystemSectionCard = () => {
           </section>
         </div>
       </article>
+      <LoginRequiredModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
     </>
   );
 };

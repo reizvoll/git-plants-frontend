@@ -2,7 +2,9 @@
 
 import CaretCircleLeft from "@/assets/icons/caret-circle-left.svg";
 import CaretCircleRight from "@/assets/icons/caret-circle-right.svg";
+import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
 import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
+import { useState } from "react";
 import ModeSectionCard from "./ModeSectionCard";
 import RewardSectionCard from "./RewardSectionCard";
 import SystemSectionCard from "./SystemSectionCard";
@@ -10,6 +12,15 @@ import UpdateSectionCard from "./UpdateSecionCard";
 
 const FeatureSection = () => {
   const { emblaRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useEmblaNavigation({ loop: false });
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const handleLoginRequired = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
 
   return (
     <section
@@ -57,13 +68,14 @@ const FeatureSection = () => {
             <RewardSectionCard />
           </div>
           <div className="flex shrink-0 basis-full justify-center">
-            <SystemSectionCard />
+            <SystemSectionCard onLoginRequired={handleLoginRequired} />
           </div>
           <div className="flex shrink-0 basis-full justify-center">
             <UpdateSectionCard />
           </div>
         </div>
       </div>
+      <LoginRequiredModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
     </section>
   );
 };
