@@ -1,7 +1,5 @@
 import ShopPageClient from "./_components/ShopPageClient";
 
-const ShopPage = () => {
+export default function ShopPage() {
   return <ShopPageClient />;
-};
-
-export default ShopPage;
+}

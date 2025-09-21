@@ -7,7 +7,7 @@ type BackgroundImageProps = {
 
 const BackgroundImage = ({ blurDataURL }: BackgroundImageProps) => {
   return (
-    <div className="absolute inset-0 h-full w-full">
+    <div className="absolute inset-0 h-full w-full" aria-hidden="true">
       <Image
         src={background}
         alt="Hero background"

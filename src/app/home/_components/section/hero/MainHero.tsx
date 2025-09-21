@@ -12,24 +12,29 @@ const MainHero = () => {
   const router = useRouter();
   const { user, login } = useAuth();
 
-  // 로그인 상태 확인
   const isLoggedIn = !!user;
 
   const handleFirstButtonClick = () => {
     if (isLoggedIn) {
       router.push("/shop");
     } else {
-      login(); // GitHub OAuth 로그인 실행
+      login();
     }
   };
 
   return (
-    <div className="shadow-emphasize flex items-center justify-center gap-16 rounded-[1rem] bg-[#F4EBDC]/80 px-16 py-16">
+    <section
+      aria-labelledby="hero-title"
+      className="shadow-emphasize flex items-center justify-center gap-16 rounded-[1rem] bg-[#F4EBDC]/80 px-16 py-16"
+    >
       <div className="flex w-full flex-col items-start gap-20">
         <div className="flex w-full flex-col items-start gap-12">
-          <div className="w-full whitespace-pre-line font-galmuri text-heading text-primary-default">{t("title")}</div>
-          <div className="whitespace-pre-line font-galmuri text-subtitle2 text-primary-default">{t("subtitle")}</div>
+          <h1 id="hero-title" className="w-full whitespace-pre-line text-heading text-primary-default">
+            {t("title")}
+          </h1>
+          <p className="whitespace-pre-line text-subtitle2 text-primary-default">{t("subtitle")}</p>
         </div>
+
         <div className="flex w-full flex-row items-start gap-4">
           <Button
             variant="primary"
@@ -49,10 +54,12 @@ const MainHero = () => {
           </Button>
         </div>
       </div>
-      <div className="shadow-normal flex h-60 w-60 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-bg-01">
-        <Image src={plant} alt="plant" width={200} height={200} className="object-contain" />
-      </div>
-    </div>
+
+      <figure className="shadow-normal flex h-60 w-60 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-bg-01">
+        <Image src={plant} alt="Plant illustration" width={200} height={200} className="object-contain" />
+        <figcaption className="sr-only">{t("title")}</figcaption>
+      </figure>
+    </section>
   );
 };
 

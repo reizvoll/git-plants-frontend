@@ -10,7 +10,6 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-//Todo : refactoring code, and explore strategies for connecting with the back office.
 const NoteSection = () => {
   const t = useTranslations("plants-note");
   const { language } = useLanguageStore();
@@ -24,7 +23,6 @@ const NoteSection = () => {
 
     getMonthlyPlant(language)
       .then((data) => {
-        // 데이터 유효성 검사 추가
         if (data && data.mainImageUrl && data.iconUrl) {
           setMonthlyPlant(data);
         } else {
@@ -40,7 +38,7 @@ const NoteSection = () => {
   }, [language]);
 
   return (
-    <div className="flex w-full justify-center">
+    <section className="flex w-full justify-center" aria-labelledby="monthly-plant-title">
       <div className="relative h-[634px] w-[1000px]">
         <Image src={note} alt="Note" className="object-cover" loading="lazy" />
 
@@ -61,22 +59,22 @@ const NoteSection = () => {
         {monthlyPlant && monthlyPlant.mainImageUrl && monthlyPlant.iconUrl && (
           <div className="absolute inset-0 flex items-center justify-center px-12 py-20">
             <div className="flex w-full flex-row items-center justify-center gap-20">
-              {/* Left Frame - Content Section */}
+              {/* Left Frame */}
               <div className="flex flex-col items-center justify-center gap-6">
-                {/* Section Title */}
-                <div className="flex flex-col items-center gap-6">
-                  {/* Heading */}
-                  <div className="text-center font-galmuri text-title1 text-primary-strong">
-                    {t("title")}
-                    <br />
-                    {getTranslated(monthlyPlant.name, monthlyPlant.ko?.name, language)}
-                  </div>
+                {/* Section heading */}
+                <h2 id="monthly-plant-title" className="text-center text-title1 text-primary-strong">
+                  {t("title")}
+                </h2>
 
-                  {/* Text */}
-                  <div className="whitespace-pre-line text-center font-galmuri text-body2 text-primary-strong">
+                {/* API: title/description → definition list */}
+                <dl className="m-0 flex flex-col items-center gap-6">
+                  <dt className="text-center text-title1 text-primary-strong">
+                    {getTranslated(monthlyPlant.name, monthlyPlant.ko?.name, language)}
+                  </dt>
+                  <dd className="whitespace-pre-line text-center text-body2 text-primary-strong">
                     {getTranslated(monthlyPlant.description, monthlyPlant.ko?.description, language)}
-                  </div>
-                </div>
+                  </dd>
+                </dl>
 
                 {/* Plant Image */}
                 <div className="h-[233px] w-[350px]">
@@ -91,57 +89,43 @@ const NoteSection = () => {
                 </div>
               </div>
 
-              {/* Right Frame */}
               <div className="flex flex-col items-center justify-center gap-16">
-                {/* Main Character Image */}
                 <div className="h-[196px] w-[196px] rounded-full bg-bg-01">
                   <Image
                     src={monthlyPlant.iconUrl}
                     width={196}
                     height={196}
-                    alt="monthly_plant_icon"
+                    alt="Monthly plant icon"
                     quality={75}
-                    className="object-cover rounded-full"
+                    className="rounded-full object-cover"
                   />
                 </div>
 
-                {/* Content */}
                 <div className="flex flex-col items-center gap-4">
-                  {/* Row */}
                   <div className="flex flex-row gap-8">
-                    {/* First List Item */}
-                    <div className="flex w-auto flex-grow flex-col items-start gap-4">
-                      {/* Icon */}
-                      <div className="h-[43px] w-12">
-                        <Image src={plant} alt="icon" loading="lazy" />
+                    <dl className="m-0 grid grid-cols-2 gap-8">
+                      <div className="flex w-auto flex-grow flex-col items-start gap-4">
+                        <div className="h-[43px] w-12">
+                          <Image src={plant} alt="" role="presentation" loading="lazy" />
+                        </div>
+                        <dt className="font-pretendard text-title2 font-bold text-text-04">
+                          {t("growth_stage.title")}
+                        </dt>
+                        <dd className="whitespace-pre-line font-pretendard text-caption text-text-04">
+                          {t("growth_stage.description")}
+                        </dd>
                       </div>
 
-                      {/* Subheading */}
-                      <div className="font-pretendard text-title2 font-bold text-text-04">
-                        {t("growth_stage.title")}
+                      <div className="flex w-auto flex-grow flex-col items-start gap-4">
+                        <div className="h-[43px] w-12">
+                          <Image src={plant} alt="" role="presentation" loading="lazy" />
+                        </div>
+                        <dt className="font-pretendard text-title2 font-bold text-text-04">{t("start_now.title")}</dt>
+                        <dd className="whitespace-pre-line font-pretendard text-caption text-text-04">
+                          {t("start_now.description")}
+                        </dd>
                       </div>
-
-                      {/* Text */}
-                      <p className="whitespace-pre-line font-pretendard text-caption text-text-04">
-                        {t("growth_stage.description")}
-                      </p>
-                    </div>
-
-                    {/* Second List Item */}
-                    <div className="flex w-auto flex-grow flex-col items-start gap-4">
-                      {/* Icon */}
-                      <div className="h-[43px] w-12">
-                        <Image src={plant} alt="icon" loading="lazy" />
-                      </div>
-
-                      {/* Subheading */}
-                      <div className="font-pretendard text-title2 font-bold text-text-04">{t("start_now.title")}</div>
-
-                      {/* Text */}
-                      <p className="whitespace-pre-line font-pretendard text-caption text-text-04">
-                        {t("start_now.description")}
-                      </p>
-                    </div>
+                    </dl>
                   </div>
                 </div>
               </div>
@@ -149,7 +133,7 @@ const NoteSection = () => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

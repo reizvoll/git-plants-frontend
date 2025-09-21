@@ -31,7 +31,7 @@ const FooterContent = () => {
             {locale === "en" ? <br /> : <span>&nbsp;</span>}
             {t("copyright")}
           </div>
-          <div className="font-galmuri text-caption text-text-01">{t("copyrightNotice")}</div>
+          <div className="text-caption text-text-01">{t("copyrightNotice")}</div>
         </div>
       </div>
     </div>

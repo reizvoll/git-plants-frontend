@@ -43,7 +43,7 @@ const HeaderContent = () => {
       <div className="mx-auto flex h-20 w-full max-w-[75rem] items-center justify-between px-4 md:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="font-galmuri text-subHeading text-text-04">Git-Plants</span>
+          <span className="text-subHeading text-text-04">Git-Plants</span>
         </Link>
         {/* User/Actions */}
         <div className="flex items-center gap-4 md:gap-6">
@@ -77,7 +77,7 @@ const HeaderContent = () => {
               { label: "English", onClick: () => handleLanguageChange("en"), active: currentLanguage === "en" },
               { label: "한국어", onClick: () => handleLanguageChange("ko"), active: currentLanguage === "ko" }
             ]}
-            className="font-galmuri text-body1"
+            className="text-body1"
             triggerClassName="h-[30px]"
           />
           {/* Store Icon */}
@@ -96,7 +96,7 @@ const HeaderContent = () => {
                   <GearSix className="h-[30px] w-[30px]" strokeWidth={3} />
                 </button>
               }
-              className="font-galmuri text-body1 text-text-04"
+              className="text-body1 text-text-04"
             />
           )}
         </div>
