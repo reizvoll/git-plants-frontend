@@ -1,9 +1,9 @@
 "use client";
 
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
+import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useProfile } from "@/lib/hooks/mypage/useProfile";
 import { useShopItems } from "@/lib/hooks/shop/useShopItems";
-import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useEffect, useMemo } from "react";
 import ShopHero from "./section/hero/ShopHero";
@@ -37,15 +37,20 @@ const ShopPageClient = () => {
 
   return (
     <>
-      <div className="relative w-full bg-sageGreen-100">
+      <main aria-labelledby="shop-title" className="relative w-full bg-sageGreen-100">
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-center gap-16 px-8 pb-48 pt-12">
+          <h1 id="shop-title" className="sr-only">
+            Shop
+          </h1>
+
           <ShopHero />
           {user && <SellCropsSection />}
           <UpdateSection />
           <BackgroundList items={backgroundItems} loading={isLoading} />
           <PotList items={potItems} loading={isLoading} />
         </div>
-      </div>
+      </main>
+
       <ScrollTopButton />
     </>
   );
