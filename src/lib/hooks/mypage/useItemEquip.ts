@@ -2,6 +2,7 @@ import { authApi } from "@/api/auth";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 interface EquipItemParams {
   userItemId: string;
@@ -13,6 +14,7 @@ interface EquipItemParams {
 export const useItemEquip = () => {
   const { updateItemEquipStatus, items } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
+  const t = useTranslations("mypage.styleSection");
 
   const mutation = useMutation({
     mutationFn: async ({ userItemId, equipped }: { userItemId: string; equipped: boolean }) => {
@@ -58,10 +60,11 @@ export const useItemEquip = () => {
       }
 
       console.error("Failed to equip/unequip item:", error);
-      addToast("아이템 장착에 실패했습니다.", "warning");
+      addToast(t("errorEquip"), "warning");
     },
-    onSuccess: () => {
-      addToast("아이템이 성공적으로 장착되었습니다.", "success");
+    onSuccess: (data, variables) => {
+      const message = variables.equipped ? t("successEquip") : t("successUnEquip");
+      addToast(message, "success");
     }
   });
 
