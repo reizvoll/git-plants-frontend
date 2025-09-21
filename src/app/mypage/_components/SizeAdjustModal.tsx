@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
@@ -20,25 +22,16 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
+      if (e.key === "Escape") onClose();
     };
-
     if (isOpen) {
       document.addEventListener("keydown", handleGlobalKeyDown);
-      return () => {
-        document.removeEventListener("keydown", handleGlobalKeyDown);
-      };
+      return () => document.removeEventListener("keydown", handleGlobalKeyDown);
     }
   }, [isOpen, onClose]);
 
   const handleApply = () => {
     onApply(tempSize);
-    onClose();
-  };
-
-  const handleCancel = () => {
     onClose();
   };
 
@@ -62,24 +55,52 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
         tabIndex={-1}
         className="flex flex-col gap-4"
       >
-        <div className="font-pretendard text-subtitle font-bold text-text-04">{t("title")}</div>
-        <div className="flex items-center justify-center gap-3">
-          <input
-            value={tempSize.width}
-            onChange={(e) => setTempSize((prev) => ({ ...prev, width: Number(e.target.value) }))}
-            onKeyDown={handleKeyDown}
-            className="rounded-lg bg-gray-50 px-3 py-4 text-center font-pretendard text-body1 text-text-04 outline-none"
-          />
-          <span className="font-pretendard text-title2 text-text-03">x</span>
-          <input
-            value={tempSize.height}
-            onChange={(e) => setTempSize((prev) => ({ ...prev, height: Number(e.target.value) }))}
-            onKeyDown={handleKeyDown}
-            className="rounded-lg bg-gray-50 px-3 py-4 text-center font-pretendard text-body1 text-text-04 outline-none"
-          />
-          <span className="font-pretendard text-title2 text-text-03">px</span>
-        </div>
-        <div className="text-center font-pretendard text-caption text-text-03">{t("description")}</div>
+        <h3 className="font-pretendard text-subtitle font-bold text-text-04">{t("title")}</h3>
+
+        <fieldset className="m-0 border-0 p-0">
+          <legend className="sr-only">{t("title")}</legend>
+
+          <div className="flex items-center justify-center gap-3">
+            <label htmlFor="size-width" className="sr-only">
+              widthLabel
+            </label>
+            <input
+              id="size-width"
+              name="width"
+              type="number"
+              inputMode="numeric"
+              value={Number.isFinite(tempSize.width) ? tempSize.width : 0}
+              onChange={(e) => setTempSize((prev) => ({ ...prev, width: Math.max(1, Number(e.target.value || 0)) }))}
+              className="rounded-lg bg-gray-50 px-3 py-4 text-center font-pretendard text-body1 text-text-04 outline-none"
+              required
+            />
+
+            <span aria-hidden className="font-pretendard text-title2 text-text-03">
+              ×
+            </span>
+
+            <label htmlFor="size-height" className="sr-only">
+              heightLabel
+            </label>
+            <input
+              id="size-height"
+              name="height"
+              type="number"
+              inputMode="numeric"
+              min={1}
+              step={1}
+              value={Number.isFinite(tempSize.height) ? tempSize.height : 0}
+              onChange={(e) => setTempSize((prev) => ({ ...prev, height: Math.max(1, Number(e.target.value || 0)) }))}
+              className="rounded-lg bg-gray-50 px-3 py-4 text-center font-pretendard text-body1 text-text-04 outline-none"
+              required
+            />
+
+            <span className="font-pretendard text-title2 text-text-03">px</span>
+          </div>
+        </fieldset>
+
+        <p className="text-center font-pretendard text-caption text-text-03">{t("description")}</p>
+
         <div className="flex gap-3">
           <Button type="submit" variant="primary" size="md" className="w-full text-body1 text-text-01">
             {t("apply")}
@@ -89,7 +110,7 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
             variant="disabled"
             size="md"
             className="w-full text-body1 text-text-03"
-            onClick={handleCancel}
+            onClick={onClose}
           >
             {t("cancel")}
           </Button>

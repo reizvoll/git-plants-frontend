@@ -1,3 +1,5 @@
+"use client";
+
 import Modal from "@/components/ui/Modal";
 import { useLanguageStore } from "@/lib/store/languageStore";
 import { useTranslations } from "next-intl";
@@ -23,9 +25,6 @@ const PotPositionAdjustModal = ({
   selectedPot
 }: PotPositionAdjustModalProps) => {
   const { language } = useLanguageStore();
-  const handlePositionSelect = (position: { x: number; y: number }) => {
-    onApply(position);
-  };
   const t = useTranslations("mypage.potPositionAdjustModal");
 
   const positionOptions = [
@@ -39,36 +38,38 @@ const PotPositionAdjustModal = ({
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
+      if (e.key === "Escape") onClose();
     };
-
     if (isOpen) {
       document.addEventListener("keydown", handleGlobalKeyDown);
-      return () => {
-        document.removeEventListener("keydown", handleGlobalKeyDown);
-      };
+      return () => document.removeEventListener("keydown", handleGlobalKeyDown);
     }
   }, [isOpen, onClose]);
 
+  if (!isOpen) return null;
+
+  const minWidthClass = language === "ko" ? "min-w-[120px]" : "min-w-[140px]";
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} mode="default">
       <div className="flex flex-col gap-4">
         {selectedPot ? (
-          <div className="flex flex-col">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <div className="text-center font-pretendard text-subtitle font-bold text-text-03">{t("title")}</div>
-                <span className="text-center font-pretendard text-body1 text-text-03">{t("description")}</span>
-              </div>
-              <div className="mx-auto grid grid-cols-3 gap-2">
-                {positionOptions.map((pos) => (
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <h3 className="text-center font-pretendard text-subtitle font-bold text-text-03">{t("title")}</h3>
+              <p className="text-center font-pretendard text-body1 text-text-03">{t("description")}</p>
+            </div>
+
+            <div className="mx-auto grid grid-cols-3 gap-2">
+              {positionOptions.map((pos) => {
+                const isActive = currentPotPosition.x === pos.x && currentPotPosition.y === pos.y;
+                return (
                   <button
                     key={`${pos.x}-${pos.y}`}
-                    onClick={() => handlePositionSelect({ x: pos.x, y: pos.y })}
-                    className={`w-full ${language === "ko" ? "min-w-[120px]" : "min-w-[140px]"} whitespace-nowrap rounded px-3 py-2 text-center font-pretendard transition-colors ${
-                      currentPotPosition.x === pos.x && currentPotPosition.y === pos.y
+                    type="button"
+                    onClick={() => onApply({ x: pos.x, y: pos.y })}
+                    className={`w-full ${minWidthClass} whitespace-nowrap rounded px-3 py-2 text-center font-pretendard transition-colors ${
+                      isActive
                         ? "bg-primary-default text-white"
                         : "border border-gray-200 text-gray-600 hover:bg-gray-300"
                     }`}
@@ -76,12 +77,12 @@ const PotPositionAdjustModal = ({
                   >
                     {pos.label}
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </div>
         ) : (
-          <div className="text-body3 text-center text-text-04">{t("selectPotFirst")}</div>
+          <p className="text-body3 text-center text-text-04">{t("selectPotFirst")}</p>
         )}
       </div>
     </Modal>
