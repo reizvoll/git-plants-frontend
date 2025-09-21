@@ -1,7 +1,5 @@
 import MyPageClient from "./_components/MyPageClient";
 
-const MyPage = () => {
+export default function MyPage() {
   return <MyPageClient />;
-};
-
-export default MyPage;
+}
