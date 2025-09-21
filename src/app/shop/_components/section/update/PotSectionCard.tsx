@@ -41,6 +41,7 @@ const PotSectionCard = () => {
                 </figure>
 
                 <dl className="flex flex-row items-center gap-4">
+                  <dt className="sr-only">price</dt>
                   <dd className="flex flex-row items-center gap-2">
                     <Image src={seed} alt="seed" width={24} height={33} />
                     <span className="text-title1 text-text-03">{item.price}</span>
