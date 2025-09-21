@@ -64,12 +64,12 @@ const MyPageClient = () => {
       <main aria-labelledby="mypage-title" className="relative w-full bg-bg-03">
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-start gap-16 px-8 pb-48 pt-20">
           <h1 id="mypage-title" className="sr-only">
-            "My Page"
+            My Page
           </h1>
 
           <section aria-labelledby="mypage-userinfo-heading" className="w-full">
             <h2 id="mypage-userinfo-heading" className="sr-only">
-              "User information"
+              User information
             </h2>
             <UserInfo />
           </section>
