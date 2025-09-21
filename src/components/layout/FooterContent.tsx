@@ -8,14 +8,17 @@ const FooterContent = () => {
   const locale = useLocale();
 
   return (
-    <div className="flex h-52 w-full items-center bg-gray-700">
-      <div className="mx-auto flex w-full max-w-[75rem] flex-col items-start justify-center gap-6 px-4 md:px-6 lg:px-8">
-        <div className="flex items-center gap-4">
-          <span className="text-subHeading text-text-04">Git-Plants</span>
+    <footer className="flex h-52 w-full items-center bg-gray-700">
+      <section className="mx-auto flex w-full max-w-[75rem] flex-col items-start justify-center gap-6 px-4 md:px-6 lg:px-8">
+        <header className="flex items-center gap-4">
+          <h2 id="site-footer-title" className="text-subHeading text-text-04">
+            Git-Plants
+          </h2>
           <GithubIcon className="text-text-04" width={28} height={28} />
-        </div>
-        <div className="flex flex-col items-start gap-4">
-          <div className="font-pretendard text-caption font-medium text-text-01">
+        </header>
+
+        <address className="flex flex-col items-start gap-4 not-italic">
+          <p className="font-pretendard text-caption font-medium text-text-01">
             {t("description")}
             <br />
             {t("feedback")}
@@ -30,11 +33,12 @@ const FooterContent = () => {
             {t("feedbackEnd")}
             {locale === "en" ? <br /> : <span>&nbsp;</span>}
             {t("copyright")}
-          </div>
-          <div className="text-caption text-text-01">{t("copyrightNotice")}</div>
-        </div>
-      </div>
-    </div>
+          </p>
+
+          <small className="text-caption text-text-01">{t("copyrightNotice")}</small>
+        </address>
+      </section>
+    </footer>
   );
 };
 

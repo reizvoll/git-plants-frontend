@@ -3,11 +3,9 @@ import FooterContent from "./FooterContent";
 
 const Footer = () => {
   return (
-    <footer>
-      <Suspense fallback={<p></p>}>
-        <FooterContent />
-      </Suspense>
-    </footer>
+    <Suspense fallback={<div aria-hidden />}>
+      <FooterContent />
+    </Suspense>
   );
 };
 
