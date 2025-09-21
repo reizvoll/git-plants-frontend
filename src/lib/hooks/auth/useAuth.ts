@@ -2,12 +2,17 @@ import { authApi } from "@/api/auth";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const useAuth = (requireAuth: boolean = false) => {
   const router = useRouter();
   const { user, setUser, clearUser } = useAuthStore();
   const queryClient = useQueryClient();
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   // 세션 조회 - 클라이언트에서 항상 시도 (백엔드에서 refresh_token 자동 처리)
   const { data: sessionUser, isLoading } = useQuery({
@@ -66,11 +71,12 @@ export const useAuth = (requireAuth: boolean = false) => {
 
   return {
     // 사용자 정보
-    user: sessionUser || user,
-    isAuthenticated: !!sessionUser,
+    user: isHydrated ? sessionUser || user : null,
+    isAuthenticated: isHydrated && !!sessionUser,
 
     // 로딩 상태
     isLoading,
+    isHydrated,
 
     // 액션
     login: () => {
