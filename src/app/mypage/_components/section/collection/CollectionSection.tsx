@@ -8,8 +8,8 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import CollectionControls from "./section/collection/CollectionControls";
-import CollectionGrid from "./section/collection/CollectionGrid";
+import CollectionControls from "./CollectionControls";
+import CollectionGrid from "./CollectionGrid";
 
 interface CollectionSectionProps {
   initialMode?: CollectionMode;

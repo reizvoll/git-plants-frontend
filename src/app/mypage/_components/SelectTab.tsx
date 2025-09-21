@@ -2,8 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
-import CollectionSection from "./CollectionSection";
-import StyleSection from "./StyleSection";
+import CollectionSection from "./section/collection/CollectionSection";
+import StyleSection from "./section/style/StyleSection";
 
 type FilterKey = "tab1" | "tab2";
 type Mode = "CROP" | "BACKGROUND" | "POT";

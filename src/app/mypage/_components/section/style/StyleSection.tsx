@@ -10,12 +10,12 @@ import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
-import PotPositionAdjustModal from "./modal/PotPositionAdjustModal";
-import SizeAdjustModal from "./modal/SizeAdjustModal";
-import BackgroundSection from "./section/style/BackgroundSection";
-import PotSection from "./section/style/PotSection";
-import PreviewArea from "./section/style/PreviewArea";
-import SizeControls from "./section/style/SizeControls";
+import PotPositionAdjustModal from "../../modal/PotPositionAdjustModal";
+import SizeAdjustModal from "../../modal/SizeAdjustModal";
+import BackgroundSection from "./BackgroundSection";
+import PotSection from "./PotSection";
+import PreviewArea from "./PreviewArea";
+import SizeControls from "./SizeControls";
 
 type Mode = "GARDEN" | "MINI";
 
