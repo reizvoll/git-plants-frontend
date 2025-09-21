@@ -29,10 +29,10 @@ const MainHero = () => {
     >
       <div className="flex w-full flex-col items-start gap-20">
         <div className="flex w-full flex-col items-start gap-12">
-          <h1 id="hero-title" className="w-full whitespace-pre-line font-galmuri text-heading text-primary-default">
+          <h1 id="hero-title" className="w-full whitespace-pre-line text-heading text-primary-default">
             {t("title")}
           </h1>
-          <p className="whitespace-pre-line font-galmuri text-subtitle2 text-primary-default">{t("subtitle")}</p>
+          <p className="whitespace-pre-line text-subtitle2 text-primary-default">{t("subtitle")}</p>
         </div>
 
         <div className="flex w-full flex-row items-start gap-4">

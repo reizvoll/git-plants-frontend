@@ -13,7 +13,7 @@ const ModeSectionCard = () => {
       aria-labelledby="mode-card-title"
       className="mx-auto flex w-full max-w-[800px] flex-col items-center justify-center gap-10 rounded-2xl bg-secondary-light py-[3.75rem]"
     >
-      <h3 id="mode-card-title" className="w-full text-center font-galmuri text-subtitle text-text-04">
+      <h3 id="mode-card-title" className="w-full text-center text-subtitle text-text-04">
         {t("title")}
       </h3>
 
@@ -25,8 +25,8 @@ const ModeSectionCard = () => {
           </figure>
 
           <div className="flex flex-col items-center">
-            <dt className="text-center font-galmuri text-body2 text-text-04">{t("miniMode.title")}</dt>
-            <dd className="mt-3 whitespace-pre-line text-center font-galmuri text-caption text-text-04">
+            <dt className="text-center text-body2 text-text-04">{t("miniMode.title")}</dt>
+            <dd className="mt-3 whitespace-pre-line text-center text-caption text-text-04">
               {t("miniMode.description")}
             </dd>
           </div>
@@ -34,8 +34,8 @@ const ModeSectionCard = () => {
 
         <div className="flex w-full flex-row items-center justify-center gap-10">
           <div className="flex flex-col items-center">
-            <dt className="text-center font-galmuri text-body2 text-text-04">{t("gardenMode.title")}</dt>
-            <dd className="mt-3 whitespace-pre-line text-center font-galmuri text-caption text-text-04">
+            <dt className="text-center text-body2 text-text-04">{t("gardenMode.title")}</dt>
+            <dd className="mt-3 whitespace-pre-line text-center text-caption text-text-04">
               {t("gardenMode.description")}
             </dd>
           </div>

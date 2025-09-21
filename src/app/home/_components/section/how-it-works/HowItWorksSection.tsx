@@ -13,10 +13,10 @@ const HowItWorksSection = () => {
     >
       <div className="flex w-full flex-col items-center justify-center gap-10">
         <div className="flex flex-col gap-6 text-center">
-          <h2 id="howitworks-title" className="font-galmuri text-subtitle text-text-04">
+          <h2 id="howitworks-title" className="text-subtitle text-text-04">
             {t("title")}
           </h2>
-          <p className="whitespace-pre-line font-galmuri text-caption text-text-03">{t("description")}</p>
+          <p className="whitespace-pre-line text-caption text-text-03">{t("description")}</p>
         </div>
 
         <ContributionsTab />

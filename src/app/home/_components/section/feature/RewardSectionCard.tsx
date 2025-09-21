@@ -12,7 +12,7 @@ const RewardSectionCard = () => {
       aria-labelledby="reward-card-title"
       className="mx-auto flex h-[556px] w-full max-w-[800px] flex-col items-center justify-center gap-10 rounded-2xl bg-secondary-light py-[3.75rem]"
     >
-      <h3 id="reward-card-title" className="w-full text-center font-galmuri text-subtitle text-text-04">
+      <h3 id="reward-card-title" className="w-full text-center text-subtitle text-text-04">
         {t("title")}
       </h3>
 
@@ -21,7 +21,7 @@ const RewardSectionCard = () => {
         <figcaption className="sr-only">{t("title")}</figcaption>
       </figure>
 
-      <p className="w-full whitespace-pre-line text-center font-galmuri text-body2 text-text-03">{t("description")}</p>
+      <p className="w-full whitespace-pre-line text-center text-body2 text-text-03">{t("description")}</p>
     </article>
   );
 };

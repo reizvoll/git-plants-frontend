@@ -62,16 +62,16 @@ const NoteSection = () => {
               {/* Left Frame */}
               <div className="flex flex-col items-center justify-center gap-6">
                 {/* Section heading */}
-                <h2 id="monthly-plant-title" className="text-center font-galmuri text-title1 text-primary-strong">
+                <h2 id="monthly-plant-title" className="text-center text-title1 text-primary-strong">
                   {t("title")}
                 </h2>
 
                 {/* API: title/description → definition list */}
                 <dl className="m-0 flex flex-col items-center gap-6">
-                  <dt className="text-center font-galmuri text-title1 text-primary-strong">
+                  <dt className="text-center text-title1 text-primary-strong">
                     {getTranslated(monthlyPlant.name, monthlyPlant.ko?.name, language)}
                   </dt>
-                  <dd className="whitespace-pre-line text-center font-galmuri text-body2 text-primary-strong">
+                  <dd className="whitespace-pre-line text-center text-body2 text-primary-strong">
                     {getTranslated(monthlyPlant.description, monthlyPlant.ko?.description, language)}
                   </dd>
                 </dl>

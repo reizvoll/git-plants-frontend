@@ -17,7 +17,7 @@ const UpdateSectionCard = () => {
           <h3 id="update-card-title" className="text-center text-title1 text-text-04">
             Update Soon!
           </h3>
-          <p className="text-center font-galmuri text-body2 text-text-03">{t("description")}</p>
+          <p className="text-center text-body2 text-text-03">{t("description")}</p>
         </div>
 
         <figure className="flex w-[250px] flex-col items-center justify-center">

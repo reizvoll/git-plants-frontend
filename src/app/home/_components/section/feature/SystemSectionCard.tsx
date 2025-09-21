@@ -46,7 +46,7 @@ const SystemSectionCard = ({ onLoginRequired }: SystemSectionCardProps) => {
       >
         <div className="flex w-full flex-row items-center justify-center gap-20">
           <section className="flex flex-col items-center justify-center gap-10" aria-labelledby="system-left-title">
-            <h3 id="system-left-title" className="whitespace-pre-line text-center font-galmuri text-body2 text-text-04">
+            <h3 id="system-left-title" className="whitespace-pre-line text-center text-body2 text-text-04">
               {t("title-left")}
             </h3>
             <figure className="w-[250px]">
@@ -64,10 +64,7 @@ const SystemSectionCard = ({ onLoginRequired }: SystemSectionCardProps) => {
           </section>
 
           <section className="flex flex-col items-center justify-center gap-10" aria-labelledby="system-right-title">
-            <h3
-              id="system-right-title"
-              className="whitespace-pre-line text-center font-galmuri text-body2 text-text-04"
-            >
+            <h3 id="system-right-title" className="whitespace-pre-line text-center text-body2 text-text-04">
               {t("title-right")}
             </h3>
             <figure className="w-[200px]">
