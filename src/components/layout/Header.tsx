@@ -1,13 +1,11 @@
-import HeaderContent from "@/components/layout/HeaderContent";
 import { Suspense } from "react";
+import HeaderContent from "./HeaderContent";
 
 const Header = () => {
   return (
-    <header>
-      <Suspense fallback={<p></p>}>
-        <HeaderContent />
-      </Suspense>
-    </header>
+    <Suspense fallback={<div aria-hidden />}>
+      <HeaderContent />
+    </Suspense>
   );
 };
 
