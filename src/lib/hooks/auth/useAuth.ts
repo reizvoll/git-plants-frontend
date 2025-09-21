@@ -9,20 +9,8 @@ export const useAuth = (requireAuth: boolean = false) => {
   const { user, setUser, clearUser } = useAuthStore();
   const queryClient = useQueryClient();
 
-  // 쿠키에서 세션 존재 여부 확인
-  const hasSessionCookie = () => {
-    if (typeof document === "undefined") return false;
-    return document.cookie.includes("access_token");
-  };
-
-  // auth callback 페이지 확인
-  const isAuthCallback = typeof window !== "undefined" && window.location.pathname === "/auth/callback";
-
-  // 세션 조회 - 쿠키가 있거나 auth callback이거나 localStorage에 user가 있을 때 API 호출
-  const {
-    data: sessionUser,
-    isLoading
-  } = useQuery({
+  // 세션 조회 - 클라이언트에서 항상 시도 (백엔드에서 refresh_token 자동 처리)
+  const { data: sessionUser, isLoading } = useQuery({
     queryKey: ["auth", "session"],
     queryFn: async () => {
       const response = await authApi.getSession();
@@ -31,7 +19,7 @@ export const useAuth = (requireAuth: boolean = false) => {
       }
       return null;
     },
-    enabled: isAuthCallback || hasSessionCookie() || !!user, // auth callback이거나 세션 쿠키가 있거나 localStorage에 user가 있을 때 API 호출
+    enabled: true, // 클라이언트에서만 실행, 백엔드에서 토큰 처리
     retry: false, // 401 에러 시 재시도하지 않음
     refetchOnWindowFocus: true // 인증은 포커스 시 체크 필요
     // 나머지는 전역 설정 사용 (5분 staleTime, 15분 gcTime)
@@ -67,8 +55,8 @@ export const useAuth = (requireAuth: boolean = false) => {
   useEffect(() => {
     if (sessionUser) {
       setUser(sessionUser);
-    } else if (!isLoading && !sessionUser && !hasSessionCookie() && user) {
-      // 쿠키도 없고 세션도 없으면서 localStorage에는 user가 있는 경우 = 세션 만료
+    } else if (!isLoading && !sessionUser && user) {
+      // 세션이 없으면서 localStorage에는 user가 있는 경우 = 세션 만료
       clearUser();
       if (requireAuth) {
         router.push("/");
