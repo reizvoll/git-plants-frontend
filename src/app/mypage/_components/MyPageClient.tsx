@@ -19,13 +19,14 @@ const MyPageClient = () => {
   const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
   const t = useTranslations("mypage");
 
-  // TanStack Query 데이터를 Zustand store에 동기화
+  // TanStack Query -> Zustand 동기화
   useEffect(() => {
     if (profileData && isAuthenticated) {
       setProfileData(profileData);
     }
   }, [profileData, isAuthenticated, setProfileData]);
 
+  // 신규 뱃지 알림 제어
   useEffect(() => {
     if (newBadges && newBadges.length > 0 && !profileLoading) {
       setShowBadgeNotification(true);
@@ -37,9 +38,7 @@ const MyPageClient = () => {
     setShowBadgeNotification(false);
     if (newBadges && currentBadgeIndex < newBadges.length - 1) {
       setCurrentBadgeIndex((prev) => prev + 1);
-      setTimeout(() => {
-        setShowBadgeNotification(true);
-      }, 100);
+      setTimeout(() => setShowBadgeNotification(true), 100);
     } else {
       clearNewBadges();
       setCurrentBadgeIndex(0);
@@ -48,7 +47,7 @@ const MyPageClient = () => {
 
   if (profileLoading || authLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-bg-03">
+      <div className="flex min-h-screen items-center justify-center bg-bg-03" role="status" aria-live="polite">
         <LoadingText text={t("loading")} className="text-subHeading text-primary-default" />
       </div>
     );
@@ -62,12 +61,25 @@ const MyPageClient = () => {
 
   return (
     <>
-      <div className="relative w-full bg-bg-03">
+      <main aria-labelledby="mypage-title" className="relative w-full bg-bg-03">
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-start gap-16 px-8 pb-48 pt-20">
-          <UserInfo />
-          <SelectTab />
+          <h1 id="mypage-title" className="sr-only">
+            "My Page"
+          </h1>
+
+          <section aria-labelledby="mypage-userinfo-heading" className="w-full">
+            <h2 id="mypage-userinfo-heading" className="sr-only">
+              "User information"
+            </h2>
+            <UserInfo />
+          </section>
+
+          <nav aria-label="Tab navigation" className="w-full">
+            <SelectTab />
+          </nav>
         </div>
-      </div>
+      </main>
+
       <ScrollTopButton />
 
       {currentBadge && showBadgeNotification && (
