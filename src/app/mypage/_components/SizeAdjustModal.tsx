@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button";
-import ModalItem from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, type KeyboardEvent } from "react";
 
@@ -52,7 +52,7 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
   if (!isOpen) return null;
 
   return (
-    <ModalItem isOpen={isOpen} onClose={onClose} mode="default">
+    <Modal isOpen={isOpen} onClose={onClose} mode="default">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -95,7 +95,7 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
           </Button>
         </div>
       </form>
-    </ModalItem>
+    </Modal>
   );
 };
 

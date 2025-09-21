@@ -1,5 +1,5 @@
 import Close from "@/assets/icons/Close";
-import ModalItem from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -15,7 +15,7 @@ type BadgeNotificationModalProps = {
 const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationModalProps) => {
   const t = useTranslations("mypage.badgeNotification");
   return (
-    <ModalItem isOpen={isOpen} onClose={onClose} mode="default">
+    <Modal isOpen={isOpen} onClose={onClose} mode="default">
       <div className="flex flex-col items-center gap-6">
         {/* 헤더 */}
         <div className="flex w-full items-center justify-between">
@@ -52,7 +52,7 @@ const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationMod
           {t("check")}
         </button>
       </div>
-    </ModalItem>
+    </Modal>
   );
 };
 

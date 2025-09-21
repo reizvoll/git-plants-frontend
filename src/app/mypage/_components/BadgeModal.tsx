@@ -1,6 +1,6 @@
 import Close from "@/assets/icons/Close";
 import badgeSlot from "@/assets/images/badge_slot.webp";
-import ModalItem from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -21,7 +21,7 @@ type BadgeModalProps = {
 const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
   const t = useTranslations("mypage.badgeModal");
   return (
-    <ModalItem isOpen={isOpen} onClose={onClose} mode="image">
+    <Modal isOpen={isOpen} onClose={onClose} mode="image">
       <div className="flex flex-col items-center gap-9">
         <div className="flex w-full items-center justify-between">
           <span className="text-subHeading text-text-01">{t("title")}</span>
@@ -48,7 +48,7 @@ const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
           </div>
         </div>
       </div>
-    </ModalItem>
+    </Modal>
   );
 };
 
