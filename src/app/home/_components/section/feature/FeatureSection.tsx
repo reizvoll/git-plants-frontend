@@ -12,7 +12,14 @@ const FeatureSection = () => {
   const { emblaRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useEmblaNavigation({ loop: false });
 
   return (
-    <section className="relative mx-auto flex w-full max-w-[1000px] items-center justify-center" aria-label="기능 소개">
+    <section
+      className="relative mx-auto flex w-full max-w-[1000px] items-center justify-center"
+      aria-labelledby="feature-title"
+    >
+      <h2 id="feature-title" className="sr-only">
+        기능 소개
+      </h2>
+
       <button
         className={`absolute left-0 z-10 text-text-03 transition-opacity ${
           !canScrollPrev ? "pointer-events-none opacity-0" : "opacity-100"
@@ -23,6 +30,7 @@ const FeatureSection = () => {
       >
         <CaretCircleLeft className="h-12 w-12" />
       </button>
+
       <button
         className={`absolute right-0 z-10 text-text-03 transition-opacity ${
           !canScrollNext ? "pointer-events-none opacity-0" : "opacity-100"
@@ -33,18 +41,25 @@ const FeatureSection = () => {
       >
         <CaretCircleRight className="h-12 w-12" />
       </button>
-      <div className="w-full overflow-hidden" ref={emblaRef} role="region" aria-label="기능 카드 슬라이더">
-        <div className="flex">
-          <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+
+      <div
+        className="w-full overflow-hidden"
+        ref={emblaRef}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="기능 카드 슬라이더"
+      >
+        <div className="flex w-full">
+          <div className="flex shrink-0 basis-full justify-center">
             <ModeSectionCard />
           </div>
-          <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+          <div className="flex shrink-0 basis-full justify-center">
             <RewardSectionCard />
           </div>
-          <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+          <div className="flex shrink-0 basis-full justify-center">
             <SystemSectionCard />
           </div>
-          <div className="flex min-w-0 flex-[0_0_100%] justify-center">
+          <div className="flex shrink-0 basis-full justify-center">
             <UpdateSectionCard />
           </div>
         </div>
