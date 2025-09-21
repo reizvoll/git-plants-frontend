@@ -23,17 +23,13 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
   const searchParams = useSearchParams();
   const [currentMode, setCurrentMode] = useState<CollectionMode>(initialMode);
   const { items, crops } = useProfileStore();
-  const addToast = useToastStore((state) => state.addToast);
+  const addToast = useToastStore((s) => s.addToast);
   const t = useTranslations("mypage.collectionSection");
 
   // URL에서 정렬 상태 가져오기
   const currentSort = (searchParams.get("sort") as SortType) || "latest";
 
-  const { sortedData, getSortOptions } = useCollectionSort({
-    items,
-    crops,
-    currentSort
-  });
+  const { sortedData, getSortOptions } = useCollectionSort({ items, crops, currentSort });
   const { backgrounds, pots, crops: ownedCrops } = sortedData;
 
   const handleModeChange = (mode: CollectionMode) => {
@@ -85,20 +81,25 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
     switch (currentMode) {
       case "CROP":
         return (
-          <div className="grid auto-rows-min grid-cols-10 items-start gap-[10px] leading-none">
+          <ul className="m-0 grid list-none auto-rows-min grid-cols-10 items-start gap-[10px] p-0 leading-none">
             {ownedCrops.length > 0 &&
               ownedCrops.map((crop) => (
-                <picture key={crop.id} className="group relative size-[76px]">
-                  <Image
-                    src={crop.monthlyPlant.cropImageUrl}
-                    alt={crop.monthlyPlant.name}
-                    className="object-contain"
-                    fill
-                  />
+                <li key={crop.id} className="group relative size-[76px]">
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={crop.monthlyPlant.cropImageUrl}
+                      alt={crop.monthlyPlant.name}
+                      className="object-contain"
+                      fill
+                    />
+                  </div>
                   <div className="text-border absolute -bottom-1 -right-1 flex items-center justify-center text-title1 text-white">
                     {crop.quantity}
                   </div>
-                  <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] flex -translate-x-1/2 -translate-y-full flex-col items-center justify-center whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
+                  <span
+                    aria-hidden="true"
+                    className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] flex -translate-x-1/2 -translate-y-full flex-col items-center justify-center whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100"
+                  >
                     <span className="block text-body2 text-primary-default">{crop.monthlyPlant.name}</span>
                     <span className="text-mini text-brown-500">
                       {t("acquiredAt")} {formatDate(crop.createdAt)}
@@ -111,16 +112,17 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
                       {t("price")} <Image src={seed} alt="seed" width={9} height={9} /> 10
                     </span>
                   </span>
-                </picture>
+                </li>
               ))}
-          </div>
+          </ul>
         );
+
       case "BACKGROUND":
         return (
-          <div className="grid auto-rows-min grid-cols-10 items-start gap-[10px] leading-none">
+          <ul className="m-0 grid list-none auto-rows-min grid-cols-10 items-start gap-[10px] p-0 leading-none">
             {backgrounds.length > 0 &&
               backgrounds.map((background) => (
-                <picture key={background.id} className="group relative size-[76px]">
+                <li key={background.id} className="group relative size-[76px]">
                   <Image
                     src={background.item.iconUrl}
                     alt={background.item.name}
@@ -129,59 +131,63 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
                     height={76}
                     priority
                   />
-                  <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
+                  <span
+                    aria-hidden="true"
+                    className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100"
+                  >
                     <span className="block text-body2 text-primary-default">{background.item.name}</span>
                     <span className="text-mini text-brown-500">
                       {t("acquiredAt")} {formatDate(background.acquiredAt)}
                     </span>
                   </span>
-                </picture>
+                </li>
               ))}
-          </div>
+          </ul>
         );
+
       case "POT":
         return (
-          <div className="grid auto-rows-min grid-cols-10 items-start gap-[18px] px-1 py-1 leading-none">
+          <ul className="m-0 grid list-none auto-rows-min grid-cols-10 items-start gap-[18px] px-1 py-1 leading-none">
             {pots.length > 0 &&
               pots.map((pot) => (
-                <picture key={pot.id} className="group relative size-[66px]">
+                <li key={pot.id} className="group relative size-[66px]">
                   <Image src={pot.item.iconUrl} alt={pot.item.name} width={66} height={66} className="object-cover" />
-                  <span className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100">
+                  <span
+                    aria-hidden="true"
+                    className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100"
+                  >
                     <span className="block text-body2 text-primary-default">{pot.item.name}</span>
                     <span className="text-mini text-brown-500">
                       {t("acquiredAt")} {formatDate(pot.acquiredAt)}
                     </span>
                   </span>
-                </picture>
+                </li>
               ))}
-          </div>
+          </ul>
         );
+
       default:
         return null;
     }
   };
 
   return (
-    <div className="flex w-full justify-center">
+    <section aria-labelledby="collection-title" className="flex w-full justify-center">
+      <h2 id="collection-title" className="sr-only">
+        collection
+      </h2>
+
       <div className="relative flex w-full flex-col gap-10 rounded-2xl bg-brown-100 px-12 py-12">
         <div className="flex h-12 w-full flex-row items-start justify-between">
           <Dropdown
             items={[
-              {
-                label: t("crop"),
-                onClick: () => handleModeChange("CROP"),
-                active: currentMode === "CROP"
-              },
+              { label: t("crop"), onClick: () => handleModeChange("CROP"), active: currentMode === "CROP" },
               {
                 label: t("background"),
                 onClick: () => handleModeChange("BACKGROUND"),
                 active: currentMode === "BACKGROUND"
               },
-              {
-                label: t("pot"),
-                onClick: () => handleModeChange("POT"),
-                active: currentMode === "POT"
-              }
+              { label: t("pot"), onClick: () => handleModeChange("POT"), active: currentMode === "POT" }
             ]}
             className="font-pretendard text-body1 text-sageGreen-900"
             mode="click"
@@ -206,6 +212,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
             </Button>
           </div>
         </div>
+
         <div className="flex w-full flex-col gap-6">
           <div className="relative flex w-full flex-col">
             <Image src={inventory} alt="inventory" priority />
@@ -213,7 +220,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
