@@ -7,7 +7,7 @@ import { useProfile } from "@/lib/hooks/mypage/useProfile";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import BadgeNotificationModal from "./BadgeNotificationModal";
+import BadgeNotificationModal from "./modal/BadgeNotificationModal";
 import SelectTab from "./SelectTab";
 import UserInfo from "./UserInfo";
 

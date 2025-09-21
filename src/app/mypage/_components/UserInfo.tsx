@@ -7,7 +7,7 @@ import { useProfileStore } from "@/lib/store/profileStore";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
-import BadgeModal from "./BadgeModal";
+import BadgeModal from "./modal/BadgeModal";
 
 const UserInfo = () => {
   const { user, seedCount, badges } = useProfileStore();

@@ -14,8 +14,8 @@ import { useToastStore } from "@/lib/store/useToaststore";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import PotPositionAdjustModal from "./PotPositionAdjustModal";
-import SizeAdjustModal from "./SizeAdjustModal";
+import PotPositionAdjustModal from "./modal/PotPositionAdjustModal";
+import SizeAdjustModal from "./modal/SizeAdjustModal";
 
 type Mode = "GARDEN" | "MINI";
 
