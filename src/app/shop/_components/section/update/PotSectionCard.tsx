@@ -21,14 +21,14 @@ const PotSectionCard = () => {
 
   return (
     <div className="mx-auto flex h-[700px] w-full flex-col items-center justify-center gap-10 rounded-2xl px-[60px] py-12 py-[3.75rem]">
-      <div className="w-full text-center text-heading text-primary-default">{t("title")}</div>
+      <h2 className="w-full text-center text-heading text-primary-default">{t("title")}</h2>
 
       <div className="flex w-full flex-col gap-10">
         {potItems.length > 0 ? (
-          <div className="flex w-full flex-row items-center justify-center gap-10">
+          <ul className="flex w-full flex-row items-center justify-center gap-10">
             {potItems.map((item) => (
-              <div key={item.id} className="flex flex-col items-center justify-center gap-6">
-                <picture className="flex w-full justify-center">
+              <li key={item.id} className="flex flex-col items-center justify-center gap-6">
+                <figure className="flex w-full justify-center">
                   <Image
                     src={item.imageUrl}
                     alt={item.name}
@@ -37,11 +37,16 @@ const PotSectionCard = () => {
                     className="object-cover"
                     priority
                   />
-                </picture>
-                <div className="flex flex-row items-center gap-4">
-                  <Image src={seed} alt="seed" width={24} height={33} />
-                  <span className="text-title1 text-text-03">{item.price}</span>
-                </div>
+                  <figcaption className="sr-only">{item.name}</figcaption>
+                </figure>
+
+                <dl className="flex flex-row items-center gap-4">
+                  <dd className="flex flex-row items-center gap-2">
+                    <Image src={seed} alt="seed" width={24} height={33} />
+                    <span className="text-title1 text-text-03">{item.price}</span>
+                  </dd>
+                </dl>
+
                 <Button
                   size="md"
                   variant="secondaryLine"
@@ -49,9 +54,9 @@ const PotSectionCard = () => {
                 >
                   {t("purchase")}
                 </Button>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         ) : (
           <div>{t("comingSoon")}</div>
         )}

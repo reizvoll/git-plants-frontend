@@ -31,38 +31,42 @@ const PotList = ({ items, loading }: PotListProps) => {
     setCurrentPage(newPage);
   };
 
-
   // TODO: 리팩토링 필요
   const SkeletonItem = () => (
-    <div className="grid h-[220px] grid-rows-[1fr_auto] items-center justify-center gap-6">
+    <li className="grid h-[220px] grid-rows-[1fr_auto] items-center justify-center gap-6">
       <div className="flex flex-col items-center justify-center gap-6">
-        <div className="h-[100px] w-[100px] animate-pulse rounded-lg bg-gray-300"></div>
+        <div className="h-[100px] w-[100px] animate-pulse rounded-lg bg-gray-300" />
         <div className="flex flex-row items-center gap-4">
-          <div className="h-[33px] w-[24px] animate-pulse rounded bg-gray-300"></div>
-          <div className="h-6 w-16 animate-pulse rounded bg-gray-300"></div>
+          <div className="h-[33px] w-[24px] animate-pulse rounded bg-gray-300" />
+          <div className="h-6 w-16 animate-pulse rounded bg-gray-300" />
         </div>
       </div>
-      <div className="h-10 w-24 animate-pulse rounded bg-gray-300"></div>
-    </div>
+      <div className="h-10 w-24 animate-pulse rounded bg-gray-300" />
+    </li>
   );
 
   return (
-    <div className="shadow-strong relative mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]">
-      <div className="text-center text-heading text-primary-default">{t("title")}</div>
+    <section
+      aria-labelledby="pot-list-title"
+      className="shadow-strong relative mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]"
+    >
+      <h2 id="pot-list-title" className="text-center text-heading text-primary-default">
+        {t("title")}
+      </h2>
 
       <div className="flex w-full flex-col gap-10">
         {loading ? (
-          <div className="flex w-full flex-row items-center justify-center gap-10">
+          <ul className="flex w-full flex-row items-center justify-center gap-10">
             {Array.from({ length: 5 }).map((_, index) => (
               <SkeletonItem key={index} />
             ))}
-          </div>
+          </ul>
         ) : currentPotItems.length > 0 ? (
-          <div className="flex w-full flex-row items-center justify-center gap-10">
+          <ul className="flex w-full flex-row items-center justify-center gap-10">
             {currentPotItems.map((item) => (
-              <div key={item.id} className="grid h-[220px] grid-rows-[1fr_auto] items-center justify-center gap-6">
+              <li key={item.id} className="grid h-[220px] grid-rows-[1fr_auto] items-center justify-center gap-6">
                 <div className="flex flex-col items-center justify-center gap-6">
-                  <picture className="flex h-[100px] w-[100px] justify-center">
+                  <figure className="flex h-[100px] w-[100px] justify-center">
                     <Image
                       src={item.imageUrl}
                       alt={item.name}
@@ -71,7 +75,9 @@ const PotList = ({ items, loading }: PotListProps) => {
                       className="object-cover"
                       priority
                     />
-                  </picture>
+                    <figcaption className="sr-only">{item.name}</figcaption>
+                  </figure>
+
                   <div className="flex flex-row items-center gap-4">
                     <Image src={seed} alt="seed" width={24} height={33} />
                     <span className="text-title1 text-text-03">{item.price}</span>
@@ -86,9 +92,9 @@ const PotList = ({ items, loading }: PotListProps) => {
                 >
                   {purchasing ? t("purchasing") : t("purchase")}
                 </Button>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         ) : (
           <div className="flex h-[400px] w-full flex-row items-center justify-center">
             <div className="text-center text-body1 text-text-03">{t("notReady")}</div>
@@ -98,12 +104,14 @@ const PotList = ({ items, loading }: PotListProps) => {
 
       {/* 페이지네이션 */}
       {items.length > limit && (
-        <Pagination
-          Results={{ total: items.length }}
-          page={currentPage}
-          handlePageChange={handlePageChange}
-          limit={limit}
-        />
+        <nav aria-label="paginationAria">
+          <Pagination
+            Results={{ total: items.length }}
+            page={currentPage}
+            handlePageChange={handlePageChange}
+            limit={limit}
+          />
+        </nav>
       )}
 
       {/* 오버레이 적용 */}
@@ -112,7 +120,7 @@ const PotList = ({ items, loading }: PotListProps) => {
           <div className="text-center text-subtitle text-text-01">{t("notReady2")}</div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 
