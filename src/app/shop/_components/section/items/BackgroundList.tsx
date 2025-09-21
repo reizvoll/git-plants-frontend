@@ -27,44 +27,46 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
   const endIndex = startIndex + limit;
   const currentBackgroundItems = items.slice(startIndex, endIndex);
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
-
+  const handlePageChange = (newPage: number) => setCurrentPage(newPage);
 
   // TODO: 리팩토링 필요
   const SkeletonItem = () => (
-    <div className="grid h-[400px] grid-rows-[1fr_auto] items-center gap-6">
+    <li className="h[400px] grid grid-rows-[1fr_auto] items-center gap-6">
       <div className="flex items-center justify-center">
-        <div className="h-[300px] w-[200px] animate-pulse rounded-lg bg-gray-300"></div>
+        <div className="h-[300px] w-[200px] animate-pulse rounded-lg bg-gray-300" />
       </div>
       <div className="flex flex-col items-center gap-4">
         <div className="flex flex-row items-center gap-4">
-          <div className="h-[33px] w-[24px] animate-pulse rounded bg-gray-300"></div>
-          <div className="h-6 w-16 animate-pulse rounded bg-gray-300"></div>
+          <div className="h-[33px] w-[24px] animate-pulse rounded bg-gray-300" />
+          <div className="h-6 w-16 animate-pulse rounded bg-gray-300" />
         </div>
-        <div className="h-10 w-24 animate-pulse rounded bg-gray-300"></div>
+        <div className="h-10 w-24 animate-pulse rounded bg-gray-300" />
       </div>
-    </div>
+    </li>
   );
 
   return (
-    <div className="shadow-strong relative mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]">
-      <div className="text-center text-heading text-primary-default">{t("title")}</div>
+    <section
+      aria-labelledby="background-list"
+      className="shadow-strong relative mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]"
+    >
+      <h2 id="background-list" className="text-center text-heading text-primary-default">
+        {t("title")}
+      </h2>
 
       <div className="flex w-full flex-col gap-10">
         {loading ? (
-          <div className="flex w-full flex-row items-end justify-center gap-10">
+          <ul className="flex w-full flex-row items-end justify-center gap-10">
             {Array.from({ length: 5 }).map((_, index) => (
               <SkeletonItem key={index} />
             ))}
-          </div>
+          </ul>
         ) : currentBackgroundItems.length > 0 ? (
-          <div className="flex w-full flex-row items-end justify-center gap-10">
+          <ul className="flex w-full flex-row items-end justify-center gap-10">
             {currentBackgroundItems.map((item) => (
-              <div key={item.id} className="grid h-[400px] grid-rows-[1fr_auto] items-center gap-6">
+              <li key={item.id} className="grid h-[400px] grid-rows-[1fr_auto] items-center gap-6">
                 <div className="flex items-center justify-center">
-                  <picture className="relative h-[300px] w-[200px] justify-center overflow-hidden">
+                  <figure className="relative h-[300px] w-[200px] justify-center overflow-hidden">
                     <Image
                       src={item.imageUrl}
                       alt={item.name}
@@ -73,7 +75,8 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
                       className="object-cover"
                       priority
                     />
-                  </picture>
+                    <figcaption className="sr-only">{item.name}</figcaption>
+                  </figure>
                 </div>
 
                 <div className="flex flex-col items-center gap-4">
@@ -91,9 +94,9 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
                     {purchasing ? t("purchasing") : t("purchase")}
                   </Button>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         ) : (
           <div className="flex h-[400px] w-full flex-row items-center justify-center">
             <div className="text-center text-body1 text-text-03">{t("notReady")}</div>
@@ -103,12 +106,14 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
 
       {/* 페이지네이션 */}
       {items.length > limit && (
-        <Pagination
-          Results={{ total: items.length }}
-          page={currentPage}
-          handlePageChange={handlePageChange}
-          limit={limit}
-        />
+        <nav aria-label="paginationAria">
+          <Pagination
+            Results={{ total: items.length }}
+            page={currentPage}
+            handlePageChange={handlePageChange}
+            limit={limit}
+          />
+        </nav>
       )}
 
       {/* 오버레이 적용 */}
@@ -117,7 +122,7 @@ const BackgroundList = ({ items, loading }: BackgroundListProps) => {
           <div className="text-center text-subtitle text-text-01">{t("notReady2")}</div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 
