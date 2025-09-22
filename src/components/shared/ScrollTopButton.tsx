@@ -65,7 +65,7 @@ const ScrollTopButton = ({
     <div
       className={clsx("z-40 h-fit w-fit", {
         // 단독 사용 시 FloatingButton과 동일한 위치 적용
-        "fixed bottom-12 right-[6.875rem] tb:bottom-[80px] tb:right-[24px]": !useFlexLayout,
+        "fixed bottom-12 right-[6.875rem]": !useFlexLayout,
 
         // 부모가 flex 레이아웃일 때는 relative 적용
         relative: useFlexLayout
@@ -77,7 +77,7 @@ const ScrollTopButton = ({
         style={buttonInlineStyle}
         className={clsx(
           "shadow-strong flex items-center justify-center rounded-full bg-sageGreen-700 text-bg-01 hover:bg-sageGreen-500 focus:outline-none",
-          "h-[4rem] w-[4rem] tb:h-[2.5rem] tb:w-[2.5rem]"
+          "h-[4rem] w-[4rem]"
         )}
         aria-label="최상단으로 이동"
       >

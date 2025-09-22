@@ -29,12 +29,12 @@ const HeaderContent = () => {
 
   return (
     <header role="banner" className="fixed left-0 top-0 z-50 w-full bg-white">
-      <section className="mx-auto flex h-20 w-full max-w-[75rem] items-center justify-between px-4 md:px-6 lg:px-8">
+      <section className="mx-auto flex h-20 w-full max-w-[75rem] items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2.5">
           <span className="text-subHeading text-text-04">Git-Plants</span>
         </Link>
 
-        <nav aria-label="Main navigation" className="flex items-center gap-4 md:gap-6">
+        <nav aria-label="Main navigation" className="flex items-center gap-4">
           {user ? (
             <Link
               href="/mypage"
@@ -47,13 +47,13 @@ const HeaderContent = () => {
             <Button
               variant="gray"
               size="md"
-              className="flex h-[2.9375rem] items-center justify-center gap-2 rounded-lg bg-gray-800 px-4 py-3 md:px-[2.1875rem]"
+              className="flex h-[2.9375rem] items-center justify-center gap-2 rounded-lg bg-gray-800 px-4 py-3"
               onClick={login}
               aria-label="Sign in GitHub"
             >
               <div className="flex items-center gap-2">
                 <GithubIcon width={20} height={20} className="text-text-01" aria-hidden="true" />
-                <span className="hidden text-body1 text-white md:flex">{t("login")}</span>
+                <span className="hidden text-body1 text-white">{t("login")}</span>
               </div>
             </Button>
           )}

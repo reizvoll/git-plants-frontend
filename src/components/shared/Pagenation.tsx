@@ -21,13 +21,13 @@ const Pagination = ({ Results, page, handlePageChange, limit = 6 }: PaginationPr
   const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
   return (
-    <div className="mt-16 flex items-center justify-center gap-3 tb:mt-6">
+    <div className="mt-16 flex items-center justify-center gap-3">
       {/* <button
         disabled={page === 1}
         onClick={() => handlePageChange(1)}
         className="flex h-7 w-7 items-center justify-center disabled:text-text-02"
       >
-        <CaretDoubleLeft size={16} weight="bold" className="tb:w-[13px]" />
+        <CaretDoubleLeft size={16} weight="bold" className= />
       </button> */}
 
       <button
@@ -35,7 +35,7 @@ const Pagination = ({ Results, page, handlePageChange, limit = 6 }: PaginationPr
         onClick={() => handlePageChange(page - 1)}
         className="flex h-7 w-7 items-center justify-center disabled:text-text-02"
       >
-        <CaretLeft className="h-4 w-4 tb:w-[13px]" strokeWidth={3} />
+        <CaretLeft className="h-4 w-4" strokeWidth={3} />
       </button>
 
       {Array.from({ length: endPage - startPage + 1 }, (_, idx) => startPage + idx).map((pageNumber) => (
@@ -59,7 +59,7 @@ const Pagination = ({ Results, page, handlePageChange, limit = 6 }: PaginationPr
         onClick={() => handlePageChange(page + 1)}
         className="flex h-7 w-7 items-center justify-center disabled:text-text-02"
       >
-        <CaretRight className="h-4 w-4 tb:w-[13px]" strokeWidth={3} />
+        <CaretRight className="h-4 w-4" strokeWidth={3} />
       </button>
 
       {/* <button
@@ -67,7 +67,7 @@ const Pagination = ({ Results, page, handlePageChange, limit = 6 }: PaginationPr
         onClick={() => handlePageChange(totalPages)}
         className="flex h-7 w-7 items-center justify-center disabled:text-text-02"
       >
-        <CaretDoubleRight size={16} weight="bold" className="tb:w-[13px]" />
+        <CaretDoubleRight size={16} weight="bold"/>
       </button> */}
     </div>
   );

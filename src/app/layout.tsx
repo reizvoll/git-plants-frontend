@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <body className={`${pretendard.className} ${galmuri.className} overflow-x-hidden`}>
           <NextIntlClientProvider locale={locale}>
             <Header />
-            <main className="relative mx-auto w-full pt-20 tb:pt-0">{children}</main>
+            <main className="relative mx-auto w-full pt-20">{children}</main>
             <Footer />
             <Toast />
           </NextIntlClientProvider>

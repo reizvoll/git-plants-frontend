@@ -14,12 +14,12 @@ const Toast = () => {
       {toasts.slice(0, 5).map((toast, index) => (
         <div
           key={index}
-          className="text-body relative flex min-h-[52px] min-w-[400px] animate-fadeIn items-center justify-between gap-2 overflow-hidden px-14 font-pretendard text-white tb:min-h-[48px] tb:min-w-[330px] tb:px-12"
+          className="text-body relative flex min-h-[52px] min-w-[400px] animate-fadeIn items-center justify-between gap-2 overflow-hidden px-14 font-pretendard text-white"
         >
           <div className="click-box -z-10 rounded-full bg-black bg-opacity-40"></div>
           <i
             className={clsx(
-              "absolute left-4 flex aspect-square w-7 flex-shrink-0 items-center justify-center rounded-full tb:w-5",
+              "absolute left-4 flex aspect-square w-7 flex-shrink-0 items-center justify-center rounded-full",
               {
                 "bg-status-warning text-black": toast.type === "warning",
                 "bg-status-success": toast.type === "success"

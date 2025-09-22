@@ -9,7 +9,7 @@ const FooterContent = () => {
 
   return (
     <footer className="flex h-52 w-full items-center bg-gray-700">
-      <section className="mx-auto flex w-full max-w-[75rem] flex-col items-start justify-center gap-6 px-4 md:px-6 lg:px-8">
+      <section className="mx-auto flex w-full max-w-[75rem] flex-col items-start justify-center gap-6 px-4">
         <header className="flex items-center gap-4">
           <h2 id="site-footer-title" className="text-subHeading text-text-04">
             Git-Plants
