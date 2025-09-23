@@ -190,7 +190,7 @@ const config: Config = {
         slideOut: "slideOut 0.3s ease-in-out"
       },
       screens: {
-        xs: "240px", // Extreme small (≥240px)
+        xs: "280px", // Extra small (≥280px)
         sm: "380px", // default mobile (≥380px)
         mb: "480px", // Mobile (≥480px)
         tb: "768px", // Tablet (≥768px)
@@ -205,6 +205,7 @@ const config: Config = {
       borderColor: ["checked"], // checked 상태에서 테두리색 활성화
       textColor: ["checked"] // checked 상태에서 텍스트 색상 활성화
     }
-  }
+  },
+  plugins: [require("tailwindcss-animate")]
 };
 export default config;
