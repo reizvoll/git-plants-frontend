@@ -190,10 +190,12 @@ const config: Config = {
         slideOut: "slideOut 0.3s ease-in-out"
       },
       screens: {
-        lt: { max: "1200px" }, // 일반 노트북 크기
-        tb: { max: "768px" }, // 일반 타블렛 크기
-        mb: { max: "480px" }, // 가장 큰 폰 크기
-        mn: { max: "375px" } // 모바일 디자인 시안 크기
+        xs: "280px", // Extra small (≥280px)
+        sm: "380px", // default mobile (≥380px)
+        mb: "480px", // Mobile (≥480px)
+        tb: "768px", // Tablet (≥768px)
+        lt: "1024px", // Desktop (≥1024px)
+        xl: "1200px" // Large desktop (≥1200px)
       }
     }
   },
