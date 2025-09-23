@@ -35,7 +35,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <body className={`${pretendard.className} ${galmuri.className} overflow-x-hidden`}>
           <NextIntlClientProvider locale={locale}>
             <Header />
-            <main className="relative mx-auto w-full pt-20">{children}</main>
+
+            <main
+              id="main-content"
+              role="main"
+              className="relative mx-auto w-full max-w-[1200px] px-4"
+              style={{ paddingTop: "max(env(safe-area-inset-top), var(--header-h, clamp(60px, 15vw, 80px)))" }}
+            >
+              {children}
+            </main>
+
             <Footer />
             <Toast />
           </NextIntlClientProvider>
