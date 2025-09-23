@@ -65,7 +65,7 @@ const ScrollTopButton = ({
     <div
       className={clsx("z-40 h-fit w-fit", {
         // 단독 사용 시 FloatingButton과 동일한 위치 적용
-        "fixed bottom-12 right-[6.875rem]": !useFlexLayout,
+        "fixed bottom-12 right-4 xs:right-6 sm:right-8 tb:right-12 lt:right-[6.875rem]": !useFlexLayout,
 
         // 부모가 flex 레이아웃일 때는 relative 적용
         relative: useFlexLayout
