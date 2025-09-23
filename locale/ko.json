@@ -13,7 +13,8 @@
   "navigation": {
     "login": "로그인",
     "logout": "로그아웃",
-    "mypage": "마이페이지"
+    "mypage": "마이페이지",
+    "home": "홈"
   },
   "plants-note": {
     "title": "이달의 식물노트:",
@@ -38,8 +39,7 @@
     "feedback": "문의 및 피드백은",
     "githubIssues": "GitHub Issues",
     "feedbackEnd": "에 남겨주세요.",
-    "copyright": "창작물에 대한 무단 복제 및 상업적 사용을 금합니다.",
-    "copyrightNotice": "© 2025 reizvoll. All illustrations and UI elements are copyright protected."
+    "copyrightNotice": "© 2025 reizvoll"
   },
   "feature": {
     "mode": {
@@ -80,7 +80,7 @@
     },
     "cta": {
       "title": "지금, 당신의 여정을 시작해보세요!",
-      "subtitle": "지금 가입하고, 매일 작은 성장을 함께 기록하며 \n나만의 정원을 가꿔봐요!",
+      "subtitle": "가입하고, 매일 작은 성장을 함께 기록하며, \n나만의 정원을 가꿔봐요!",
       "startButton": "시작하기",
       "storeButton": "상점 바로가기",
       "moreInfoButton": "더 알아보기"

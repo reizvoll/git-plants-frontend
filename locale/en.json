@@ -12,8 +12,9 @@
   },
   "navigation": {
     "login": "Login",
-    "logout": "logout",
-    "mypage": "mypage"
+    "logout": "Logout",
+    "mypage": "MyPage",
+    "home": "Home"
   },
   "plants-note": {
     "title": "Monthly Plant Note :",
@@ -38,8 +39,7 @@
     "feedback": "If you have any questions or feedback, feel free to drop an issue on",
     "githubIssues": "GitHub Issues",
     "feedbackEnd": ".",
-    "copyright": "Do not reproduce or use for commercial purposes without permission.",
-    "copyrightNotice": "© 2025 reizvoll. All illustrations and UI elements are copyright protected."
+    "copyrightNotice": "© 2025 reizvoll"
   },
   "feature": {
     "mode": {
@@ -80,7 +80,7 @@
     },
     "cta": {
       "title": "Start your journey today!",
-      "subtitle": "Join us and watch your garden grow, one seed at a time!",
+      "subtitle": "Join and watch your garden grow, \none seed at a time!",
       "startButton": "Get started",
       "storeButton": "Go to shop",
       "moreInfoButton": "More Info"
