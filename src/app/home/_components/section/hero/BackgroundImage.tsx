@@ -12,7 +12,7 @@ const BackgroundImage = ({ blurDataURL }: BackgroundImageProps) => {
         src={background}
         alt="Hero background"
         priority
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover object-center"
         quality={80}
         sizes="100vw"
         fill
