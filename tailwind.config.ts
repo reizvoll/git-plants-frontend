@@ -206,6 +206,23 @@ const config: Config = {
       textColor: ["checked"] // checked 상태에서 텍스트 색상 활성화
     }
   },
-  plugins: [require("tailwindcss-animate")]
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }: { addUtilities: (utilities: Record<string, any>) => void }) {
+      const newUtilities = {
+        ".scrollbar-hide": {
+          /* IE and Edge */
+          "-ms-overflow-style": "none",
+          /* Firefox */
+          "scrollbar-width": "none",
+          /* Safari and Chrome */
+          "&::-webkit-scrollbar": {
+            display: "none"
+          }
+        }
+      };
+      addUtilities(newUtilities);
+    }
+  ]
 };
 export default config;
