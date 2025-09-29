@@ -17,21 +17,18 @@ interface NoteModalProps {
 
 const NoteModal = ({ isOpen, onClose, monthlyPlant, language }: NoteModalProps) => {
   const t = useTranslations("plants-note");
-
-  // 모달이 열릴 때 외부 스크롤 잠금
   useLockScroll(isOpen);
 
   useEffect(() => {
     const handleResize = () => {
-      // 화면이 태블릿 브레이크포인트(768px)보다 크면 모달 닫기
-      if (window.innerWidth >= 768) {
+      // close modal when screen size is greater than 480px
+      if (window.innerWidth >= 480) {
         onClose();
       }
     };
 
     if (isOpen) {
       window.addEventListener("resize", handleResize);
-      // 초기 체크
       handleResize();
     }
 
