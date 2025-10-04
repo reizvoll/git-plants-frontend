@@ -47,7 +47,7 @@ const NoteSection = () => {
       {isLoading ? (
         <>
           {/* mobile */}
-          <div className="relative aspect-[1000/634] w-full overflow-hidden mb:hidden">
+          <div className="relative aspect-[1000/634] w-full overflow-hidden lt:hidden">
             <Image src={note} alt="Note" fill className="object-cover" sizes="100vw" />
             <div className="absolute inset-0 flex items-center justify-center bg-black/50">
               <LoadingText text="Loading..." className="text-body1 text-white xs:text-title2 sm:text-title1" />
@@ -55,7 +55,7 @@ const NoteSection = () => {
           </div>
 
           {/* desktop */}
-          <div className="hidden mb:flex mb:w-full mb:justify-center">
+          <div className="hidden lt:flex lt:w-full lt:justify-center">
             <div className="relative aspect-[1000/634] w-full max-w-[1000px]">
               <Image
                 src={note}
@@ -74,7 +74,7 @@ const NoteSection = () => {
       ) : error || !monthlyPlant ? (
         <>
           {/* mobile */}
-          <div className="relative aspect-[1000/634] w-full overflow-hidden tb:hidden">
+          <div className="relative aspect-[1000/634] w-full overflow-hidden lt:hidden">
             <Image src={note} alt="Note" fill className="object-cover" sizes="100vw" />
             <div className="absolute inset-0 flex items-center justify-center bg-black/50">
               <span className="text-body1 text-white xs:text-title2 sm:text-title1">준비중입니다.</span>
@@ -82,7 +82,7 @@ const NoteSection = () => {
           </div>
 
           {/* desktop */}
-          <div className="hidden mb:flex mb:w-full mb:justify-center">
+          <div className="hidden lt:flex lt:w-full lt:justify-center">
             <div className="relative aspect-[1000/634] w-full max-w-[1000px]">
               <Image
                 src={note}
@@ -102,7 +102,7 @@ const NoteSection = () => {
         <>
           {/* mobile */}
           <div
-            className="relative aspect-[1000/634] w-full cursor-pointer overflow-hidden mb:hidden"
+            className="relative aspect-[1000/634] w-full cursor-pointer overflow-hidden tb:hidden"
             onClick={() => setIsModalOpen(true)}
           >
             <Image src={note} alt="Note" fill className="object-cover" sizes="100vw" />
@@ -130,7 +130,7 @@ const NoteSection = () => {
           </div>
 
           {/* tablet */}
-          <div className="relative hidden aspect-[1000/634] w-full overflow-hidden mb:flex mb:w-full mb:justify-center tb:hidden">
+          <div className="relative hidden aspect-[1000/634] w-full overflow-hidden mb:hidden tb:flex tb:w-full tb:justify-center lt:hidden">
             <Image src={note} alt="Note" fill className="object-cover" sizes="100vw" />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-4">
               <h2
@@ -161,7 +161,7 @@ const NoteSection = () => {
           </div>
 
           {/* desktop */}
-          <div className="hidden tb:flex tb:w-full tb:justify-center lt:flex lt:w-full lt:justify-center">
+          <div className="hidden lt:flex lt:w-full lt:justify-center">
             <div className="relative aspect-[1000/634] w-full max-w-[1000px]">
               <Image
                 src={note}
