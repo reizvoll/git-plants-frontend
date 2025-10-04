@@ -22,7 +22,7 @@ export default function HomePage() {
     <main className="relative -ml-[calc(50vw-50%)] w-screen">
       <HeroSection backgroundBlur={background.blurDataURL || ""} />
       <div className="w-full bg-bg-02">
-        <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-60 pb-48 pt-32">
+        <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-60 px-5 pb-48 pt-32 mb:px-8 tb:px-10">
           <NoteSection />
           <FeatureSection />
           <HowItWorksSection />
