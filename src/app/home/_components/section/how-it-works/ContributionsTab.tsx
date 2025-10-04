@@ -39,12 +39,16 @@ const ContributionsTab = () => {
               aria-controls={panelId}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(tab.key)}
-              className={`flex-1 py-2 text-center transition-colors ${
+              className={`flex-1 px-2 py-2 text-center transition-colors mb:px-4 ${
                 selected ? "text-primary-strong" : "text-brown-300"
               }`}
             >
-              <div className={`font-pretendard text-body1 ${selected ? "font-bold" : ""}`}>{tab.title}</div>
-              <div className="mt-1 whitespace-pre-line font-pretendard text-small">{tab.description}</div>
+              <div className={`font-pretendard text-caption mb:text-body1 ${selected ? "font-bold" : ""}`}>
+                {tab.title}
+              </div>
+              <div className="mt-0.5 hidden whitespace-pre-line font-pretendard text-small mb:mt-1 mb:block">
+                {tab.description}
+              </div>
             </button>
           );
         })}
@@ -52,24 +56,61 @@ const ContributionsTab = () => {
         <div
           className="absolute bottom-0 h-[2px] bg-primary-strong transition-all duration-300"
           style={{ width: `${slice}%`, left: `${slice * (activeIndex < 0 ? 0 : activeIndex)}%` }}
+          aria-hidden="true"
         />
       </div>
 
       {/* Add Images (later) */}
-      <div id={panelId} role="tabpanel" aria-labelledby={activeTabId} className="pt-10">
+      <div id={panelId} role="tabpanel" aria-labelledby={activeTabId} className="pt-6 mb:pt-10">
         {active === "tab1" && (
-          <div className="flex w-full flex-col items-center justify-center">
-            <Image src={noimage} alt="Tab preview" width={500} loading="lazy" />
+          <div className="flex w-full flex-col items-center justify-center gap-4">
+            <div className="relative aspect-video w-full max-w-[500px]">
+              <Image
+                src={noimage}
+                alt="Tab 1 preview"
+                fill
+                className="object-contain"
+                sizes="(max-width: 480px) 100vw, 500px"
+                loading="lazy"
+              />
+            </div>
+            <p className="whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:hidden">
+              {tabs[0].description}
+            </p>
           </div>
         )}
         {active === "tab2" && (
-          <div className="flex flex-col items-center justify-center">
-            <Image src={noimage} alt="Tab preview" width={500} loading="lazy" />
+          <div className="flex w-full flex-col items-center justify-center gap-4">
+            <div className="relative aspect-video w-full max-w-[500px]">
+              <Image
+                src={noimage}
+                alt="Tab 2 preview"
+                fill
+                className="object-contain"
+                sizes="(max-width: 480px) 100vw, 500px"
+                loading="lazy"
+              />
+            </div>
+            <p className="whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:hidden">
+              {tabs[1].description}
+            </p>
           </div>
         )}
         {active === "tab3" && (
-          <div className="flex flex-col items-center justify-center">
-            <Image src={noimage} alt="Tab preview" width={500} loading="lazy" />
+          <div className="flex w-full flex-col items-center justify-center gap-4">
+            <div className="relative aspect-video w-full max-w-[500px]">
+              <Image
+                src={noimage}
+                alt="Tab 3 preview"
+                fill
+                className="object-contain"
+                sizes="(max-width: 480px) 100vw, 500px"
+                loading="lazy"
+              />
+            </div>
+            <p className="whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:hidden">
+              {tabs[2].description}
+            </p>
           </div>
         )}
       </div>
