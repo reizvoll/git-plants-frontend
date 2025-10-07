@@ -10,18 +10,20 @@ const RewardSectionCard = () => {
   return (
     <article
       aria-labelledby="reward-card-title"
-      className="mx-auto flex h-[556px] w-full max-w-[800px] flex-col items-center justify-center gap-10 rounded-2xl bg-secondary-light py-[3.75rem]"
+      className="mx-auto flex w-full max-w-[800px] flex-col items-center justify-center gap-3 rounded-xl bg-secondary-light px-3 py-5 xs:gap-4 xs:px-4 xs:py-6 sm:gap-5 sm:px-5 sm:py-7"
     >
-      <h3 id="reward-card-title" className="w-full text-center text-subtitle text-text-04">
+      <h3 id="reward-card-title" className="w-full text-center text-caption text-text-04 xs:text-body1 sm:text-title2">
         {t("title")}
       </h3>
 
-      <figure className="h-auto w-[200px]">
+      <figure className="h-auto w-[80px] xs:w-[110px] sm:w-[140px]">
         <Image src={sysflow} alt="System flow illustration" loading="lazy" className="h-full w-auto" />
         <figcaption className="sr-only">{t("title")}</figcaption>
       </figure>
 
-      <p className="w-full whitespace-pre-line text-center text-body2 text-text-03">{t("description")}</p>
+      <p className="w-full whitespace-pre-line px-2 text-center text-[9px] text-text-03 xs:text-[11px] sm:text-caption">
+        {t("description")}
+      </p>
     </article>
   );
 };
