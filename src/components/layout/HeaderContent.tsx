@@ -142,10 +142,8 @@ const HeaderContent = () => {
         <div className="flex items-center gap-2 xs:gap-2.5 sm:gap-3 tb:hidden">
           {/* GitHub Login Button (only if not logged in) */}
           {!user && (
-            <Button
-              variant="gray"
-              size="sm"
-              className="flex aspect-square items-center justify-center rounded-lg bg-gray-800 p-2 xs:p-2.5 sm:p-3"
+            <button
+              className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-800 hover:bg-gray-700"
               onClick={login}
               aria-label="Sign in GitHub"
             >
@@ -155,7 +153,7 @@ const HeaderContent = () => {
                 className="text-text-01 xs:h-4 xs:w-4 sm:h-4 sm:w-4"
                 aria-hidden="true"
               />
-            </Button>
+            </button>
           )}
 
           {/* User Profile (if logged in) */}
