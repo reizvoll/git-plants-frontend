@@ -61,7 +61,7 @@ const MyPageClient = () => {
 
   return (
     <>
-      <main aria-labelledby="mypage-title" className="relative w-full bg-bg-03">
+      <main aria-labelledby="mypage-title" className="relative -ml-[calc(50vw-50%)] w-screen bg-bg-03">
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-start gap-16 px-8 pb-48 pt-20">
           <h1 id="mypage-title" className="sr-only">
             My Page
