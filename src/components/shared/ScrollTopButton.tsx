@@ -45,10 +45,12 @@ const ScrollTopButton = ({
   // isFloatingOpen이 true면 렌더링하지 않음 (조건부 렌더링, 모든 hook 호출 이후에 하기)
   if (isFloatingOpen) return null;
 
-  // 최상단으로 이동
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  // 최상단으로 이동 + 포커스 제거
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    (document.activeElement as HTMLElement)?.blur();
+  };
 
-  // 나타날 때랑 사라질때의 속성 분리..
   const buttonInlineStyle = isVisible
     ? {
         opacity: 1, // 나타날 때
@@ -76,12 +78,12 @@ const ScrollTopButton = ({
         onClick={scrollToTop}
         style={buttonInlineStyle}
         className={clsx(
-          "shadow-strong flex items-center justify-center rounded-full bg-sageGreen-700 text-bg-01 hover:bg-sageGreen-500 focus:outline-none",
-          "h-[4rem] w-[4rem]"
+          "shadow-strong flex items-center justify-center rounded-full bg-sageGreen-700 text-bg-01 focus:outline-none [@media(hover:hover)]:hover:bg-sageGreen-500",
+          "h-[3rem] w-[3rem] mb:h-[3.5rem] mb:w-[3.5rem] tb:h-[4rem] tb:w-[4rem]"
         )}
         aria-label="최상단으로 이동"
       >
-        <ArrowUp className="h-6 w-6" strokeWidth={3} />
+        <ArrowUp className="h-4 w-4 mb:h-5 mb:w-5 tb:h-6 tb:w-6" strokeWidth={3} />
       </button>
     </div>
   );

@@ -32,7 +32,7 @@ const FooterContent = () => {
       </section>
 
       {/* Desktop Footer */}
-      <section className="mx-auto hidden min-h-[120px] w-full max-w-full flex-col items-start justify-center gap-6 px-4 tb:flex tb:min-h-[160px] tb:max-w-[75rem] tb:gap-8 tb:px-8 tb:py-8 lt:min-h-[208px] lt:py-12">
+      <section className="mx-auto hidden min-h-[120px] w-full max-w-full flex-col items-start justify-center gap-6 px-4 tb:flex tb:max-h-[210px] tb:max-w-[75rem] tb:gap-8 tb:px-8 tb:py-8 lt:py-12">
         <header className="flex items-center gap-4 tb:gap-6">
           <h2 id="site-footer-title" className="text-title1 text-text-04 tb:text-subHeading">
             Git-Plants
