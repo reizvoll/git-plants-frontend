@@ -49,7 +49,11 @@ const MyPageClient = () => {
 
   if (profileLoading || authLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-bg-03" role="status" aria-live="polite">
+      <div
+        className="relative -ml-[calc(50vw-50%)] flex min-h-screen w-screen items-center justify-center bg-bg-03"
+        role="status"
+        aria-live="polite"
+      >
         <LoadingText text={t("loading")} className="text-subHeading text-primary-default" />
       </div>
     );
