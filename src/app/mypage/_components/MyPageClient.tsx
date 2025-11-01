@@ -10,10 +10,11 @@ import { useEffect, useState } from "react";
 import BadgeNotificationModal from "./modal/BadgeNotificationModal";
 import SelectTab from "./SelectTab";
 import UserInfo from "./UserInfo";
+import UserInfoDesktop from "./UserInfoDesktop";
 
 const MyPageClient = () => {
   const { isLoading: authLoading, isAuthenticated } = useAuth(true); // requireAuth: true
-  const { data: profileData, isLoading: profileLoading, error } = useProfile(isAuthenticated);
+  const { data: profileData, isLoading: profileLoading, error, refetch } = useProfile(isAuthenticated);
   const { newBadges, setProfileData, clearNewBadges } = useProfileStore();
   const [showBadgeNotification, setShowBadgeNotification] = useState(false);
   const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
@@ -42,6 +43,7 @@ const MyPageClient = () => {
     } else {
       clearNewBadges();
       setCurrentBadgeIndex(0);
+      refetch(); // 프로필 데이터 다시 가져오기
     }
   };
 
@@ -62,7 +64,7 @@ const MyPageClient = () => {
   return (
     <>
       <main aria-labelledby="mypage-title" className="relative -ml-[calc(50vw-50%)] w-screen bg-bg-03">
-        <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-start gap-16 px-8 pb-48 pt-20">
+        <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-start gap-8 px-5 py-12 tb:gap-16 tb:px-8 tb:pb-48 tb:pt-20">
           <h1 id="mypage-title" className="sr-only">
             My Page
           </h1>
@@ -71,7 +73,12 @@ const MyPageClient = () => {
             <h2 id="mypage-userinfo-heading" className="sr-only">
               User information
             </h2>
-            <UserInfo />
+            <div className="mb:hidden">
+              <UserInfo />
+            </div>
+            <div className="hidden mb:block">
+              <UserInfoDesktop />
+            </div>
           </section>
 
           <nav aria-label="Tab navigation" className="w-full">
