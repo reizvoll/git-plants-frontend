@@ -22,7 +22,7 @@ const UserInfo = () => {
         user info
       </h2>
 
-      <div className="relative flex w-full max-w-[1000px] flex-row items-center justify-center gap-20 rounded-2xl bg-brown-100 px-[96px] py-8">
+      <div className="relative flex w-full flex-row items-center justify-center gap-4 rounded-2xl bg-brown-100 px-4 py-6 xs:gap-6 xs:px-8 xs:py-6 sm:gap-6 sm:px-6 sm:py-8">
         <figure className="flex-shrink-0 overflow-hidden rounded-full">
           {user.image ? (
             <Image
@@ -30,62 +30,51 @@ const UserInfo = () => {
               alt={`${user.username}'s avatar`}
               width={160}
               height={160}
-              className="object-cover"
+              className="h-[80px] w-[80px] object-cover xs:h-[100px] xs:w-[100px] sm:h-[120px] sm:w-[120px]"
             />
           ) : (
             <div
               aria-label="avatar placeholder"
-              className="flex h-[160px] w-[160px] items-center justify-center rounded-full bg-gray-200 text-text-03"
+              className="flex h-[80px] w-[80px] items-center justify-center rounded-full bg-gray-200 text-text-03 xs:h-[100px] xs:w-[100px] sm:h-[120px] sm:w-[120px]"
             />
           )}
           <figcaption className="sr-only">{user.username}</figcaption>
         </figure>
 
-        <div className="flex w-full flex-col gap-8">
-          <div className="flex flex-row gap-[200px]">
-            <p className="text-title1 text-text-03" aria-label="username">
+        <div className="flex w-full flex-col justify-center gap-4 sm:gap-6">
+          <div className="flex flex-row items-center gap-4">
+            <p className="text-body1 text-text-03 xs:text-title2 sm:text-title1" aria-label="username">
               {user.username}
             </p>
 
-            <dl className="m-0 flex flex-row items-center gap-5">
+            <dl className="m-0 flex flex-row items-center">
               <dt className="sr-only">seedCount</dt>
-              <dd className="m-0 flex flex-row items-center gap-5">
-                <Image src={seed} alt="seed" width={24} height={33} />
-                <span className="text-title1 text-text-03">{seedCount.toLocaleString()}</span>
+              <dd className="m-0 flex flex-row items-center gap-3 sm:gap-4">
+                <Image
+                  src={seed}
+                  alt="seed"
+                  width={20}
+                  height={27}
+                  className="xs:h-[29px] xs:w-[22px] sm:h-[33px] sm:w-[24px]"
+                />
+                <span className="text-body1 text-text-03 xs:text-title2 sm:text-title1">
+                  {seedCount.toLocaleString()}
+                </span>
               </dd>
             </dl>
           </div>
 
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-row items-center justify-between">
-              <p className="text-subtitle text-text-03">{t("badge")}</p>
-              <Button
-                variant="primaryLight"
-                size="mn"
-                className="flex items-center gap-2"
-                onClick={() => setIsModalOpen(true)}
-              >
-                {t("more")}
-                <CaretRight className="h-4 w-4" strokeWidth={3} />
-              </Button>
-            </div>
-
-            <div className="flex w-full flex-row gap-4">
-              {badges.length > 0 ? (
-                <ul className="m-0 flex list-none gap-4 p-0" aria-label="badgeList">
-                  {badges.map((badge) => (
-                    <li key={badge.id} className="flex flex-col gap-2">
-                      <Image src={badge.badge.imageUrl} alt={badge.badge.name || "Badge"} width={48} height={48} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div className="flex w-full flex-col items-center justify-center gap-2">
-                  <p className="text-body text-center text-text-03">{t("noBadge")}</p>
-                  <p className="text-center text-caption text-text-03">{t("noBadgeDescription")}</p>
-                </div>
-              )}
-            </div>
+          <div className="flex flex-row justify-end">
+            {/* <p className="text-caption text-text-03 xs:text-body2 sm:text-subtitle">{t("badge")}</p> */}
+            <Button
+              variant="primaryLight"
+              size="mn"
+              className="flex items-center gap-1.5 px-2 py-1 text-[10px] xs:gap-2 xs:px-3 xs:py-1.5 xs:text-caption sm:text-body2"
+              onClick={() => setIsModalOpen(true)}
+            >
+              {t("checkBadge")}
+              <CaretRight className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4" strokeWidth={3} />
+            </Button>
           </div>
         </div>
       </div>
