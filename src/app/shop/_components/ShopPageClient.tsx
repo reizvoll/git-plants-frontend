@@ -37,7 +37,7 @@ const ShopPageClient = () => {
 
   return (
     <>
-      <main aria-labelledby="shop-title" className="relative w-full bg-sageGreen-100">
+      <main aria-labelledby="shop-title" className="relative -ml-[calc(50vw-50%)] w-screen bg-sageGreen-100">
         <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-center gap-16 px-8 pb-48 pt-12">
           <h1 id="shop-title" className="sr-only">
             Shop

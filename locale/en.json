@@ -91,6 +91,7 @@
     "userInfo": {
       "badge": "Badge",
       "more": "More",
+      "checkBadge": "Check Badges",
       "noBadge": "No badges yet...",
       "noBadgeDescription": "(Keep being active — see what surprises show up!)"
     },
@@ -101,7 +102,11 @@
       "check": "Confirm"
     },
     "badgeModal": {
-      "title": "Badge Inventory"
+      "title": "Badge Inventory",
+      "noBadge": "No badges yet. \n(Keep being active to find new surprises!)",
+      "subTitle": "Check out Badges 👀",
+      "subDescription": "View badges earned through your activities!",
+      "earnedDate": "Earned Date"
     },
     "selectTab": {
       "style": "Customize",
