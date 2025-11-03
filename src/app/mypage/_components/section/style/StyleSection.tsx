@@ -76,7 +76,9 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const handleModeChange = (selectedLabel: string) => {
     const newMode = selectedLabel === t("item_mini") ? "MINI" : "GARDEN";
     setCurrentMode(newMode);
-    typeof window !== "undefined" && localStorage.setItem("preferredMode", newMode);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("preferredMode", newMode);
+    }
   };
 
   const handleApplySize = (size: { width: number; height: number }) => {
