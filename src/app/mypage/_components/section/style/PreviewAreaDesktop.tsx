@@ -78,7 +78,13 @@ const PreviewAreaDesktop = ({
           </figcaption>
         </figure>
       ) : (
-        <div className="flex items-center justify-center bg-gray-200">
+        <div
+          className="flex items-center justify-center rounded-lg bg-gray-200"
+          style={{
+            width: `${customSize.width}px`,
+            height: `${customSize.height}px`
+          }}
+        >
           <div className="text-body3 text-text-04">{t("noBackground")}</div>
         </div>
       )}
