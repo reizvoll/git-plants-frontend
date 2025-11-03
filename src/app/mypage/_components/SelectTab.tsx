@@ -66,7 +66,7 @@ const SelectTab = () => {
       </div>
 
       {/* 단일 공용 탭 패널: 활성 콘텐츠만 렌더 */}
-      <div id={panelId} role="tabpanel" aria-labelledby={activeTabId} className="pt-16">
+      <div id={panelId} role="tabpanel" aria-labelledby={activeTabId} className="pt-[40px] tb:pt-16">
         {filter === "tab1" && (
           <div className="flex w-full flex-col items-center justify-center">
             <StyleSection onNavigateToCollection={handleNavigateToCollection} />

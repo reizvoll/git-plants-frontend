@@ -191,6 +191,7 @@ const config: Config = {
       },
       screens: {
         xs: "280px", // Extra small (≥280px)
+        s: "320px", // small (≥320px)
         sm: "380px", // default mobile (≥380px)
         mb: "480px", // Mobile (≥480px)
         tb: "768px", // Tablet (≥768px)

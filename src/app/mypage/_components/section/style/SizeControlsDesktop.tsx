@@ -11,24 +11,26 @@ interface SizeControlsProps {
   onResetToDefault: () => void;
 }
 
-const SizeControls = ({ customSize, onOpenSizeModal, onResetToDefault }: SizeControlsProps) => {
+const SizeControls = ({ currentMode, customSize, onOpenSizeModal, onResetToDefault }: SizeControlsProps) => {
   const t = useTranslations("mypage.styleSection");
 
   return (
-    <div className="flex flex-col items-center gap-4 xs:gap-6">
-      <div className="text-center text-caption text-text-03 xs:text-body1">
-        {t("currentSize")}
-        <br />
-        <span className="text-caption text-text-03 xs:text-body1">
-          {customSize.width} × {customSize.height} px
-        </span>
+    <>
+      <div className="flex flex-row items-center gap-4">
+        <div className="text-body2 text-text-03">
+          {t("currentSize")}
+          <br />
+          <span className="text-body3 text-text-03">
+            {customSize.width} × {customSize.height} px
+          </span>
+        </div>
       </div>
 
-      <div className="flex w-full flex-col gap-1.5 xs:gap-2">
+      <div className={`flex ${currentMode === "MINI" ? "flex-col items-center" : "w-auto flex-row items-start"} gap-2`}>
         <Button
           variant="primary"
           size="md"
-          className="flex w-full flex-row items-center justify-center gap-2 px-3 py-2 text-caption xs:px-4 xs:py-2.5 xs:text-body1"
+          className="flex w-auto flex-row items-center gap-2 text-body1"
           onClick={onOpenSizeModal}
           aria-haspopup="dialog"
         >
@@ -39,13 +41,13 @@ const SizeControls = ({ customSize, onOpenSizeModal, onResetToDefault }: SizeCon
         <Button
           variant="primaryLine"
           size="md"
-          className="flex w-full flex-row items-center justify-center gap-2 px-3 py-2 text-caption xs:px-4 xs:py-2.5 xs:text-body1"
+          className="flex w-auto flex-row items-center justify-center gap-2 text-body1"
           onClick={onResetToDefault}
         >
           {t("resetToDefault")}
         </Button>
       </div>
-    </div>
+    </>
   );
 };
 

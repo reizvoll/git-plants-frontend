@@ -3,18 +3,32 @@ import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useRef } from "react";
 
 interface EquipItemParams {
   userItemId: string;
   equipped: boolean;
   category: "background" | "pot";
   currentMode?: string;
+  silent?: boolean; // 토스트 알림 표시 안함
 }
 
-export const useItemEquip = () => {
-  const { updateItemEquipStatus, items } = useProfileStore();
+interface UseItemEquipOptions {
+  currentMode?: string;
+  currentBackgrounds?: Array<{ id: string; item: { category: string; mode?: string } }>;
+  currentPots?: Array<{ id: string; item: { category: string } }>;
+  autoEquip?: boolean; // 자동 장착 활성화 여부
+}
+
+export const useItemEquip = (options?: UseItemEquipOptions) => {
+  const { updateItemEquipStatus, items, equipped } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
   const t = useTranslations("mypage.styleSection");
+
+  const equippedRef = useRef(equipped);
+  useEffect(() => {
+    equippedRef.current = equipped;
+  }, [equipped]);
 
   const mutation = useMutation({
     mutationFn: async ({ userItemId, equipped }: { userItemId: string; equipped: boolean }) => {
@@ -63,19 +77,52 @@ export const useItemEquip = () => {
       addToast(t("errorEquip"), "warning");
     },
     onSuccess: (data, variables) => {
-      const message = variables.equipped ? t("successEquip") : t("successUnEquip");
-      addToast(message, "success");
+      if (!variables.silent) {
+        const message = variables.equipped ? t("successEquip") : t("successUnEquip");
+        addToast(message, "success");
+      }
     }
   });
 
-  const equipItem = (params: EquipItemParams) => {
+  const equipItem = useCallback((params: EquipItemParams) => {
     mutation.mutate({
       userItemId: params.userItemId,
       equipped: params.equipped,
       category: params.category,
-      currentMode: params.currentMode
+      currentMode: params.currentMode,
+      silent: params.silent
     });
-  };
+  }, [mutation]);
+
+  // 자동 장착: equipped가 없을 때 첫 번째 아이템을 자동으로 장착
+  useEffect(() => {
+    if (!options?.autoEquip || !options?.currentMode || !options?.currentBackgrounds) return;
+
+    const hasEquippedBackground = equippedRef.current?.backgrounds?.some((bg) => bg.mode === options.currentMode);
+    if (!hasEquippedBackground && options.currentBackgrounds.length > 0) {
+      equipItem({
+        userItemId: options.currentBackgrounds[0].id,
+        equipped: true,
+        category: "background",
+        currentMode: options.currentMode,
+        silent: true
+      });
+    }
+  }, [options?.autoEquip, options?.currentMode, options?.currentBackgrounds, equipItem]);
+
+  useEffect(() => {
+    if (!options?.autoEquip || !options?.currentPots) return;
+
+    const hasEquippedPot = equippedRef.current?.pots?.length > 0;
+    if (!hasEquippedPot && options.currentPots.length > 0) {
+      equipItem({
+        userItemId: options.currentPots[0].id,
+        equipped: true,
+        category: "pot",
+        silent: true
+      });
+    }
+  }, [options?.autoEquip, options?.currentPots, equipItem]);
 
   return {
     equipItem,

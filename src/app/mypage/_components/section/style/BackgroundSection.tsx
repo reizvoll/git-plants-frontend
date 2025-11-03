@@ -46,7 +46,7 @@ const BackgroundSection = ({
             id="bg-tooltip"
             role="tooltip"
             aria-hidden={!showBackgroundTooltip}
-            className={`shadow-emphasize pointer-events-none absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity ${
+            className={`shadow-emphasize pointer-events-none absolute left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity tb:block ${
               showBackgroundTooltip ? "opacity-100" : "opacity-0"
             }`}
           >
