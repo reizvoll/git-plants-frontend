@@ -54,7 +54,10 @@ const MyPageClient = () => {
         role="status"
         aria-live="polite"
       >
-        <LoadingText text={t("loading")} className="text-subHeading text-primary-default" />
+        <LoadingText
+          text={t("loading")}
+          className="text-caption text-primary-default xs:text-body2 s:text-subtitle mb:text-title1 tb:text-subHeading"
+        />
       </div>
     );
   }
@@ -68,7 +71,7 @@ const MyPageClient = () => {
   return (
     <>
       <main aria-labelledby="mypage-title" className="relative -ml-[calc(50vw-50%)] w-screen bg-bg-03">
-        <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-start gap-8 px-5 py-12 tb:gap-16 tb:px-8 tb:pb-48 tb:pt-20">
+        <div className="mx-auto flex min-h-[calc(100vh-156px)] w-full max-w-[1200px] flex-col items-start gap-8 px-5 py-12 tb:min-h-screen tb:gap-16 tb:px-8 tb:pb-48 tb:pt-20">
           <h1 id="mypage-title" className="sr-only">
             My Page
           </h1>
