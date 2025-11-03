@@ -3,6 +3,7 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 
 type DropdownItem = {
   label: string;
+  displayLabel?: string;
   onClick?: () => void;
   active?: boolean;
 };
@@ -37,7 +38,7 @@ const Dropdown = ({
           mode === "click" ? "shadow-normal rounded-lg bg-bg-01 px-5 py-3" : ""
         }`}
       >
-        {activeItem.label}
+        {activeItem.displayLabel || activeItem.label}
         {mode === "click" && (
           <CaretDown
             className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "-rotate-180" : ""}`}
