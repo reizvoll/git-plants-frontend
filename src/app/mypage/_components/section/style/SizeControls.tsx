@@ -11,7 +11,7 @@ interface SizeControlsProps {
   onResetToDefault: () => void;
 }
 
-const SizeControls = ({ currentMode, customSize, onOpenSizeModal, onResetToDefault }: SizeControlsProps) => {
+const SizeControls = ({ customSize, onOpenSizeModal, onResetToDefault }: SizeControlsProps) => {
   const t = useTranslations("mypage.styleSection");
 
   return (
