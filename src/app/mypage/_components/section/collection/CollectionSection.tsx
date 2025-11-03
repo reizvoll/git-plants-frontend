@@ -1,6 +1,8 @@
 "use client";
 
+import SquaresFour from "@/assets/icons/squares-four.svg";
 import inventory from "@/assets/images/inventory.webp";
+import { Button } from "@/components/ui/Button";
 import { useCollectionSort, type CollectionMode, type SortType } from "@/lib/hooks/mypage/useCollectionSort";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
@@ -8,6 +10,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import CollectionModal from "../../modal/CollectionModal";
 import CollectionControls from "./CollectionControls";
 import CollectionGrid from "./CollectionGrid";
 
@@ -19,6 +22,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentMode, setCurrentMode] = useState<CollectionMode>(initialMode);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { items, crops } = useProfileStore();
   const addToast = useToastStore((s) => s.addToast);
   const t = useTranslations("mypage.collectionSection");
@@ -60,9 +64,26 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
     setCurrentMode(initialMode);
   }, [initialMode]);
 
+  // 화면 크기가 mb(480px) 이상이 되면 모달 자동 닫기
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 480 && isModalOpen) {
+        setIsModalOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isModalOpen]);
+
   const hasShownToast = useRef(false);
 
   useEffect(() => {
+    // mb 이상(태블릿/데스크톱)에서만 토스트 표시
+    if (typeof window !== "undefined" && window.innerWidth < 480) {
+      return;
+    }
+
     const hasNoItems =
       (currentMode === "CROP" && ownedCrops.length === 0) ||
       (currentMode === "BACKGROUND" && backgrounds.length === 0) ||
@@ -80,7 +101,26 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
         collection
       </h2>
 
-      <div className="relative flex w-full flex-col gap-10 rounded-2xl bg-brown-100 px-12 py-12">
+      {/* Mobile - 안내 문구와 버튼만 표시 */}
+      <div className="relative flex w-full flex-col items-center justify-center gap-4 rounded-2xl bg-brown-100 px-3 py-8 xs:gap-6 xs:px-4 xs:py-12 mb:hidden">
+        <p className="whitespace-pre-line text-center font-pretendard text-mini leading-relaxed text-text-03 xs:text-caption s:text-body1">
+          {t("mobileNotice")}
+        </p>
+        <Button
+          variant="primary"
+          className="flex items-center gap-2 px-4 py-2.5 text-mini xs:text-caption s:px-6 s:py-3 s:text-body1"
+          onClick={() => setIsModalOpen(true)}
+        >
+          {t("viewCollection")}
+          <SquaresFour className="h-4 w-4 fill-white s:h-6 s:w-6" />
+        </Button>
+      </div>
+
+      {/* 모바일 전용 모달 */}
+      <CollectionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+      {/* Tablet & Desktop Layout */}
+      <div className="relative hidden w-full flex-col gap-5 rounded-2xl bg-brown-100 px-4 py-5 mb:flex mb:gap-10 mb:px-12 mb:py-12">
         <CollectionControls
           currentMode={currentMode}
           onModeChange={handleModeChange}
@@ -89,10 +129,10 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
           onResetSort={handleResetToDefault}
         />
 
-        <div className="flex w-full flex-col gap-6">
+        <div className="flex w-full flex-col gap-4 mb:gap-6">
           <div className="relative flex w-full flex-col">
             <Image src={inventory} alt="inventory" priority />
-            <div className="absolute inset-0 flex px-9 py-9">
+            <div className="absolute inset-0 flex px-5 py-5 mb:px-9 mb:py-9">
               <CollectionGrid mode={currentMode} backgrounds={backgrounds} pots={pots} crops={ownedCrops} />
             </div>
           </div>

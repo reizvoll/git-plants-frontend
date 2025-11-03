@@ -22,7 +22,7 @@ const CollectionControls = ({
   const t = useTranslations("mypage.collectionSection");
 
   return (
-    <div className="flex h-12 w-full flex-row items-start justify-between">
+    <div className="hidden h-12 w-full flex-row items-start justify-between mb:flex">
       <Dropdown
         items={[
           { label: t("crop"), onClick: () => onModeChange("CROP"), active: currentMode === "CROP" },
