@@ -160,6 +160,12 @@
         "most_grown": "Most Grown",
         "a_z": "A-Z"
       },
+      "modal": {
+        "title": "My Collection",
+        "subTitle": "Check out Collections 👀",
+        "subDescription": "View your collected crops and items!",
+        "noItems": "No items yet..."
+      },
       "crop": "Crop",
       "background": "Background",
       "pot": "Pot",
@@ -170,7 +176,9 @@
       "quantity": "Quantity :",
       "price": "Price :",
       "resetSort": "Reset Sort",
-      "unit": ""
+      "unit": "",
+      "mobileNotice": "Too tiny to view all items..😭\n Jump into PC mode for sorting\n and way more features! 💻",
+      "viewCollection": "View Collection"
     }
   },
   "shop": {
