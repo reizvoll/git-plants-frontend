@@ -3,16 +3,25 @@ import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
 interface EquipItemParams {
   userItemId: string;
   equipped: boolean;
   category: "background" | "pot";
   currentMode?: string;
+  silent?: boolean; // 토스트 알림 표시 안함
 }
 
-export const useItemEquip = () => {
-  const { updateItemEquipStatus, items } = useProfileStore();
+interface UseItemEquipOptions {
+  currentMode?: string;
+  currentBackgrounds?: any[];
+  currentPots?: any[];
+  autoEquip?: boolean; // 자동 장착 활성화 여부
+}
+
+export const useItemEquip = (options?: UseItemEquipOptions) => {
+  const { updateItemEquipStatus, items, equipped } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
   const t = useTranslations("mypage.styleSection");
 
@@ -63,8 +72,10 @@ export const useItemEquip = () => {
       addToast(t("errorEquip"), "warning");
     },
     onSuccess: (data, variables) => {
-      const message = variables.equipped ? t("successEquip") : t("successUnEquip");
-      addToast(message, "success");
+      if (!variables.silent) {
+        const message = variables.equipped ? t("successEquip") : t("successUnEquip");
+        addToast(message, "success");
+      }
     }
   });
 
@@ -73,9 +84,40 @@ export const useItemEquip = () => {
       userItemId: params.userItemId,
       equipped: params.equipped,
       category: params.category,
-      currentMode: params.currentMode
+      currentMode: params.currentMode,
+      silent: params.silent
     });
   };
+
+  // 자동 장착: equipped가 없을 때 첫 번째 아이템을 자동으로 장착
+  useEffect(() => {
+    if (!options?.autoEquip || !options?.currentMode || !options?.currentBackgrounds) return;
+
+    const hasEquippedBackground = equipped?.backgrounds?.some((bg) => bg.mode === options.currentMode);
+    if (!hasEquippedBackground && options.currentBackgrounds.length > 0) {
+      equipItem({
+        userItemId: options.currentBackgrounds[0].id,
+        equipped: true,
+        category: "background",
+        currentMode: options.currentMode,
+        silent: true
+      });
+    }
+  }, [options?.currentMode, options?.currentBackgrounds?.length]);
+
+  useEffect(() => {
+    if (!options?.autoEquip || !options?.currentPots) return;
+
+    const hasEquippedPot = equipped?.pots?.length > 0;
+    if (!hasEquippedPot && options.currentPots.length > 0) {
+      equipItem({
+        userItemId: options.currentPots[0].id,
+        equipped: true,
+        category: "pot",
+        silent: true
+      });
+    }
+  }, [options?.currentPots?.length]);
 
   return {
     equipItem,
