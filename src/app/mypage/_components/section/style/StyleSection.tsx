@@ -1,21 +1,23 @@
 "use client";
 
-import Export from "@/assets/icons/export.svg";
-import { Button } from "@/components/ui/Button";
-import Dropdown from "@/components/ui/Dropdown";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
+import { useItemEquip } from "@/lib/hooks/mypage/useItemEquip";
 import { useItemSelection } from "@/lib/hooks/mypage/useItemSelection";
 import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPositionStore";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { useTranslations } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import PotPositionAdjustModal from "../../modal/PotPositionAdjustModal";
 import SizeAdjustModal from "../../modal/SizeAdjustModal";
+import SizeAdjustModalDesktop from "../../modal/SizeAdjustModalDesktop";
 import BackgroundSection from "./BackgroundSection";
 import PotSection from "./PotSection";
 import PreviewArea from "./PreviewArea";
+import PreviewAreaDesktop from "./PreviewAreaDesktop";
 import SizeControls from "./SizeControls";
+import SizeControlsDesktop from "./SizeControlsDesktop";
+import StyleSectionNav from "./StyleSectionNav";
 
 type Mode = "GARDEN" | "MINI";
 
@@ -27,40 +29,14 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const { user } = useAuth();
   const { equipped, items, plants } = useProfileStore();
   const { addToast } = useToastStore();
-  const [currentMode, setCurrentMode] = useState<Mode>("GARDEN");
+  const [currentMode, setCurrentMode] = useState<Mode>(
+    // 새로고침 시에도 선택한 모드 유지 (localStorage 사용)
+    () => (typeof window !== "undefined" && (localStorage.getItem("preferredMode") as Mode)) || "MINI"
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPotPositionModalOpen, setIsPotPositionModalOpen] = useState(false);
 
   const t = useTranslations("mypage.styleSection");
-  const availableModes = useMemo(() => {
-    if (!items || items.length === 0) return { garden: false, mini: false };
-
-    const gardenBackgrounds = items.filter(
-      (item) => item.item.category === "background" && item.item.mode === "GARDEN"
-    );
-    const miniBackgrounds = items.filter((item) => item.item.category === "background" && item.item.mode === "MINI");
-
-    return {
-      garden: gardenBackgrounds.length > 0,
-      mini: miniBackgrounds.length > 0
-    };
-  }, [items]);
-
-  // equipped 를 활용한 defaultMode 계산
-  const defaultMode: Mode = useMemo(() => {
-    if (equipped?.backgrounds?.length) {
-      const equippedBackground = equipped.backgrounds[0];
-      if (equippedBackground.mode === "GARDEN" && availableModes.garden) return "GARDEN";
-      if (equippedBackground.mode === "MINI" && availableModes.mini) return "MINI";
-    }
-    if (availableModes.garden) return "GARDEN";
-    if (availableModes.mini) return "MINI";
-    return "GARDEN";
-  }, [equipped, availableModes]);
-
-  useEffect(() => {
-    setCurrentMode(defaultMode);
-  }, [defaultMode]);
 
   const { potPosition, setPotPosition } = usePotPosition(currentMode);
   const { customSize, setCustomSize } = useCustomSize(currentMode);
@@ -69,6 +45,14 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const currentBackgrounds =
     items?.filter((item) => item.item.category === "background" && item.item.mode === currentMode) || [];
   const currentPots = items?.filter((item) => item.item.category === "pot") || [];
+
+  // 자동 장착 옵션과 함께 useItemEquip 호출
+  useItemEquip({
+    currentMode,
+    currentBackgrounds,
+    currentPots,
+    autoEquip: true
+  });
 
   const backgroundSelection = useItemSelection({
     items: currentBackgrounds,
@@ -88,8 +72,11 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
   const selectedPot = potSelection.selectedItem;
   const currentPlant = plants && plants.length > 0 ? plants[0] : null;
 
+  // 모드 변경 핸들러 (변경된 모드를 localStorage에 저장)
   const handleModeChange = (selectedLabel: string) => {
-    setCurrentMode(selectedLabel === t("item_mini") ? "MINI" : "GARDEN");
+    const newMode = selectedLabel === t("item_mini") ? "MINI" : "GARDEN";
+    setCurrentMode(newMode);
+    typeof window !== "undefined" && localStorage.setItem("preferredMode", newMode);
   };
 
   const handleApplySize = (size: { width: number; height: number }) => {
@@ -116,59 +103,20 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
         style editor
       </h2>
 
-      <div className="relative flex w-full flex-col gap-6 rounded-2xl bg-brown-100 px-12 py-12">
-        <div className="flex h-12 w-full flex-row items-start justify-end gap-[10px]">
-          <Dropdown
-            items={[
-              {
-                label: t("item_mini"),
-                onClick: () => handleModeChange(t("item_mini")),
-                active: currentMode === "MINI"
-              },
-              {
-                label: t("item_garden"),
-                onClick: () => handleModeChange(t("item_garden")),
-                active: currentMode === "GARDEN"
-              }
-            ]}
-            className="font-pretendard text-body1 text-sageGreen-900"
-            mode="click"
-          />
+      <div className="relative flex w-full flex-col gap-6 rounded-2xl bg-brown-100 px-6 py-8 mb:px-8 mb:py-12 tb:p-12">
+        <StyleSectionNav
+          currentMode={currentMode}
+          onModeChange={handleModeChange}
+          user={user}
+          equipped={equipped}
+          customSize={customSize}
+          potPosition={potPosition}
+          addToast={addToast}
+        />
 
-          <Button
-            variant="secondaryLine"
-            size="md"
-            className="shadow-normal flex items-center gap-2 text-body1"
-            aria-label="copyLink"
-            onClick={async () => {
-              try {
-                if (user?.username) {
-                  const hasEquippedBackground = equipped?.backgrounds && equipped.backgrounds.length > 0;
-                  const hasEquippedPot = equipped?.pots && equipped.pots.length > 0;
-                  if (!hasEquippedBackground || !hasEquippedPot) {
-                    addToast(t("haveEquipped"), "warning");
-                    return;
-                  }
-                  const baseUrl = window.location.origin;
-                  const apiUrl = `${baseUrl}/api/mypage/${user.username}?format=gif&mode=${currentMode}&width=${customSize.width}&height=${customSize.height}&potX=${potPosition.x}&potY=${potPosition.y}`;
-                  const mdx = `[![${user.username}'s Garden](${apiUrl})](${baseUrl})`;
-                  await navigator.clipboard.writeText(mdx);
-                  addToast(t("copyLinkSuccess"), "success");
-                } else {
-                  await navigator.clipboard.writeText(window.location.href);
-                }
-              } catch {
-                addToast(t("copyLinkError"), "warning");
-              }
-            }}
-          >
-            {t("copyLink")}
-            <Export className="h-5 w-5" />
-          </Button>
-        </div>
-
-        <div className="flex flex-row gap-[60px]">
-          <div className="flex flex-shrink-0 flex-col items-center gap-6">
+        {/* Mobile Layout */}
+        <div className="flex flex-col gap-6 xs:gap-8 mb:hidden">
+          <div className="flex w-full flex-col items-center gap-4 xs:gap-6">
             <PreviewArea
               selectedBackground={selectedBackground}
               selectedPot={selectedPot}
@@ -178,6 +126,71 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
             />
 
             <SizeControls
+              currentMode={currentMode}
+              customSize={customSize}
+              onOpenSizeModal={() => setIsModalOpen(true)}
+              onResetToDefault={() => {
+                const defaultSize = currentMode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
+                setCustomSize(defaultSize);
+                setPotPosition({ x: 50, y: 80 });
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Tablet Layout */}
+        <div className="hidden flex-col gap-16 mb:flex tb:hidden">
+          <div className="flex w-full flex-col items-center gap-6">
+            <PreviewArea
+              selectedBackground={selectedBackground}
+              selectedPot={selectedPot}
+              currentPlant={currentPlant}
+              customSize={customSize}
+              potPosition={potPosition}
+            />
+
+            <SizeControls
+              currentMode={currentMode}
+              customSize={customSize}
+              onOpenSizeModal={() => setIsModalOpen(true)}
+              onResetToDefault={() => {
+                const defaultSize = currentMode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
+                setCustomSize(defaultSize);
+                setPotPosition({ x: 50, y: 80 });
+              }}
+            />
+          </div>
+
+          <div className="flex w-full flex-col gap-6">
+            <BackgroundSection
+              currentBackgrounds={currentBackgrounds}
+              onBackgroundSelect={handleBackgroundSelect}
+              backgroundSelection={backgroundSelection}
+              onNavigateToCollection={onNavigateToCollection}
+            />
+
+            <PotSection
+              currentPots={currentPots}
+              onPotSelect={handlePotSelect}
+              potSelection={potSelection}
+              onOpenPotPositionModal={() => setIsPotPositionModalOpen(true)}
+              onNavigateToCollection={onNavigateToCollection}
+            />
+          </div>
+        </div>
+
+        {/* Desktop/Tablet Layout */}
+        <div className="hidden flex-row gap-[60px] tb:flex">
+          <div className="flex flex-shrink-0 flex-col items-center gap-6">
+            <PreviewAreaDesktop
+              selectedBackground={selectedBackground}
+              selectedPot={selectedPot}
+              currentPlant={currentPlant}
+              customSize={customSize}
+              potPosition={potPosition}
+            />
+
+            <SizeControlsDesktop
               currentMode={currentMode}
               customSize={customSize}
               onOpenSizeModal={() => setIsModalOpen(true)}
@@ -208,12 +221,25 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
         </div>
       </div>
 
-      <SizeAdjustModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        currentSize={customSize}
-        onApply={handleApplySize}
-      />
+      {/* Mobile - BottomSheet */}
+      <div className="mb:hidden">
+        <SizeAdjustModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          currentSize={customSize}
+          onApply={handleApplySize}
+        />
+      </div>
+
+      {/* Desktop/Tablet - Modal */}
+      <div className="hidden mb:block">
+        <SizeAdjustModalDesktop
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          currentSize={customSize}
+          onApply={handleApplySize}
+        />
+      </div>
 
       {selectedPot && (
         <PotPositionAdjustModal
