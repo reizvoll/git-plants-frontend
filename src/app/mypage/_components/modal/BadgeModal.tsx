@@ -1,5 +1,6 @@
 import Close from "@/assets/icons/Close";
 import plant from "@/assets/images/plant_icon.png";
+import { EmptyState } from "@/components/shared/EmptyState";
 import FullScreenModal from "@/components/ui/FullScreenModal";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -33,35 +34,31 @@ const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
           <Image src={plant} alt="plant" width={40} height={40} />
           <figcaption className="sr-only">plant</figcaption>
           <div className="flex flex-col items-start">
-            <h3 className="font-pretendard font-bold text-text-04">{t("subTitle")}</h3>
-            <p className="font-pretendard text-caption text-text-03">{t("subDescription")}</p>
+            <h3 className="font-pretendard text-caption font-bold text-text-04 xs:text-body1">{t("subTitle")}</h3>
+            <p className="font-pretendard text-small text-text-03 xs:text-caption">{t("subDescription")}</p>
           </div>
         </figure>
 
         {badges.length > 0 ? (
-          <section className="flex flex-col items-center gap-6 px-4 pt-5">
+          <article className="flex flex-col items-center gap-6 px-4 pt-5">
             <ul className="grid grid-cols-3 gap-5">
               {badges.map((badge) => (
-                <li
-                  key={badge.id}
-                  className="group relative flex cursor-pointer flex-col items-center"
-                  onClick={() => setSelectedBadge(badge)}
-                >
-                  <Image
-                    src={badge.badge.imageUrl}
-                    alt={badge.badge.name}
-                    width={80}
-                    height={80}
-                    className="h-[80px] w-[80px] xs:h-[90px] xs:w-[90px] sm:h-[100px] sm:w-[100px]"
-                  />
+                <li key={badge.id} className="group relative flex flex-col items-center">
+                  <button type="button" onClick={() => setSelectedBadge(badge)} className="cursor-pointer">
+                    <Image
+                      src={badge.badge.imageUrl}
+                      alt={badge.badge.name}
+                      width={80}
+                      height={80}
+                      className="h-[80px] w-[80px] xs:h-[90px] xs:w-[90px] sm:h-[100px] sm:w-[100px]"
+                    />
+                  </button>
                 </li>
               ))}
             </ul>
-          </section>
+          </article>
         ) : (
-          <div className="flex flex-1 -translate-y-8 items-center justify-center">
-            <p className="whitespace-pre-line text-center font-pretendard text-text-03">{t("noBadge")}</p>
-          </div>
+          <EmptyState title={t("noBadge")} className="-translate-y-8 text-small xs:text-caption s:text-body1" />
         )}
 
         {/* 뱃지 상세 모달 */}
@@ -70,7 +67,7 @@ const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
             className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 p-4"
             onClick={() => setSelectedBadge(null)}
           >
-            <div
+            <article
               className="relative w-full max-w-[400px] rounded-2xl bg-bg-01 p-6"
               onClick={(e) => e.stopPropagation()}
             >
@@ -104,7 +101,7 @@ const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
                   </p>
                 </div>
               </div>
-            </div>
+            </article>
           </div>
         )}
       </section>

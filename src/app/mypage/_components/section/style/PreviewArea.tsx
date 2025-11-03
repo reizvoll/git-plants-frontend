@@ -115,7 +115,15 @@ const PreviewArea = ({ selectedBackground, selectedPot, currentPlant, customSize
           </figcaption>
         </figure>
       ) : (
-        <div className="flex h-32 w-full items-center justify-center rounded-lg bg-gray-200 xs:h-48">
+        <div
+          className="flex w-full items-center justify-center rounded-lg bg-gray-200"
+          style={{
+            width: `${mobileWidth}px`,
+            height: `${mobileHeight}px`,
+            maxWidth: "100%",
+            margin: "0 auto"
+          }}
+        >
           <div className="xs:text-body3 text-caption text-text-04">{t("noBackground")}</div>
         </div>
       )}

@@ -87,8 +87,8 @@ const UserInfoDesktop = () => {
                 </ul>
               ) : (
                 <div className="flex w-full flex-col items-center justify-center gap-1.5 tb:gap-2">
-                  <p className="tb:text-body text-center text-body2 text-text-03">{t("noBadge")}</p>
-                  <p className="text-center text-[11px] text-text-03 tb:text-caption">{t("noBadgeDescription")}</p>
+                  <p className="text-center text-caption text-text-03 tb:text-body1">{t("noBadge")}</p>
+                  <p className="text-center text-small text-text-03 tb:text-caption">{t("noBadgeDescription")}</p>
                 </div>
               )}
             </div>
