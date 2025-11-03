@@ -3,7 +3,7 @@ import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface EquipItemParams {
   userItemId: string;
@@ -15,8 +15,8 @@ interface EquipItemParams {
 
 interface UseItemEquipOptions {
   currentMode?: string;
-  currentBackgrounds?: any[];
-  currentPots?: any[];
+  currentBackgrounds?: Array<{ id: string; item: { category: string; mode?: string } }>;
+  currentPots?: Array<{ id: string; item: { category: string } }>;
   autoEquip?: boolean; // 자동 장착 활성화 여부
 }
 
@@ -24,6 +24,11 @@ export const useItemEquip = (options?: UseItemEquipOptions) => {
   const { updateItemEquipStatus, items, equipped } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);
   const t = useTranslations("mypage.styleSection");
+
+  const equippedRef = useRef(equipped);
+  useEffect(() => {
+    equippedRef.current = equipped;
+  }, [equipped]);
 
   const mutation = useMutation({
     mutationFn: async ({ userItemId, equipped }: { userItemId: string; equipped: boolean }) => {
@@ -79,7 +84,7 @@ export const useItemEquip = (options?: UseItemEquipOptions) => {
     }
   });
 
-  const equipItem = (params: EquipItemParams) => {
+  const equipItem = useCallback((params: EquipItemParams) => {
     mutation.mutate({
       userItemId: params.userItemId,
       equipped: params.equipped,
@@ -87,13 +92,13 @@ export const useItemEquip = (options?: UseItemEquipOptions) => {
       currentMode: params.currentMode,
       silent: params.silent
     });
-  };
+  }, [mutation]);
 
   // 자동 장착: equipped가 없을 때 첫 번째 아이템을 자동으로 장착
   useEffect(() => {
     if (!options?.autoEquip || !options?.currentMode || !options?.currentBackgrounds) return;
 
-    const hasEquippedBackground = equipped?.backgrounds?.some((bg) => bg.mode === options.currentMode);
+    const hasEquippedBackground = equippedRef.current?.backgrounds?.some((bg) => bg.mode === options.currentMode);
     if (!hasEquippedBackground && options.currentBackgrounds.length > 0) {
       equipItem({
         userItemId: options.currentBackgrounds[0].id,
@@ -103,12 +108,12 @@ export const useItemEquip = (options?: UseItemEquipOptions) => {
         silent: true
       });
     }
-  }, [options?.currentMode, options?.currentBackgrounds?.length]);
+  }, [options?.autoEquip, options?.currentMode, options?.currentBackgrounds, equipItem]);
 
   useEffect(() => {
     if (!options?.autoEquip || !options?.currentPots) return;
 
-    const hasEquippedPot = equipped?.pots?.length > 0;
+    const hasEquippedPot = equippedRef.current?.pots?.length > 0;
     if (!hasEquippedPot && options.currentPots.length > 0) {
       equipItem({
         userItemId: options.currentPots[0].id,
@@ -117,7 +122,7 @@ export const useItemEquip = (options?: UseItemEquipOptions) => {
         silent: true
       });
     }
-  }, [options?.currentPots?.length]);
+  }, [options?.autoEquip, options?.currentPots, equipItem]);
 
   return {
     equipItem,
