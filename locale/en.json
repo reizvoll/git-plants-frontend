@@ -115,7 +115,10 @@
     "styleSection": {
       "item_mini": "Mini Mode",
       "item_garden": "Garden Mode",
+      "item_mini_mobile": "Mini",
+      "item_garden_mobile": "Garden",
       "copyLink": "Copy Link",
+      "copyLinkMobile": "Copy Link",
       "copyLinkSuccess": "Link copied to clipboard!",
       "copyLinkError": "Failed to copy link.",
       "haveEquipped": "Please equip both background and pot.",
@@ -130,11 +133,13 @@
       "currentSize": "Current Size",
       "adjustSize": "Adjust Size",
       "resetToDefault": "Reset to Default",
-      "adjustPotPosition": "Adjust Position"
+      "adjustPotPosition": "Adjust Position",
+      "tooltip": "Item equipping is not available on mobile.\n Jump into PC mode\n to unlock more features! 💻"
     },
     "sizeAdjustModal": {
       "title": "Customize Size",
       "description": "Each mode has a recommended ratio.\n (Mini: 2:3 / Garden: 4:3 or 16:9)",
+      "mobiledescription": "Each mode has a recommended ratio.\n (Mini: 2:3 / Garden: 4:3 or 16:9)",
       "apply": "Apply",
       "cancel": "Cancel"
     },
