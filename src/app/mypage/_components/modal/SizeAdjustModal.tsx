@@ -1,7 +1,7 @@
 "use client";
 
+import BottomSheet from "@/components/ui/BottomSheet";
 import { Button } from "@/components/ui/Button";
-import Modal from "@/components/ui/Modal";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, type KeyboardEvent } from "react";
 
@@ -20,16 +20,6 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
     setTempSize(currentSize);
   }, [currentSize]);
 
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleGlobalKeyDown);
-      return () => document.removeEventListener("keydown", handleGlobalKeyDown);
-    }
-  }, [isOpen, onClose]);
-
   const handleApply = () => {
     onApply(tempSize);
     onClose();
@@ -45,7 +35,7 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
   if (!isOpen) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} mode="default">
+    <BottomSheet isOpen={isOpen} onClose={onClose}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -53,14 +43,19 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
         }}
         onKeyDown={handleKeyDown}
         tabIndex={-1}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 xs:gap-6"
       >
-        <h3 className="font-pretendard text-subtitle font-bold text-text-04">{t("title")}</h3>
+        <h3 className="text-center font-pretendard font-bold text-body1 text-text-04 xs:text-subtitle">
+          {t("title")}
+        </h3>
+        <p className="whitespace-pre-line text-center font-pretendard text-caption text-text-03">
+          {t("mobiledescription")}
+        </p>
 
         <fieldset className="m-0 border-0 p-0">
           <legend className="sr-only">{t("title")}</legend>
 
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex w-full items-center gap-1.5 xs:gap-2">
             <label htmlFor="size-width" className="sr-only">
               widthLabel
             </label>
@@ -71,11 +66,11 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
               inputMode="numeric"
               value={Number.isFinite(tempSize.width) ? tempSize.width : 0}
               onChange={(e) => setTempSize((prev) => ({ ...prev, width: Math.max(1, Number(e.target.value || 0)) }))}
-              className="rounded-lg bg-gray-50 px-3 py-4 text-center font-pretendard text-body1 text-text-04 outline-none"
+              className="w-0 flex-1 rounded-lg bg-gray-50 px-1.5 py-2.5 text-center font-pretendard text-caption text-text-04 outline-none xs:px-2 xs:py-3 xs:text-body1"
               required
             />
 
-            <span aria-hidden className="font-pretendard text-title2 text-text-03">
+            <span aria-hidden className="shrink-0 font-pretendard text-caption text-text-03 xs:text-body1">
               ×
             </span>
 
@@ -91,32 +86,30 @@ const SizeAdjustModal = ({ isOpen, onClose, currentSize, onApply }: SizeAdjustMo
               step={1}
               value={Number.isFinite(tempSize.height) ? tempSize.height : 0}
               onChange={(e) => setTempSize((prev) => ({ ...prev, height: Math.max(1, Number(e.target.value || 0)) }))}
-              className="rounded-lg bg-gray-50 px-3 py-4 text-center font-pretendard text-body1 text-text-04 outline-none"
+              className="w-0 flex-1 rounded-lg bg-gray-50 px-1.5 py-2.5 text-center font-pretendard text-caption text-text-04 outline-none xs:px-2 xs:py-3 xs:text-body1"
               required
             />
 
-            <span className="font-pretendard text-title2 text-text-03">px</span>
+            <span className="shrink-0 font-pretendard text-caption text-text-03 xs:text-body1">px</span>
           </div>
         </fieldset>
 
-        <p className="text-center font-pretendard text-caption text-text-03">{t("description")}</p>
-
-        <div className="flex gap-3">
-          <Button type="submit" variant="primary" size="md" className="w-full text-body1 text-text-01">
+        <div className="flex gap-2 xs:gap-3">
+          <Button type="submit" variant="primary" size="md" className="w-full text-caption text-text-01 xs:text-body1">
             {t("apply")}
           </Button>
           <Button
             type="button"
             variant="disabled"
             size="md"
-            className="w-full text-body1 text-text-03"
+            className="w-full text-caption text-text-03 xs:text-body1"
             onClick={onClose}
           >
             {t("cancel")}
           </Button>
         </div>
       </form>
-    </Modal>
+    </BottomSheet>
   );
 };
 
