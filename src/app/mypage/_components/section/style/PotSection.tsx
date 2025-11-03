@@ -51,7 +51,7 @@ const PotSection = ({
               id="pot-adj-tooltip"
               role="tooltip"
               aria-hidden={!showPotAdjustTooltip}
-              className={`shadow-emphasize pointer-events-none absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity ${
+              className={`shadow-emphasize pointer-events-none absolute left-1/2 top-full z-10 mt-1 hidden -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity tb:block ${
                 showPotAdjustTooltip ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -76,7 +76,7 @@ const PotSection = ({
               id="pot-tooltip"
               role="tooltip"
               aria-hidden={!showPotTooltip}
-              className={`shadow-emphasize pointer-events-none absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity ${
+              className={`shadow-emphasize pointer-events-none absolute left-1/2 top-full z-10 mt-1 hidden -translate-x-1/2 whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center transition-opacity tb:block ${
                 showPotTooltip ? "opacity-100" : "opacity-0"
               }`}
             >
