@@ -39,14 +39,14 @@ const ContributionsTab = () => {
               aria-controls={panelId}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(tab.key)}
-              className={`flex-1 px-2 py-2 text-center transition-colors mb:px-4 ${
+              className={`ml:px-4 flex-1 px-2 py-2 text-center transition-colors ${
                 selected ? "text-primary-strong" : "text-brown-300"
               }`}
             >
               <div className={`font-pretendard text-caption mb:text-body1 ${selected ? "font-bold" : ""}`}>
                 {tab.title}
               </div>
-              <div className="mt-0.5 hidden whitespace-pre-line font-pretendard text-small mb:mt-1 mb:block">
+              <div className="mt-0.5 hidden whitespace-pre-line font-pretendard text-small lt:mt-1 lt:block">
                 {tab.description}
               </div>
             </button>
@@ -70,11 +70,11 @@ const ContributionsTab = () => {
                 alt="Tab 1 preview"
                 fill
                 className="object-contain"
-                sizes="(max-width: 480px) 100vw, 500px"
+                sizes="(min-width: 480px) 500px, 100vw"
                 loading="lazy"
               />
             </div>
-            <p className="whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:hidden">
+            <p className="ml:text-body1 whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:text-caption lt:hidden">
               {tabs[0].description}
             </p>
           </div>
@@ -87,11 +87,11 @@ const ContributionsTab = () => {
                 alt="Tab 2 preview"
                 fill
                 className="object-contain"
-                sizes="(max-width: 480px) 100vw, 500px"
+                sizes="(min-width: 480px) 500px, 100vw"
                 loading="lazy"
               />
             </div>
-            <p className="whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:hidden">
+            <p className="ml:text-body1 whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:text-caption lt:hidden">
               {tabs[1].description}
             </p>
           </div>
@@ -104,11 +104,11 @@ const ContributionsTab = () => {
                 alt="Tab 3 preview"
                 fill
                 className="object-contain"
-                sizes="(max-width: 480px) 100vw, 500px"
+                sizes="(min-width: 480px) 500px, 100vw"
                 loading="lazy"
               />
             </div>
-            <p className="whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:hidden">
+            <p className="ml:text-body1 whitespace-pre-line text-center font-pretendard text-small text-primary-strong mb:text-caption lt:hidden">
               {tabs[2].description}
             </p>
           </div>

@@ -10,7 +10,7 @@ const UpdateSectionCard = () => {
   return (
     <article
       aria-labelledby="update-card-title"
-      className="mx-auto flex h-[556px] w-full max-w-[800px] flex-col items-center justify-center rounded-2xl bg-secondary-light px-5 py-[3.75rem] tb:px-0"
+      className="mx-auto flex h-[556px] w-full max-w-[800px] flex-col items-center justify-center rounded-2xl bg-secondary-light px-8 py-[3.75rem] tb:px-5"
     >
       <div className="flex flex-row items-center justify-center gap-10 tb:gap-16">
         <div className="flex flex-col items-center justify-center gap-10">

@@ -30,9 +30,10 @@
   "main-hero": {
     "title": "Grow your own little friend,\nGit-Plants",
     "subtitle": "Plant a commit, harvest a dream.\n(based on your GitHub activity)",
+    "subtitleMobile": "Plant a commit,\n harvest a dream.\n(based on your GitHub activity)",
     "startButton": "Get started",
-    "myPageButton": "Go to my page",
-    "storeButton": "Go to shop"
+    "myPageButton": "Mypage",
+    "storeButton": "Go shop"
   },
   "footer": {
     "description": "Git-Plants is a personal project made for learning and portfolio purposes only.",
@@ -44,6 +45,7 @@
   "feature": {
     "mode": {
       "title": "Grow Your Garden Warm and Full — with Two Unique Modes",
+      "titleMobile": "Grow Your Garden Warm and Full —\n with Two Unique Modes",
       "miniMode": {
         "title": "🌿 Mini Mode",
         "description": "Care for a single plant, \nwatch your seed grow in a calm & focused space, \nand enjoy a peaceful moment for yourself."
@@ -55,12 +57,13 @@
     },
     "reward": {
       "title": "Harvest crops to collect seeds and decorate your own garden!",
+      "titleMobile": "Harvest crops to collect seeds\n and decorate your own garden!",
       "description": "When you pick fruits or flowers, you’ll earn seeds. \nUse them to buy backgrounds, pots, and special items. \nCollect them all and make your garden truly yours!"
     },
     "system": {
       "title-left": "Collect seeds \nto get various items!",
       "title-right": "Harvest crops, collect seeds, \nand unlock badges!",
-      "storeButton": "Go to shop",
+      "storeButton": "Go shop",
       "badgeButton": "Check badges"
     },
     "update": {
@@ -82,7 +85,7 @@
       "title": "Start your journey today!",
       "subtitle": "Join and watch your garden grow, \none seed at a time!",
       "startButton": "Get started",
-      "storeButton": "Go to shop",
+      "storeButton": "Go shop",
       "moreInfoButton": "More Info"
     }
   },

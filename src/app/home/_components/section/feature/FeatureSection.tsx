@@ -3,6 +3,8 @@
 import CaretCircleLeft from "@/assets/icons/caret-circle-left.svg";
 import CaretCircleRight from "@/assets/icons/caret-circle-right.svg";
 import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
+import DotIndicators from "@/components/ui/DotIndicators";
+import SlideWrapper from "@/components/ui/SlideWrapper";
 import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
 import { useEffect, useState } from "react";
 
@@ -17,36 +19,6 @@ import SystemSectionCardDesktop from "./desktop/SystemSectionCardDesktop";
 import UpdateSectionCardDesktop from "./desktop/UpdateSectionCardDesktop";
 
 const TOTAL_SLIDES = 4;
-
-// Dot Indicator component
-interface DotIndicatorsProps {
-  totalSlides: number;
-  selectedIndex: number;
-  onSelect: (index: number) => void;
-}
-
-const DotIndicators = ({ totalSlides, selectedIndex, onSelect }: DotIndicatorsProps) => (
-  <div className="flex items-center justify-center gap-2" role="tablist" aria-label="slide indicators">
-    {[...Array(totalSlides)].map((_, index) => (
-      <button
-        key={index}
-        type="button"
-        role="tab"
-        aria-selected={index === selectedIndex}
-        aria-label={`move to slide ${index + 1}`}
-        className={`h-2 w-2 rounded-full transition-all ${
-          index === selectedIndex ? "w-6 bg-sageGreen-800" : "bg-line-03"
-        }`}
-        onClick={() => onSelect(index)}
-      />
-    ))}
-  </div>
-);
-
-// Slide Wrapper component
-const SlideWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex shrink-0 basis-full justify-center">{children}</div>
-);
 
 const FeatureSection = () => {
   const { emblaRef: emblaRefMobile, emblaApi: emblaApiMobile } = useEmblaNavigation({ loop: false });
