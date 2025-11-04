@@ -70,7 +70,6 @@ const NoteModal = ({ isOpen, onClose, monthlyPlant, language }: NoteModalProps) 
                       width={196}
                       height={196}
                       alt="Monthly plant icon"
-                      quality={75}
                       className="h-full w-full rounded-full object-cover"
                     />
                   </div>
@@ -87,7 +86,6 @@ const NoteModal = ({ isOpen, onClose, monthlyPlant, language }: NoteModalProps) 
                   width={350}
                   height={233}
                   alt="monthly_plant_main"
-                  quality={75}
                   className="h-full w-full object-cover"
                 />
               </div>
