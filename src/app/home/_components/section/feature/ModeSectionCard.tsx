@@ -11,13 +11,13 @@ const ModeSectionCard = () => {
   return (
     <article
       aria-labelledby="mode-card-title-mobile"
-      className="mx-auto flex w-full max-w-[800px] flex-col items-center justify-center gap-3 rounded-xl bg-secondary-light px-3 py-5 xs:gap-4 xs:px-4 xs:py-6 sm:gap-5 sm:px-5 sm:py-7"
+      className="mx-auto flex w-full max-w-[800px] flex-col items-center justify-center gap-3 rounded-xl bg-secondary-light px-4 py-6 xs:gap-4"
     >
       <h3
         id="mode-card-title"
-        className="w-full text-center text-caption text-text-04 xs:text-body1 sm:text-title2"
+        className="w-full whitespace-pre-line text-center text-caption text-text-04 xs:text-body1 sm:text-title2"
       >
-        {t("title")}
+        {t("titleMobile")}
       </h3>
 
       <div className="flex w-full flex-col gap-3 xs:gap-4 sm:gap-5">
