@@ -10,7 +10,7 @@ const UpdateSectionCard = () => {
   return (
     <article
       aria-labelledby="update-card-title"
-      className="mx-auto flex w-full max-w-[800px] flex-col items-center justify-center gap-3 rounded-xl bg-secondary-light px-3 py-5 xs:gap-4 xs:px-4 xs:py-6 sm:gap-5 sm:px-5 sm:py-7"
+      className="mx-auto flex w-full max-w-[800px] flex-col items-center justify-center gap-3 rounded-xl bg-secondary-light px-4 py-6 xs:gap-4"
     >
       <div className="flex flex-col items-center justify-center gap-2 xs:gap-3 sm:gap-4">
         <h3 id="update-card-title" className="text-center text-caption text-text-04 xs:text-body1 sm:text-title2">
