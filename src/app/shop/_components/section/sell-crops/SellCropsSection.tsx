@@ -1,6 +1,5 @@
 "use client";
 
-import inventory from "@/assets/images/inventory.webp";
 import seed from "@/assets/images/seed.webp";
 import { Button } from "@/components/ui/Button";
 import { useSellCrops } from "@/lib/hooks/shop/useSellCrops";
@@ -11,7 +10,7 @@ import Image from "next/image";
 
 const SellCropsSection = () => {
   const { crops } = useProfileStore();
-  const { selectedCropsForSale, toggleCropSelection, selectAllCrops, clearSelection } = useShopStore();
+  const { selectedCropsForSale, toggleCropSelection, clearSelection } = useShopStore();
   const { handleSell } = useSellCrops();
   const t = useTranslations("shop.sellCrops");
 
@@ -25,7 +24,6 @@ const SellCropsSection = () => {
   const selectedCount = selectedCropsForSale.reduce((sum, item) => sum + item.count, 0);
   const totalPrice = selectedCount * 100; // 임시로 개당 100 seed
 
-  const handleSelectAll = () => selectAllCrops(harvestableCrops);
   const handleSellCrops = () => {
     handleSell(selectedCropsForSale, harvestableCrops);
     clearSelection();
@@ -35,35 +33,29 @@ const SellCropsSection = () => {
   return (
     <section
       aria-labelledby="sell-crops-section"
-      className="shadow-strong mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl bg-sageGreen-200 px-[60px] py-12 py-[3.75rem]"
+      className="shadow-strong mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-xl bg-sageGreen-200 px-5 py-12 mb:hidden"
     >
-      <h2 id="sell-crops-section" className="text-center text-heading text-primary-default">
-        Sell Crops Section
+      <h2
+        id="sell-crops-section"
+        className="text-center text-title2 text-primary-default xs:text-subtitle s:text-title1"
+      >
+        {t("title")}
       </h2>
 
-      <div className="flex w-full flex-col gap-10">
-        <div className="flex w-full flex-row items-center justify-between px-[50px]">
-          <div className="flex flex-row items-center gap-6">
-            <p className="text-center text-title1 text-text-03">
-              {t("selectedCrops")} {selectedCount} {t("unit")}
-            </p>
-            <Button size="sm" variant="primary" className="text-body1 !font-medium" onClick={handleSelectAll}>
-              {t("selectAll")}
-            </Button>
-          </div>
-          <div className="flex flex-row items-center gap-4">
-            <p className="text-center text-title1 text-text-03">{t("totalPrice")} :</p>
-            <Image src={seed} alt="seed" width={24} height={33} />
-            <small className="text-title1 text-text-03">{totalPrice.toLocaleString()}</small>
-          </div>
+      <div className="flex w-full flex-col gap-6">
+        <div className="flex w-full items-center justify-center">
+          <p className="text-center text-caption text-text-03 xs:text-body2 s:text-title2">
+            {t("selectedCrops")} {selectedCount} {t("unit")}
+          </p>
         </div>
 
-        <figure className="relative flex w-full flex-col">
-          <Image src={inventory} alt="inventory" priority />
+        <figure className="flex w-full flex-col">
+          {/* TODO: 인벤토리 슬롯, 추후 적용 예정 */}
+          {/* <Image src={inventory} alt="inventory" priority /> */}
           <figcaption className="sr-only">inventory</figcaption>
 
-          <div className="absolute inset-0 flex px-[45px] py-[40px]">
-            <div className="grid w-full grid-cols-8 gap-4">
+          <div className="flex w-full">
+            <div className="grid w-full grid-cols-4 gap-3 s:gap-5">
               {availableCrops.length > 0 ? (
                 availableCrops.map((crop) => {
                   const selectedItem = selectedCropsForSale.find((item) => item.plantId === crop.id);
@@ -75,11 +67,11 @@ const SellCropsSection = () => {
                       key={crop.id}
                       type="button"
                       onClick={() => toggleCropSelection(crop.id)}
-                      className={`relative size-[82px] cursor-pointer ${isSelected ? "" : "hover:border-primary-200"}`}
+                      className={`relative aspect-square cursor-pointer ${isSelected ? "" : "hover:border-primary-200"}`}
                       aria-pressed={isSelected}
                       title={crop.monthlyPlant.name}
                     >
-                      <div className="relative h-full w-full">
+                      <div className="relative h-full max-h-[60px] w-auto sm:h-16 sm:max-h-16">
                         <Image
                           src={crop.monthlyPlant.cropImageUrl}
                           alt={crop.monthlyPlant.name}
@@ -90,19 +82,19 @@ const SellCropsSection = () => {
 
                       {isSelected && (
                         <span
-                          className="absolute inset-0 rounded-md bg-primary-default bg-opacity-30"
+                          className="absolute -inset-1 rounded-md bg-primary-default bg-opacity-30 s:-inset-2"
                           aria-hidden="true"
                         />
                       )}
 
-                      <span className="text-border absolute -bottom-3 -right-1 flex items-center justify-center text-title1 text-white">
+                      <span className="text-border sm:title1 absolute bottom-[clamp(-20px,-4vw,-8px)] right-[clamp(-6px,-1vw,-2px)] flex items-center justify-center text-body2 text-white xs:text-title2 s:text-subtitle sm:-bottom-2 sm:-right-1">
                         {remaining}
                       </span>
                     </button>
                   );
                 })
               ) : (
-                <div className="col-span-8 flex items-center justify-center rounded-lg bg-black/50 text-center text-subtitle text-text-01">
+                <div className="col-span-8 flex h-full items-center justify-center rounded-lg bg-black/50 py-16 text-center text-caption text-text-01 xs:text-body2 s:text-title2">
                   {t("noCrops")}
                 </div>
               )}
@@ -110,24 +102,32 @@ const SellCropsSection = () => {
           </div>
         </figure>
 
-        <div className="flex w-full flex-row items-center justify-center gap-10">
-          <Button
-            size="lg"
-            variant="primary"
-            className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
-            onClick={handleSellCrops}
-          >
-            {t("sell")}
-          </Button>
-          <Button
-            size="lg"
-            variant="disabledLine"
-            className="flex items-center justify-center px-[60px] py-4 text-body1 !font-medium"
-            onClick={handleCancel}
-          >
-            {t("cancel")}
-          </Button>
+        <div className="flex w-full flex-row items-center justify-center gap-2 xs:gap-3 s:gap-4">
+          <p className="ttext-center text-caption text-text-03 xs:text-body2 s:text-title2">{t("totalPrice")}</p>
+          <Image src={seed} alt="seed" width={18} height={24} />
+          <small className="text-center text-caption text-text-03 xs:text-body2 s:text-title2">
+            {totalPrice.toLocaleString()}
+          </small>
         </div>
+      </div>
+
+      <div className="flex w-full flex-col items-center justify-center gap-3 xs:gap-4 s:gap-5">
+        <Button
+          size="md"
+          variant="primary"
+          className="flex w-full items-center justify-center text-caption xs:text-body2 s:!py-[10px] s:text-title2"
+          onClick={handleSellCrops}
+        >
+          {t("sell")}
+        </Button>
+        <Button
+          size="md"
+          variant="disabledLine"
+          className="flex w-full items-center justify-center text-caption xs:text-body2 s:!py-[10px] s:text-title2"
+          onClick={handleCancel}
+        >
+          {t("cancel")}
+        </Button>
       </div>
     </section>
   );
