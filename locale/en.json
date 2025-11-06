@@ -187,7 +187,7 @@
   "shop": {
     "hero": {
       "typingMessage": "Howdy! Welcome to the Shop.",
-      "typingMessage2": "Good things are coming your way.\n Check it out!"
+      "typingMessage2": "Good things are coming.\n Check it out!"
     },
     "sellCrops": {
       "title": "Sell Crops",

@@ -7,9 +7,11 @@ import { useShopItems } from "@/lib/hooks/shop/useShopItems";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useEffect, useMemo } from "react";
 import ShopHero from "./section/hero/ShopHero";
+import ShopHeroDesktop from "./section/hero/ShopHeroDesktop";
 import BackgroundList from "./section/items/BackgroundList";
 import PotList from "./section/items/PotList";
 import SellCropsSection from "./section/sell-crops/SellCropsSection";
+import SellCropsSectionDesktop from "./section/sell-crops/SellCropsSectionDesktop";
 import UpdateSection from "./section/update/UpdateSection";
 
 const ShopPageClient = () => {
@@ -18,7 +20,7 @@ const ShopPageClient = () => {
   const { data: profileData } = useProfile();
   const { setProfileData } = useProfileStore();
 
-  // shopItems를 카테고리별로 분리
+  // shopItems, 카테고리별로 분리
   const { backgroundItems, potItems } = useMemo(() => {
     if (!shopItems) return { backgroundItems: [], potItems: [] };
 
@@ -28,7 +30,7 @@ const ShopPageClient = () => {
     };
   }, [shopItems]);
 
-  // 프로필 데이터를 Zustand store에 동기화
+  // 프로필 데이터, Zustand store에 동기화
   useEffect(() => {
     if (profileData) {
       setProfileData(profileData);
@@ -38,13 +40,23 @@ const ShopPageClient = () => {
   return (
     <>
       <main aria-labelledby="shop-title" className="relative -ml-[calc(50vw-50%)] w-screen bg-sageGreen-100">
-        <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-center gap-16 px-8 pb-48 pt-12">
+        <div className="mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-center gap-[max(120px,calc(100vh-350px))] px-5 pb-48 mb:gap-[max(160px,calc(100vh-500px))] mb:px-8 tb:gap-[255px] lt:pt-12">
           <h1 id="shop-title" className="sr-only">
             Shop
           </h1>
 
+          {/* Hero Section - Mobile & Desktop */}
           <ShopHero />
-          {user && <SellCropsSection />}
+          <ShopHeroDesktop />
+
+          {/* Sell Crops Section - Mobile & Desktop */}
+          {user && (
+            <>
+              <SellCropsSection />
+              <SellCropsSectionDesktop />
+            </>
+          )}
+
           <UpdateSection />
           <BackgroundList items={backgroundItems} loading={isLoading} />
           <PotList items={potItems} loading={isLoading} />
