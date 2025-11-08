@@ -204,7 +204,7 @@
       "title": "New Drops!",
       "seeInfo": "See Info",
       "buyNow": "Buy Now",
-      "purchase": "Purchase",
+      "purchase": "Buy",
       "comingSoon": "Coming Soon",
       "notReady": "Items are not ready yet.\n We'll update it soon!",
       "errorMessage": "Failed to load items.\n Please try again later.",
@@ -216,14 +216,19 @@
     "background": {
       "title": "Background",
       "purchasing": "Purchasing...",
-      "purchase": "Purchase",
+      "purchase": "Buy",
       "notReady": "No backgrounds.",
-      "notReady2": "Background is not ready yet.\n We'll update it soon!"
+      "notReady2": "Background is not ready yet.\n We'll update it soon!",
+      "filter": {
+        "all": "All",
+        "miniMode": "Mini Mode",
+        "gardenMode": "Garden Mode"
+      }
     },
     "pot": {
       "title": "Pot",
       "purchasing": "Purchasing...",
-      "purchase": "Purchase",
+      "purchase": "Buy",
       "notReady": "No pots.",
       "notReady2": "Pot is not ready yet.\n We'll update it soon!"
     }

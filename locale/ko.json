@@ -219,7 +219,12 @@
       "purchasing": "구매 중...",
       "purchase": "구매하기",
       "notReady": "준비 중입니다.",
-      "notReady2": "배경화면이 아직 준비되지 않았습니다.\n 추후 업데이트를 기대해주세요!"
+      "notReady2": "배경화면이 아직 준비되지 않았습니다.\n 추후 업데이트를 기대해주세요!",
+      "filter": {
+        "all": "전체",
+        "miniMode": "미니 모드",
+        "gardenMode": "가든 모드"
+      }
     },
     "pot": {
       "title": "화분",
