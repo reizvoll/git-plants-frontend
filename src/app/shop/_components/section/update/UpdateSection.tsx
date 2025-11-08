@@ -73,7 +73,14 @@ const UpdateSection = () => {
         <h2 id="updates-title" className="sr-only">
           Updates Section
         </h2>
-        <NewUpdatesCard isModalOpen={handleModalOpen} />
+        {/* Mobile */}
+        <div className="w-full mb:hidden">
+          <NewUpdatesCard isModalOpen={handleModalOpen} />
+        </div>
+        {/* Desktop */}
+        <div className="hidden w-full mb:block">
+          <NewUpdatesCardDesktop isModalOpen={handleModalOpen} />
+        </div>
       </section>
     );
   }
@@ -101,63 +108,71 @@ const UpdateSection = () => {
 
         {/* 모바일 슬라이더 + Dot */}
         <div className="flex w-full flex-col items-center gap-4 mb:hidden">
-          <div
-            className="w-full overflow-hidden"
-            ref={emblaRefMobile}
-            role="region"
-            aria-roledescription="carousel"
-            aria-label="업데이트 슬라이더"
-          >
-            <div className="flex">
-              <SlideWrapper>
-                <NewUpdatesCard isModalOpen={handleModalOpen} />
-              </SlideWrapper>
+          {totalSlides === 1 ? (
+            <NewUpdatesCard isModalOpen={handleModalOpen} />
+          ) : (
+            <>
+              <div
+                className="w-full overflow-hidden"
+                ref={emblaRefMobile}
+                role="region"
+                aria-roledescription="carousel"
+                aria-label="업데이트 슬라이더"
+              >
+                <div className="flex">
+                  <SlideWrapper>
+                    <NewUpdatesCard isModalOpen={handleModalOpen} />
+                  </SlideWrapper>
 
-              {hasBackgroundItems && (
-                <SlideWrapper>
-                  <BackgroundSectionCard />
-                </SlideWrapper>
-              )}
+                  {hasBackgroundItems && (
+                    <SlideWrapper>
+                      <BackgroundSectionCard />
+                    </SlideWrapper>
+                  )}
 
-              {hasPotItems && (
-                <SlideWrapper>
-                  <PotSectionCard />
-                </SlideWrapper>
-              )}
-            </div>
-          </div>
-          {totalSlides > 1 && (
-            <DotIndicators totalSlides={totalSlides} selectedIndex={selectedMobile} onSelect={scrollToMobile} />
+                  {hasPotItems && (
+                    <SlideWrapper>
+                      <PotSectionCard />
+                    </SlideWrapper>
+                  )}
+                </div>
+              </div>
+              <DotIndicators totalSlides={totalSlides} selectedIndex={selectedMobile} onSelect={scrollToMobile} />
+            </>
           )}
         </div>
 
         {/* 데스크톱 슬라이더 */}
         <div className="hidden w-full mb:block">
-          <div
-            className="w-full overflow-hidden"
-            ref={emblaRefDesktop}
-            role="region"
-            aria-roledescription="carousel"
-            aria-label="업데이트 슬라이더"
-          >
-            <div className="flex">
-              <SlideWrapper>
-                <NewUpdatesCardDesktop isModalOpen={handleModalOpen} />
-              </SlideWrapper>
-
-              {hasBackgroundItems && (
+          {totalSlides === 1 ? (
+            <NewUpdatesCardDesktop isModalOpen={handleModalOpen} />
+          ) : (
+            <div
+              className="w-full overflow-hidden"
+              ref={emblaRefDesktop}
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="업데이트 슬라이더"
+            >
+              <div className="flex">
                 <SlideWrapper>
-                  <BackgroundSectionCardDesktop />
+                  <NewUpdatesCardDesktop isModalOpen={handleModalOpen} />
                 </SlideWrapper>
-              )}
 
-              {hasPotItems && (
-                <SlideWrapper>
-                  <PotSectionCardDesktop />
-                </SlideWrapper>
-              )}
+                {hasBackgroundItems && (
+                  <SlideWrapper>
+                    <BackgroundSectionCardDesktop />
+                  </SlideWrapper>
+                )}
+
+                {hasPotItems && (
+                  <SlideWrapper>
+                    <PotSectionCardDesktop />
+                  </SlideWrapper>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           {/* Tablet Dot */}
           {totalSlides > 1 && (
             <div className="mt-4 tb:hidden">
