@@ -183,7 +183,7 @@ const HeaderContent = () => {
                 <List className="h-5 w-5 text-text-04 xs:h-5 xs:w-5 sm:h-6 sm:w-6" aria-hidden="true" />
               </button>
             }
-            className="text-body1 text-text-04"
+            className="text-body1 text-text-04 !left-auto !right-0 !translate-x-0"
           />
         </div>
       </section>
