@@ -6,7 +6,7 @@ import { useCurrentUpdate } from "@/lib/hooks/update/useCurrentUpdate";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-const BackgroundSectionCard = () => {
+const BackgroundSectionCardDesktop = () => {
   const { data: currentUpdate, isLoading, error } = useCurrentUpdate();
   const backgroundItems = currentUpdate?.newItems.filter((item) => item.category === "background") || [];
   const t = useTranslations("shop.update");
@@ -20,13 +20,15 @@ const BackgroundSectionCard = () => {
   }
 
   return (
-    <div className="mx-auto flex w-full flex-col items-center justify-center gap-10 px-5 py-12">
-      <h2 className="text-center text-title2 text-primary-default xs:text-subtitle s:text-title1">{t("title")}</h2>
+    <div className="mx-auto flex max-h-[700px] w-full flex-col items-center justify-center gap-10 rounded-2xl p-12 tb:px-[60px]">
+      <h2 className="w-full text-center text-title1 text-primary-default tb:text-subHeading lt:text-heading">
+        {t("title")}
+      </h2>
 
-      <ul className="flex w-full flex-wrap items-center justify-center gap-2 xs:gap-4 s:gap-6">
+      <ul className="flex w-full flex-row items-center justify-center gap-6 ml:gap-8 tb:gap-10">
         {backgroundItems.length > 0 ? (
           backgroundItems.map((item) => (
-            <li key={item.id} className="flex w-[clamp(40px,20vw,100px)] flex-col items-center gap-4">
+            <li key={item.id} className="flex w-[clamp(100px,20vw,200px)] flex-col items-center justify-center gap-6">
               <figure
                 className={`relative w-full overflow-hidden ${item.mode === "MINI" ? "aspect-[2/3]" : "aspect-[4/3]"}`}
               >
@@ -34,16 +36,15 @@ const BackgroundSectionCard = () => {
                 <figcaption className="sr-only">{item.name}</figcaption>
               </figure>
 
-              <div className="flex flex-row items-center gap-2">
-                <Image src={seed} alt="seed" width={13} height={18} />
-                <span className="text-caption text-text-03">{item.price}</span>
-              </div>
+              <dl className="flex flex-row items-center gap-2 tb:gap-4">
+                <dt className="sr-only">price</dt>
+                <dd className="flex items-center gap-2 tb:gap-4">
+                  <Image src={seed} alt="seed" className="aspect-[8/11] w-[clamp(18px,2vw,24px)]" />
+                  <span className="text-title2 text-text-03 tb:text-subtitle lt:text-title1">{item.price}</span>
+                </dd>
+              </dl>
 
-              <Button
-                size="sm"
-                variant="secondaryLine"
-                className="flex !h-[33px] w-full items-center justify-center text-mini s:text-small sm:!h-11"
-              >
+              <Button size="md" variant="secondaryLine" className="flex items-center justify-center px-8 text-body1">
                 {t("purchase")}
               </Button>
             </li>
@@ -56,4 +57,4 @@ const BackgroundSectionCard = () => {
   );
 };
 
-export default BackgroundSectionCard;
+export default BackgroundSectionCardDesktop;

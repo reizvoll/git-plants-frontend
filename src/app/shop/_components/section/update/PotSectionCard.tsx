@@ -20,38 +20,28 @@ const PotSectionCard = () => {
   }
 
   return (
-    <div className="mx-auto flex h-[700px] w-full flex-col items-center justify-center gap-10 rounded-2xl px-[60px] py-12 py-[3.75rem]">
-      <h2 className="w-full text-center text-heading text-primary-default">{t("title")}</h2>
+    <div className="mx-auto flex w-full flex-col items-center justify-center gap-10 rounded-2xl px-5 py-12">
+      <h2 className="text-center text-title2 text-primary-default xs:text-subtitle s:text-title1">{t("title")}</h2>
 
       <div className="flex w-full flex-col gap-10">
         {potItems.length > 0 ? (
-          <ul className="flex w-full flex-row items-center justify-center gap-10">
+          <ul className="flex w-full flex-wrap items-center justify-center gap-10">
             {potItems.map((item) => (
-              <li key={item.id} className="flex flex-col items-center justify-center gap-6">
-                <figure className="flex w-full justify-center">
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.name}
-                    width={150}
-                    height={150}
-                    className="object-cover"
-                    priority
-                  />
+              <li key={item.id} className="flex w-[clamp(40px,20vw,100px)] flex-col items-center gap-4">
+                <figure className="relative aspect-square w-full overflow-hidden">
+                  <Image src={item.imageUrl} alt={item.name} fill className="object-cover" priority />
                   <figcaption className="sr-only">{item.name}</figcaption>
                 </figure>
 
-                <dl className="flex flex-row items-center gap-4">
-                  <dt className="sr-only">price</dt>
-                  <dd className="flex flex-row items-center gap-2">
-                    <Image src={seed} alt="seed" width={24} height={33} />
-                    <span className="text-title1 text-text-03">{item.price}</span>
-                  </dd>
-                </dl>
+                <div className="flex flex-row items-center gap-2">
+                  <Image src={seed} alt="seed" width={13} height={18} />
+                  <span className="text-caption text-text-03">{item.price}</span>
+                </div>
 
                 <Button
-                  size="md"
+                  size="sm"
                   variant="secondaryLine"
-                  className="flex items-center justify-center px-8 text-body1 !font-medium"
+                  className="flex !h-[33px] w-full items-center justify-center text-mini s:text-small sm:!h-11"
                 >
                   {t("purchase")}
                 </Button>
