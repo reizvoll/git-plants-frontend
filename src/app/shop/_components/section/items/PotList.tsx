@@ -85,14 +85,21 @@ const PotList = ({ items, loading }: PotListProps) => {
       {/* 페이지네이션 */}
       {totalPages > 1 && (
         <nav aria-label="paginationAria">
-          <Pagination Results={{ total: items.length }} page={currentPage} handlePageChange={handlePageChange} limit={limit} />
+          <Pagination
+            Results={{ total: items.length }}
+            page={currentPage}
+            handlePageChange={handlePageChange}
+            limit={limit}
+          />
         </nav>
       )}
 
       {/* 오버레이 적용 */}
       {!loading && items.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/50">
-          <div className="text-center text-caption text-text-01">{t("notReady2")}</div>
+          <div className="whitespace-pre-line text-center text-caption text-text-01 xs:text-body2 s:text-title2">
+            {t("notReady2")}
+          </div>
         </div>
       )}
     </section>

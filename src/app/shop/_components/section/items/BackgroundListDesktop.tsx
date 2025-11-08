@@ -33,7 +33,11 @@ const BackgroundListDesktop = ({ items, loading }: BackgroundListProps) => {
   const filteredItems = selectedMode === "ALL" ? items : items.filter((item) => item.mode === selectedMode);
 
   // 페이지네이션
-  const { currentPage, currentItems: currentBackgroundItems, handlePageChange } = usePagination({
+  const {
+    currentPage,
+    currentItems: currentBackgroundItems,
+    handlePageChange
+  } = usePagination({
     items: filteredItems,
     limit
   });
@@ -152,7 +156,9 @@ const BackgroundListDesktop = ({ items, loading }: BackgroundListProps) => {
       {/* 오버레이 적용 */}
       {!loading && items.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
-          <div className="text-center text-body1 text-text-01 mb:text-title1 lt:text-subtitle">{t("notReady2")}</div>
+          <div className="whitespace-pre-line text-center text-title2 text-text-01 tb:text-subtitle lt:text-title1">
+            {t("notReady2")}
+          </div>
         </div>
       )}
     </section>
