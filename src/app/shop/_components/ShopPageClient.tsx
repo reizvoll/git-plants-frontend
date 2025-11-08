@@ -9,7 +9,10 @@ import { useEffect, useMemo } from "react";
 import ShopHero from "./section/hero/ShopHero";
 import ShopHeroDesktop from "./section/hero/ShopHeroDesktop";
 import BackgroundList from "./section/items/BackgroundList";
+import BackgroundListDesktop from "./section/items/BackgroundListDesktop";
 import PotList from "./section/items/PotList";
+import PotListDesktop from "./section/items/PotListDesktop";
+
 import SellCropsSection from "./section/sell-crops/SellCropsSection";
 import SellCropsSectionDesktop from "./section/sell-crops/SellCropsSectionDesktop";
 import UpdateSection from "./section/update/UpdateSection";
@@ -57,9 +60,16 @@ const ShopPageClient = () => {
             </>
           )}
 
+          {/* Update Section - Same for all */}
           <UpdateSection />
+
+          {/* Background List - Mobile & Desktop */}
           <BackgroundList items={backgroundItems} loading={isLoading} />
+          <BackgroundListDesktop items={backgroundItems} loading={isLoading} />
+
+          {/* Pot List - Mobile & Desktop */}
           <PotList items={potItems} loading={isLoading} />
+          <PotListDesktop items={potItems} loading={isLoading} />
         </div>
       </main>
 
