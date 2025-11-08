@@ -1,10 +1,9 @@
 "use client";
 
-import CaretCircleLeft from "@/assets/icons/caret-circle-left.svg";
-import CaretCircleRight from "@/assets/icons/caret-circle-right.svg";
 import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
 import DotIndicators from "@/components/ui/DotIndicators";
 import SlideWrapper from "@/components/ui/SlideWrapper";
+import SliderNavigationButtons from "@/components/ui/SliderNavigationButtons";
 import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
 import { useEffect, useState } from "react";
 
@@ -65,27 +64,13 @@ const FeatureSection = () => {
       </h2>
 
       {/* Desktop 화살표 버튼 */}
-      <button
-        className={`absolute left-0 z-10 hidden text-text-03 transition-opacity tb:block ${
-          !canScrollPrev ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
-        aria-label="previous slide"
-        disabled={!canScrollPrev}
-        onClick={scrollPrev}
-      >
-        <CaretCircleLeft className="h-12 w-12" />
-      </button>
-
-      <button
-        className={`absolute right-0 z-10 hidden text-text-03 transition-opacity tb:block ${
-          !canScrollNext ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
-        aria-label="next slide"
-        disabled={!canScrollNext}
-        onClick={scrollNext}
-      >
-        <CaretCircleRight className="h-12 w-12" />
-      </button>
+      <SliderNavigationButtons
+        canScrollPrev={canScrollPrev}
+        canScrollNext={canScrollNext}
+        onPrevClick={scrollPrev}
+        onNextClick={scrollNext}
+        showFrom="tb"
+      />
 
       {/* Mobile 슬라이더 + Dot */}
       <div className="flex w-full flex-col items-center gap-4 mb:hidden">

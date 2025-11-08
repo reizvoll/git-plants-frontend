@@ -1,19 +1,55 @@
 "use client";
 
-import CaretCircleLeft from "@/assets/icons/caret-circle-left.svg";
-import CaretCircleRight from "@/assets/icons/caret-circle-right.svg";
+import DotIndicators from "@/components/ui/DotIndicators";
+import SlideWrapper from "@/components/ui/SlideWrapper";
+import SliderNavigationButtons from "@/components/ui/SliderNavigationButtons";
 import { useCurrentUpdate } from "@/lib/hooks/update/useCurrentUpdate";
 import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BackgroundSectionCard from "./BackgroundSectionCard";
+import BackgroundSectionCardDesktop from "./Desktop/BackgroundSectionCardDesktop";
+import NewUpdatesCardDesktop from "./Desktop/NewUpdatesCardDesktop";
+import PotSectionCardDesktop from "./Desktop/PotSectionCardDesktop";
 import NewUpdatesCard from "./NewUpdatesCard";
 import PotSectionCard from "./PotSectionCard";
 import UpdateNoteModal from "./UpdateNoteModal";
 
 const UpdateSection = () => {
-  const { emblaRef, canScrollPrev, canScrollNext, scrollPrev, scrollNext } = useEmblaNavigation({ loop: false });
+  const { emblaRef: emblaRefMobile, emblaApi: emblaApiMobile } = useEmblaNavigation({ loop: false });
+  const {
+    emblaRef: emblaRefDesktop,
+    emblaApi: emblaApiDesktop,
+    canScrollPrev,
+    canScrollNext,
+    scrollPrev,
+    scrollNext
+  } = useEmblaNavigation({
+    loop: false
+  });
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMobile, setSelectedMobile] = useState(0);
+  const [selectedDesktop, setSelectedDesktop] = useState(0);
   const { data: currentUpdate, error, isLoading } = useCurrentUpdate();
+
+  // 모바일 선택 상태 동기화
+  useEffect(() => {
+    if (!emblaApiMobile) return;
+    const update = () => setSelectedMobile(emblaApiMobile.selectedScrollSnap());
+    update();
+    emblaApiMobile.on("select", update).on("reInit", update);
+  }, [emblaApiMobile]);
+
+  // 데스크톱 선택 상태 동기화
+  useEffect(() => {
+    if (!emblaApiDesktop) return;
+    const update = () => setSelectedDesktop(emblaApiDesktop.selectedScrollSnap());
+    update();
+    emblaApiDesktop.on("select", update).on("reInit", update);
+  }, [emblaApiDesktop]);
+
+  const scrollToMobile = (index: number) => emblaApiMobile?.scrollTo(index);
+  const scrollToDesktop = (index: number) => emblaApiDesktop?.scrollTo(index);
 
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
@@ -42,6 +78,11 @@ const UpdateSection = () => {
     );
   }
 
+  // 총 슬라이드 개수 계산
+  const hasBackgroundItems = currentUpdate.newItems?.some((item) => item.category === "background");
+  const hasPotItems = currentUpdate.newItems?.some((item) => item.category === "pot");
+  const totalSlides = 1 + (hasBackgroundItems ? 1 : 0) + (hasPotItems ? 1 : 0);
+
   return (
     <>
       <section aria-labelledby="updates-section" className="relative mx-auto flex w-full items-center justify-center">
@@ -49,52 +90,80 @@ const UpdateSection = () => {
           Updates Section
         </h2>
 
-        <button
-          className={`absolute left-0 z-10 text-text-03 transition-opacity ${
-            !canScrollPrev ? "pointer-events-none opacity-0" : "opacity-100"
-          }`}
-          aria-label="이전 슬라이드"
-          disabled={!canScrollPrev}
-          onClick={scrollPrev}
-        >
-          <CaretCircleLeft className="h-12 w-12" />
-        </button>
+        {/* 데스크톱 화살표 버튼 */}
+        <SliderNavigationButtons
+          canScrollPrev={canScrollPrev}
+          canScrollNext={canScrollNext}
+          onPrevClick={scrollPrev}
+          onNextClick={scrollNext}
+          showFrom="tb"
+        />
 
-        <button
-          className={`absolute right-0 z-10 text-text-03 transition-opacity ${
-            !canScrollNext ? "pointer-events-none opacity-0" : "opacity-100"
-          }`}
-          aria-label="다음 슬라이드"
-          disabled={!canScrollNext}
-          onClick={scrollNext}
-        >
-          <CaretCircleRight className="h-12 w-12" />
-        </button>
+        {/* 모바일 슬라이더 + Dot */}
+        <div className="flex w-full flex-col items-center gap-4 mb:hidden">
+          <div
+            className="w-full overflow-hidden"
+            ref={emblaRefMobile}
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="업데이트 슬라이더"
+          >
+            <div className="flex">
+              <SlideWrapper>
+                <NewUpdatesCard isModalOpen={handleModalOpen} />
+              </SlideWrapper>
 
-        <div
-          className="w-full overflow-hidden"
-          ref={emblaRef}
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="업데이트 슬라이더"
-        >
-          <div className="flex">
-            <div className="flex shrink-0 basis-full justify-center">
-              <NewUpdatesCard isModalOpen={handleModalOpen} />
+              {hasBackgroundItems && (
+                <SlideWrapper>
+                  <BackgroundSectionCard />
+                </SlideWrapper>
+              )}
+
+              {hasPotItems && (
+                <SlideWrapper>
+                  <PotSectionCard />
+                </SlideWrapper>
+              )}
             </div>
-
-            {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "background") && (
-              <div className="flex shrink-0 basis-full justify-center">
-                <BackgroundSectionCard />
-              </div>
-            )}
-
-            {currentUpdate.newItems && currentUpdate.newItems.some((item) => item.category === "pot") && (
-              <div className="flex shrink-0 basis-full justify-center">
-                <PotSectionCard />
-              </div>
-            )}
           </div>
+          {totalSlides > 1 && (
+            <DotIndicators totalSlides={totalSlides} selectedIndex={selectedMobile} onSelect={scrollToMobile} />
+          )}
+        </div>
+
+        {/* 데스크톱 슬라이더 */}
+        <div className="hidden w-full mb:block">
+          <div
+            className="w-full overflow-hidden"
+            ref={emblaRefDesktop}
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="업데이트 슬라이더"
+          >
+            <div className="flex">
+              <SlideWrapper>
+                <NewUpdatesCardDesktop isModalOpen={handleModalOpen} />
+              </SlideWrapper>
+
+              {hasBackgroundItems && (
+                <SlideWrapper>
+                  <BackgroundSectionCardDesktop />
+                </SlideWrapper>
+              )}
+
+              {hasPotItems && (
+                <SlideWrapper>
+                  <PotSectionCardDesktop />
+                </SlideWrapper>
+              )}
+            </div>
+          </div>
+          {/* Tablet Dot */}
+          {totalSlides > 1 && (
+            <div className="mt-4 tb:hidden">
+              <DotIndicators totalSlides={totalSlides} selectedIndex={selectedDesktop} onSelect={scrollToDesktop} />
+            </div>
+          )}
         </div>
       </section>
 
