@@ -75,7 +75,7 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardProps) => {
 
       {(error || !hasValidData) && (
         <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
-          <div className="whitespace-pre-line text-center text-subtitle text-text-01">
+          <div className="whitespace-pre-line text-center text-caption text-text-01 xs:text-body2 s:text-title2">
             {error ? <span>{t("errorMessage")}</span> : <span>{t("notReady")}</span>}
           </div>
         </div>

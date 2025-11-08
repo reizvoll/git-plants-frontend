@@ -102,7 +102,9 @@ const PotListDesktop = ({ items, loading }: PotListProps) => {
       {/* 오버레이 적용 */}
       {!loading && items.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
-          <div className="text-center text-body1 text-text-01 mb:text-title1 lt:text-subtitle">{t("notReady2")}</div>
+          <div className="whitespace-pre-line text-center text-title2 text-text-01 tb:text-subtitle lt:text-title1">
+            {t("notReady2")}
+          </div>
         </div>
       )}
     </section>
