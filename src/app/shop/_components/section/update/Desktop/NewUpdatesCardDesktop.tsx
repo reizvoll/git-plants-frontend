@@ -9,7 +9,7 @@ interface NewUpdatesCardDesktopProps {
   isModalOpen: () => void;
 }
 
-const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardDesktopProps) => {
+const NewUpdatesCardDesktop = ({ isModalOpen }: NewUpdatesCardDesktopProps) => {
   const { data: currentUpdate, isLoading, error } = useCurrentUpdate();
   const t = useTranslations("shop.update");
 
@@ -59,7 +59,7 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardDesktopProps) => {
           </div>
         ) : (
           <>
-            <div className="mx-auto flex h-[360px] w-[700px] items-center justify-center rounded-lg bg-gray-100">
+            <div className="mx-auto flex aspect-[700/360] w-full max-w-[700px] items-center justify-center rounded-lg bg-gray-100">
               <div className="text-center text-body1 text-text-03">{t("comingSoon")}</div>
             </div>
 
@@ -86,7 +86,7 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardDesktopProps) => {
 
       {(error || !hasValidData) && (
         <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/50">
-          <div className="whitespace-pre-line text-center text-subtitle text-text-01">
+          <div className="whitespace-pre-line text-center text-title2 text-text-01 tb:text-subtitle lt:text-title1">
             {error ? <span>{t("errorMessage")}</span> : <span>{t("notReady")}</span>}
           </div>
         </div>
@@ -95,4 +95,4 @@ const NewUpdatesCard = ({ isModalOpen }: NewUpdatesCardDesktopProps) => {
   );
 };
 
-export default NewUpdatesCard;
+export default NewUpdatesCardDesktop;
