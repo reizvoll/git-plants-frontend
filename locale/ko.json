@@ -25,7 +25,8 @@
     "start_now": {
       "title": "지금 시작해보세요!",
       "description": "식물을 키우는 즐거움은 물론,\n쏠쏠한 보상도 함께 챙겨봐요!"
-    }
+    },
+    "notReady": "준비 중입니다."
   },
   "main-hero": {
     "title": "코드로 자라는 식물친구,\n Git-Plants",

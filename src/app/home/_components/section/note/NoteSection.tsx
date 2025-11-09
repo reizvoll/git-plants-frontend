@@ -47,14 +47,19 @@ const NoteSection = () => {
         <div className="relative aspect-[1000/634] w-full overflow-hidden">
           <Image src={note} alt="Note" fill className="object-cover" sizes="(min-width: 480px) 480px, 100vw" />
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <LoadingText text="Loading..." className="text-body1 text-white xs:text-title2 sm:text-title1" />
+            <LoadingText
+              text="Loading..."
+              className="whitespace-pre-line text-center text-caption text-text-01 xs:text-body2 s:text-title2"
+            />
           </div>
         </div>
       ) : error || !monthlyPlant ? (
         <div className="relative aspect-[1000/634] w-full overflow-hidden">
           <Image src={note} alt="Note" fill className="object-cover" sizes="(min-width: 480px) 480px, 100vw" />
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <span className="text-body1 text-white xs:text-title2 sm:text-title1">준비중입니다.</span>
+            <span className="whitespace-pre-line text-center text-caption text-text-01 xs:text-body2 s:text-title2">
+              {t("notReady")}
+            </span>
           </div>
         </div>
       ) : (
@@ -75,7 +80,13 @@ const NoteSection = () => {
                 {getTranslated(monthlyPlant.name, monthlyPlant.ko?.name, language)}
               </p>
               <div className="relative h-[clamp(50px,15vw,80px)] w-[clamp(50px,15vw,80px)] flex-shrink-0 rounded-full bg-bg-01">
-                <Image src={monthlyPlant.iconUrl} alt="Monthly plant icon" fill className="rounded-full object-cover" sizes="80px" />
+                <Image
+                  src={monthlyPlant.iconUrl}
+                  alt="Monthly plant icon"
+                  fill
+                  className="rounded-full object-cover"
+                  sizes="80px"
+                />
               </div>
             </div>
           </div>

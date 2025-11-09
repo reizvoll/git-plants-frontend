@@ -25,7 +25,8 @@
     "start_now": {
       "title": "Start Now!",
       "description": "Enjoy growing your plants, \nand don't miss sweet rewards!"
-    }
+    },
+    "notReady": "Monthly Plant \n is not ready yet."
   },
   "main-hero": {
     "title": "Grow your own little friend,\nGit-Plants",

@@ -45,18 +45,37 @@ const NoteSectionDesktop = () => {
       {isLoading ? (
         <div className="flex w-full justify-center">
           <div className="relative aspect-[1000/634] w-full max-w-[1000px]">
-            <Image src={note} alt="Note" fill className="object-cover" loading="lazy" sizes="(min-width: 1000px) 1000px, 100vw" />
+            <Image
+              src={note}
+              alt="Note"
+              fill
+              className="object-cover"
+              loading="lazy"
+              sizes="(min-width: 1000px) 1000px, 100vw"
+            />
             <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-              <LoadingText text="Loading..." className="text-title1 text-white tb:text-subHeading lt:text-heading" />
+              <LoadingText
+                text="Loading..."
+                className="whitespace-pre-line text-center text-title2 text-text-01 tb:text-subtitle lt:text-title1"
+              />
             </div>
           </div>
         </div>
       ) : error || !monthlyPlant ? (
         <div className="flex w-full justify-center">
           <div className="relative aspect-[1000/634] w-full max-w-[1000px]">
-            <Image src={note} alt="Note" fill className="object-cover" loading="lazy" sizes="(min-width: 1000px) 1000px, 100vw" />
+            <Image
+              src={note}
+              alt="Note"
+              fill
+              className="object-cover"
+              loading="lazy"
+              sizes="(min-width: 1000px) 1000px, 100vw"
+            />
             <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-              <span className="text-title1 text-white tb:text-subHeading lt:text-heading">준비중입니다.</span>
+              <span className="text-center text-title2 text-text-01 tb:text-subtitle lt:text-title1">
+                {t("notReady")}
+              </span>
             </div>
           </div>
         </div>
@@ -69,7 +88,7 @@ const NoteSectionDesktop = () => {
               {/* 한 줄: mb까지 */}
               <h2
                 id="monthly-plant-title"
-                className="ml:text-title1 text-center text-subtitle text-primary-strong tb:hidden"
+                className="text-center text-subtitle text-primary-strong ml:text-title1 tb:hidden"
               >
                 {t("title")} {getTranslated(monthlyPlant.name, monthlyPlant.ko?.name, language)}
               </h2>
@@ -92,7 +111,7 @@ const NoteSectionDesktop = () => {
                 />
               </div>
               <dl className="m-0 flex flex-col items-center gap-[clamp(12px,2.5vw,20px)]">
-                <dd className="text ml:text-caption whitespace-pre-line text-center text-small text-text-04 tb:text-body2">
+                <dd className="text whitespace-pre-line text-center text-small text-text-04 ml:text-caption tb:text-body2">
                   {getTranslated(monthlyPlant.description, monthlyPlant.ko?.description, language)}
                 </dd>
               </dl>
@@ -102,7 +121,14 @@ const NoteSectionDesktop = () => {
           {/* desktop */}
           <div className="hidden lt:flex lt:w-full lt:justify-center">
             <div className="relative aspect-[1000/634] w-full max-w-[1000px]">
-              <Image src={note} alt="Note" fill className="object-cover" loading="lazy" sizes="(min-width: 1000px) 1000px, 100vw" />
+              <Image
+                src={note}
+                alt="Note"
+                fill
+                className="object-cover"
+                loading="lazy"
+                sizes="(min-width: 1000px) 1000px, 100vw"
+              />
               <div className="absolute inset-0 flex items-center justify-center px-12 py-20">
                 <div className="flex w-full flex-row items-center justify-center gap-12 xl:gap-20">
                   {/* Left Frame */}
@@ -149,7 +175,7 @@ const NoteSectionDesktop = () => {
 
                     <div className="flex flex-col items-center gap-4">
                       <div className="flex flex-row gap-[clamp(12px,3.5vw,32px)]">
-                        <div className="flex w-auto flex-grow flex-col items-start gap-4">
+                        <div className="flex w-auto flex-grow flex-col items-center gap-4">
                           <div className="h-[43px] w-12">
                             <Image src={plant} alt="" role="presentation" loading="lazy" />
                           </div>
@@ -163,7 +189,7 @@ const NoteSectionDesktop = () => {
                           </dl>
                         </div>
 
-                        <div className="flex w-auto flex-grow flex-col items-start gap-4">
+                        <div className="flex w-auto flex-grow flex-col items-center gap-4">
                           <div className="h-[43px] w-12">
                             <Image src={plant} alt="" role="presentation" loading="lazy" />
                           </div>
