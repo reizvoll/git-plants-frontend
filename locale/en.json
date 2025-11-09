@@ -10,6 +10,13 @@
       "failMessage": "Failed to check auth"
     }
   },
+  "error": {
+    "title": "Error!",
+    "goHome": "Go Home",
+    "retry": "Retry",
+    "notFound": "Page Not Found",
+    "notFoundDescription": "The page you are looking for does not exist."
+  },
   "navigation": {
     "login": "Login",
     "logout": "Logout",

@@ -10,6 +10,13 @@
       "failMessage": "인증 실패"
     }
   },
+  "error": {
+    "title": "에러!",
+    "goHome": "홈으로 이동",
+    "retry": "다시 시도",
+    "notFound": "페이지 오류",
+    "notFoundDescription": "페이지가 존재하지 않습니다."
+  },
   "navigation": {
     "login": "로그인",
     "logout": "로그아웃",
