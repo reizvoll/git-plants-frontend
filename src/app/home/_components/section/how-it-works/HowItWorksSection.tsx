@@ -9,7 +9,7 @@ const HowItWorksSection = () => {
   return (
     <section
       aria-labelledby="howitworks-title"
-      className="mx-auto w-full max-w-[1000px] rounded-xl bg-brown-100 px-4 py-6 mb:rounded-2xl mb:px-8 mb:py-10 lt:hidden"
+      className="mx-auto w-full justify-center rounded-xl bg-brown-100 px-4 py-6 s:px-8 s:py-12 mb:rounded-2xl mb:px-12 mb:py-16 tb:hidden"
     >
       <div className="flex flex-col items-center gap-6 mb:gap-10">
         <div className="flex flex-col gap-4 text-center mb:gap-6">

@@ -9,9 +9,9 @@ const HowItWorksSectionDesktop = () => {
   return (
     <section
       aria-labelledby="howitworks-title"
-      className="mx-auto hidden w-full max-w-[1000px] rounded-2xl bg-brown-100 px-[96px] py-10 lt:flex"
+      className="mx-auto hidden w-full max-w-[1000px] justify-center rounded-2xl bg-brown-100 px-[96px] py-20 tb:flex"
     >
-      <div className="flex flex-col items-center gap-10">
+      <div className="flex w-full flex-col items-center gap-10">
         <div className="flex flex-col gap-6 text-center">
           <h2 id="howitworks-title" className="text-subtitle text-text-04">
             {t("title")}
