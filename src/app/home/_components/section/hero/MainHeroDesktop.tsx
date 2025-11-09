@@ -46,7 +46,7 @@ const MainHeroDesktop = () => {
             <Button
               variant="primary"
               size="md"
-              className="flex items-center justify-center !px-4 py-3 text-caption tb:!px-7 tb:text-body1 lt:!px-10 lt:text-title2"
+              className="flex items-center justify-center !px-3 py-3 text-caption ml:!px-6 tb:!px-7 tb:text-body1 lt:!px-10 lt:text-title2"
               onClick={handleFirstButtonClick}
             >
               {isLoggedIn ? t("storeButton") : t("startButton")}
@@ -54,7 +54,7 @@ const MainHeroDesktop = () => {
             <Button
               variant="primaryLine"
               size="md"
-              className="flex items-center justify-center !px-4 py-3 text-caption tb:!px-7 tb:text-body1 lt:!px-10 lt:text-title2"
+              className="flex items-center justify-center !px-3 py-3 text-caption ml:!px-6 tb:!px-7 tb:text-body1 lt:!px-10 lt:text-title2"
               onClick={() => router.push("/mypage")}
             >
               {t("myPageButton")}
@@ -62,17 +62,8 @@ const MainHeroDesktop = () => {
           </div>
         </div>
 
-        <figure
-          className="shadow-normal relative flex h-[clamp(140px,25vw,250px)] w-[clamp(140px,25vw,250px)] flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-bg-01 lt:h-[250px] lt:w-[250px]"
-        >
-          <Image
-            src={plant}
-            alt="Plant illustration"
-            fill
-            className="object-contain"
-            sizes="250px"
-            priority
-          />
+        <figure className="shadow-normal relative flex h-[clamp(140px,25vw,250px)] w-[clamp(140px,25vw,250px)] flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-bg-01 lt:h-[250px] lt:w-[250px]">
+          <Image src={plant} alt="Plant illustration" fill className="object-contain" sizes="250px" priority />
           <figcaption className="sr-only">{t("title")}</figcaption>
         </figure>
       </div>
