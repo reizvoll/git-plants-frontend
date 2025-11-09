@@ -2,13 +2,20 @@
   "auth": {
     "callback": {
       "loading": "Loading...",
-      "processing": "Processing authentication...",
+      "processing": "Processing authentication",
       "error": "Authentication Error",
       "errorMessage": "There was a problem with your authentication.\n Please try again later.",
       "tryAgain": "Try Again",
       "goHome": "Go Home",
       "failMessage": "Failed to check auth"
     }
+  },
+  "error": {
+    "title": "Error!",
+    "goHome": "Go Home",
+    "retry": "Retry",
+    "notFound": "Page Not Found",
+    "notFoundDescription": "The page you are looking for does not exist."
   },
   "navigation": {
     "login": "Login",
@@ -25,7 +32,8 @@
     "start_now": {
       "title": "Start Now!",
       "description": "Enjoy growing your plants, \nand don't miss sweet rewards!"
-    }
+    },
+    "notReady": "Monthly Plant \n is not ready yet."
   },
   "main-hero": {
     "title": "Grow your own little friend,\nGit-Plants",

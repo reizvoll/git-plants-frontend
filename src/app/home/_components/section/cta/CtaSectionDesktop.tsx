@@ -47,7 +47,7 @@ const CtaSectionDesktop = () => {
             <Button
               variant="primary"
               size="md"
-              className="flex items-center justify-center !px-6 py-3 text-caption tb:!px-8 tb:text-body1"
+              className="flex items-center justify-center !px-4 py-3 text-caption ml:!px-6 tb:!px-8 tb:text-body1"
               onClick={handleStartButtonClick}
             >
               {isLoggedIn ? t("storeButton") : t("startButton")}
@@ -56,7 +56,7 @@ const CtaSectionDesktop = () => {
             <Button
               variant="primaryLine"
               size="md"
-              className="flex items-center justify-center !px-6 py-3 text-caption tb:!px-8 tb:text-body1"
+              className="flex items-center justify-center !px-4 py-3 text-caption ml:!px-6 tb:!px-8 tb:text-body1"
               onClick={handleMoreInfo}
             >
               {t("moreInfoButton")}

@@ -48,15 +48,21 @@ export default function CallbackClient(props: CallbackClientProps) {
 
   return (
     <section
-      className={cn("flex min-h-screen flex-col items-center justify-center bg-bg-01 p-8 text-center", className)}
+      className={cn(
+        "flex min-h-screen flex-col items-center justify-center bg-bg-01 p-4 text-center xs:p-5 s:p-6 mb:p-8",
+        className
+      )}
     >
       <div className="mx-auto flex w-full max-w-[400px] flex-col items-center justify-center">
-        <h1 className="m-0 text-center text-title1 text-text-04">
+        <h1 className="text-body2 text-text-04 s:text-title2 mb:text-subtitle ml:text-title1 tb:text-subHeading">
           {t("processing")}
           <LoadingDots />
         </h1>
-        <div className="mt-8 flex w-full justify-center">
-          <LoadingText text={t("loading")} className="text-body1 text-text-04" />
+        <div className="mt-4 flex w-full justify-center xs:mt-5 s:mt-6 mb:mt-8">
+          <LoadingText
+            text={t("loading")}
+            className="text-caption text-text-03 s:text-body2 mb:text-title2 ml:text-subtitle tb:text-title1"
+          />
         </div>
       </div>
     </section>

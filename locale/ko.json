@@ -2,13 +2,20 @@
   "auth": {
     "callback": {
       "loading": "인증 중...",
-      "processing": "인증 처리 중...",
+      "processing": "인증 처리 중",
       "error": "인증 오류",
       "errorMessage": "인증 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
       "tryAgain": "다시 시도",
       "goHome": "홈으로 이동",
       "failMessage": "인증 실패"
     }
+  },
+  "error": {
+    "title": "에러!",
+    "goHome": "홈으로 이동",
+    "retry": "다시 시도",
+    "notFound": "페이지 오류",
+    "notFoundDescription": "페이지가 존재하지 않습니다."
   },
   "navigation": {
     "login": "로그인",
@@ -25,7 +32,8 @@
     "start_now": {
       "title": "지금 시작해보세요!",
       "description": "식물을 키우는 즐거움은 물론,\n쏠쏠한 보상도 함께 챙겨봐요!"
-    }
+    },
+    "notReady": "준비 중입니다."
   },
   "main-hero": {
     "title": "코드로 자라는 식물친구,\n Git-Plants",
