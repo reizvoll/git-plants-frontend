@@ -2,7 +2,7 @@
   "auth": {
     "callback": {
       "loading": "Loading...",
-      "processing": "Processing authentication...",
+      "processing": "Processing authentication",
       "error": "Authentication Error",
       "errorMessage": "There was a problem with your authentication.\n Please try again later.",
       "tryAgain": "Try Again",

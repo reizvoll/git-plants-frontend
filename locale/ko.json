@@ -2,7 +2,7 @@
   "auth": {
     "callback": {
       "loading": "인증 중...",
-      "processing": "인증 처리 중...",
+      "processing": "인증 처리 중",
       "error": "인증 오류",
       "errorMessage": "인증 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
       "tryAgain": "다시 시도",
