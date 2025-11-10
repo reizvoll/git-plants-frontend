@@ -1,5 +1,6 @@
 import { SessionResponse } from "@/lib/types/api/auth";
 import { ProfileState } from "@/lib/types/api/profile";
+import { addLocaleParam } from "@/lib/store/languageStore";
 import API, { BASE_URL } from "./api";
 
 // 인증 관련 API
@@ -29,7 +30,8 @@ export const authApi = {
     }
   },
   getProfile: () => {
-    return API.get<ProfileState>("/api/users/profile").then((response) => ({
+    const url = addLocaleParam("/api/users/profile");
+    return API.get<ProfileState>(url).then((response) => ({
       success: true,
       data: response.data
     }));
