@@ -39,7 +39,14 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
   if (!isOpen) return null;
 
   return isMobile ? (
-    <Modal isOpen={isOpen} onClose={onClose} mode="mobile" maxWidth="800px" className="bg-bg-01" contentClassName="px-5 py-8">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      mode="mobile"
+      maxWidth="800px"
+      className="bg-bg-01"
+      contentClassName="px-5 py-8"
+    >
       <div className="flex w-full flex-col items-center gap-6">
         <div className="flex w-full flex-col items-center gap-4">
           <h2 className="text-center text-subtitle font-bold text-text-04 xs:text-title1 s:text-subHeading">
@@ -53,7 +60,9 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
           <figcaption className="sr-only">update note</figcaption>
         </figure>
 
-        <p className="whitespace-pre-wrap text-center text-caption text-text-03 xs:text-body2">{updateNote.description}</p>
+        <p className="whitespace-pre-wrap text-center text-caption text-text-03 xs:text-body2">
+          {updateNote.description}
+        </p>
 
         <div className="flex w-full gap-3">
           <Button
@@ -70,7 +79,7 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
     </Modal>
   ) : (
     <Modal isOpen={isOpen} onClose={onClose} mode="default">
-      <div className="flex w-full flex-col gap-6">
+      <div className="flex w-full flex-col items-center gap-6">
         <div className="flex w-full flex-col items-center gap-4">
           <h2 className="font-pretendard text-subHeading font-bold text-text-04">{t("modalTitle")}</h2>
           <p className="text-subtitle text-text-03">{updateNote.title}</p>
@@ -83,8 +92,14 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
 
         <p className="whitespace-pre-wrap text-center text-caption text-text-03">{updateNote.description}</p>
 
-        <div className="flex gap-3">
-          <Button type="button" variant="primary" size="md" className="w-full text-body1 text-text-01" onClick={onClose}>
+        <div className="flex w-full gap-3">
+          <Button
+            type="button"
+            variant="primary"
+            size="md"
+            className="w-full text-body1 text-text-01"
+            onClick={onClose}
+          >
             {t("modalClose")}
           </Button>
         </div>
