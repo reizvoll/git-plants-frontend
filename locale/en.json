@@ -240,5 +240,11 @@
       "notReady": "No pots.",
       "notReady2": "Pot is not ready yet.\n We'll update it soon!"
     }
+  },
+  "common": {
+    "loginRequired": {
+      "title": "Login Required",
+      "confirm": "Confirm"
+    }
   }
 }

@@ -241,5 +241,11 @@
       "notReady": "준비 중입니다.",
       "notReady2": "화분이 아직 준비되지 않았습니다.\n 추후 업데이트를 기대해주세요!"
     }
+  },
+  "common": {
+    "loginRequired": {
+      "title": "로그인이 필요합니다",
+      "confirm": "확인"
+    }
   }
 }
