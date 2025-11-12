@@ -7,7 +7,7 @@ import { useProfileStore } from "@/lib/store/profileStore";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
-import BadgeModal from "./modal/BadgeModalDesktop";
+import BadgeModalDesktop from "./modal/BadgeModalDesktop";
 
 const UserInfoDesktop = () => {
   const { user, seedCount, badges } = useProfileStore();
@@ -96,7 +96,7 @@ const UserInfoDesktop = () => {
         </div>
       </div>
 
-      <BadgeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} badges={badges} />
+      <BadgeModalDesktop isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} badges={badges} />
     </section>
   );
 };

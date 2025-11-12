@@ -1,6 +1,7 @@
 import Close from "@/assets/icons/Close";
 import badgeSlot from "@/assets/images/badge_slot.webp";
 import Modal from "@/components/ui/Modal";
+import { useModalKeyboard } from "@/lib/hooks/common/useModalKeyboard";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -12,14 +13,16 @@ type Badge = {
   };
 };
 
-type BadgeModalProps = {
+type BadgeModalDesktopProps = {
   isOpen: boolean;
   onClose: () => void;
   badges: Badge[];
 };
 
-const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
+const BadgeModalDesktop = ({ isOpen, onClose, badges }: BadgeModalDesktopProps) => {
   const t = useTranslations("mypage.badgeModal");
+  useModalKeyboard({ isOpen, onClose });
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} mode="image">
       <section className="flex flex-col items-center gap-9">
@@ -55,4 +58,4 @@ const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
   );
 };
 
-export default BadgeModal;
+export default BadgeModalDesktop;
