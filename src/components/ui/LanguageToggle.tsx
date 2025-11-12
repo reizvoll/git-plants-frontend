@@ -53,7 +53,7 @@ const LanguageToggle = ({ currentLanguage, onLanguageChange, className = "" }: L
       </button>
 
       {/* Expanded Options */}
-      {isExpanded && languages.map((lang, index) => [
+      {isExpanded && languages.map((lang) => [
         <hr key={`hr-before-${lang.value}`} className="w-full border-t border-line-02" />,
         <button
           key={lang.value}
