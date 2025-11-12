@@ -1,9 +1,9 @@
 "use client";
 
 import Modal from "@/components/ui/Modal";
+import { useModalKeyboard } from "@/lib/hooks/common/useModalKeyboard";
 import { useLanguageStore } from "@/lib/store/languageStore";
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
 
 interface PotPositionAdjustModalProps {
   isOpen: boolean;
@@ -36,15 +36,7 @@ const PotPositionAdjustModal = ({
     { label: t("rightBottom"), x: 75, y: 80 }
   ];
 
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleGlobalKeyDown);
-      return () => document.removeEventListener("keydown", handleGlobalKeyDown);
-    }
-  }, [isOpen, onClose]);
+  useModalKeyboard({ isOpen, onClose });
 
   if (!isOpen) return null;
 

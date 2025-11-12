@@ -1,6 +1,7 @@
 import Close from "@/assets/icons/Close";
 import Modal from "@/components/ui/Modal";
 import { useIsMobile } from "@/lib/hooks/common/useBreakpoints";
+import { useModalKeyboard } from "@/lib/hooks/common/useModalKeyboard";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -16,6 +17,13 @@ type BadgeNotificationModalProps = {
 const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationModalProps) => {
   const t = useTranslations("mypage.badgeNotification");
   const isMobile = useIsMobile();
+
+  useModalKeyboard({
+    isOpen,
+    onClose,
+    onSubmit: onClose,
+    enableSubmit: true
+  });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} mode={isMobile ? "mobile" : "default"} className="bg-bg-01 px-5 py-6">

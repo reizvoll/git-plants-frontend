@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
+import { useModalKeyboard } from "@/lib/hooks/common/useModalKeyboard";
 import { useTranslations } from "next-intl";
-import { useEffect, useState, type KeyboardEvent } from "react";
+import { useEffect, useState } from "react";
 
 interface SizeAdjustModalDesktopProps {
   isOpen: boolean;
@@ -20,27 +21,17 @@ const SizeAdjustModalDesktop = ({ isOpen, onClose, currentSize, onApply }: SizeA
     setTempSize(currentSize);
   }, [currentSize]);
 
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleGlobalKeyDown);
-      return () => document.removeEventListener("keydown", handleGlobalKeyDown);
-    }
-  }, [isOpen, onClose]);
-
   const handleApply = () => {
     onApply(tempSize);
     onClose();
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleApply();
-    }
-  };
+  useModalKeyboard({
+    isOpen,
+    onClose,
+    onSubmit: handleApply,
+    enableSubmit: true
+  });
 
   if (!isOpen) return null;
 
@@ -51,8 +42,6 @@ const SizeAdjustModalDesktop = ({ isOpen, onClose, currentSize, onApply }: SizeA
           e.preventDefault();
           handleApply();
         }}
-        onKeyDown={handleKeyDown}
-        tabIndex={-1}
         className="flex flex-col gap-4"
       >
         <h3 className="font-pretendard text-subtitle font-bold text-text-04">{t("title")}</h3>
