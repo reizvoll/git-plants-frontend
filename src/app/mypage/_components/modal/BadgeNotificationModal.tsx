@@ -1,5 +1,6 @@
 import Close from "@/assets/icons/Close";
 import Modal from "@/components/ui/Modal";
+import { useIsMobile } from "@/lib/hooks/common/useBreakpoints";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -14,18 +15,20 @@ type BadgeNotificationModalProps = {
 
 const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationModalProps) => {
   const t = useTranslations("mypage.badgeNotification");
+  const isMobile = useIsMobile();
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} mode="default">
+    <Modal isOpen={isOpen} onClose={onClose} mode={isMobile ? "mobile" : "default"} className="bg-bg-01 px-5 py-6">
       <article className="flex flex-col items-center gap-6">
         {/* 제목 */}
         <div className="flex w-full items-center justify-between">
-          <h2 className="text-title1 text-primary-default">{t("title")}</h2>
+          <h2 className="text-body2 text-primary-default xs:text-subtitle mb:text-title1">{t("title")}</h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-heading text-primary-default transition-opacity hover:opacity-70"
+            className="p-2 text-primary-default transition-opacity tb:hover:opacity-70"
           >
-            <Close width={32} height={32} />
+            <Close className="h-[clamp(20px,6vw,32px)] w-[clamp(20px,6vw,32px)]" />
           </button>
         </div>
 
@@ -34,14 +37,20 @@ const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationMod
           <Image src={badge.imageUrl} alt={badge.name} width={120} height={120} />
           <figcaption>
             {/* 뱃지 이름 */}
-            <h3 className="text-center text-title2 font-bold text-text-04">{badge.name}</h3>
+            <h3 className="text-center text-caption font-bold text-text-04 xs:text-body2 mb:text-title2">
+              {badge.name}
+            </h3>
           </figcaption>
         </figure>
 
         {/* 축하 메시지 */}
         <div className="text-center">
-          <p className="mb-2 text-body1 text-primary-default">{t("congratulation")}</p>
-          <p className="text-caption text-primary-light">{t("description")}</p>
+          <p className="mb-2 text-center text-caption font-bold text-primary-default xs:text-body2 mb:text-title2">
+            {t("congratulation")}
+          </p>
+          <p className="text-center text-small font-bold text-primary-light xs:text-caption mb:text-body2">
+            {t("description")}
+          </p>
         </div>
 
         {/* 확인 버튼 */}

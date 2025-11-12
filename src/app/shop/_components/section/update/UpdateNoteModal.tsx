@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
+import { useIsMobile } from "@/lib/hooks/common/useBreakpoints";
 import type { UpdateNote } from "@/lib/types/api/public";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface UpdateNoteModalProps {
   isOpen: boolean;
@@ -13,7 +14,7 @@ interface UpdateNoteModalProps {
 
 const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) => {
   const t = useTranslations("shop.update.updateModal");
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
@@ -25,16 +26,6 @@ const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) 
       return () => document.removeEventListener("keydown", handleGlobalKeyDown);
     }
   }, [isOpen, onClose]);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 480);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   if (!isOpen) return null;
 
