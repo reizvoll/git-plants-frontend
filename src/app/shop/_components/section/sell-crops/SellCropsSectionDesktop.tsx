@@ -49,7 +49,7 @@ const SellCropsSectionDesktop = () => {
         <div className="hidden w-full flex-row items-center justify-between px-2 ml:flex tb:px-10 lt:px-[50px]">
           <div className="flex flex-row items-center gap-4 tb:gap-6">
             <p className="text-center text-title2 text-text-03 tb:text-subtitle lt:text-title1">
-              {t("selectedCrops")} {selectedCount} {t("unit")}
+              {t("selectedCrops", { count: selectedCount })}
             </p>
             <Button size="sm" variant="primary" className="text-body1" onClick={handleSelectAll}>
               {t("selectAll")}
@@ -66,9 +66,7 @@ const SellCropsSectionDesktop = () => {
 
         {/* ml 미만에서만 보이는 헤더 */}
         <div className="flex w-full flex-row items-center justify-center gap-8 ml:hidden">
-          <p className="text-center text-title2 text-text-03">
-            {t("selectedCrops")} {selectedCount} {t("unit")}
-          </p>
+          <p className="text-center text-title2 text-text-03">{t("selectedCrops", { count: selectedCount })}</p>
           <Button size="sm" variant="primary" className="text-body1" onClick={handleSelectAll}>
             {t("selectAll")}
           </Button>
@@ -129,9 +127,10 @@ const SellCropsSectionDesktop = () => {
 
         {/* ml 미만에서만 보이는 합계 */}
         <div className="flex w-full flex-row items-center justify-center gap-4 ml:hidden">
-          <p className="text-center text-title2 text-text-03 tb:text-subtitle">{t("totalPrice")}</p>
           <Image src={seed} alt="seed" width={24} height={33} />
-          <small className="text-center text-title2 text-text-03 tb:text-subtitle">{totalPrice.toLocaleString()}</small>
+          <p className="text-center text-title2 text-text-03 tb:text-subtitle">
+            {t("totalPrice")} {totalPrice.toLocaleString()}
+          </p>
         </div>
       </div>
       <div className="flex w-full flex-row items-center justify-center gap-6">

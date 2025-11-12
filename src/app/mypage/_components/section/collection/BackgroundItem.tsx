@@ -39,7 +39,7 @@ const BackgroundItem = ({ background }: BackgroundItemProps) => {
         >
           <span className="block text-body2 text-primary-default">{background.item.name}</span>
           <span className="text-mini text-brown-500">
-            {t("acquiredAt")} {formatDate(background.acquiredAt)}
+            {t("acquiredAt", { date: formatDate(background.acquiredAt) })}
           </span>
         </span>
       )}
@@ -50,7 +50,7 @@ const BackgroundItem = ({ background }: BackgroundItemProps) => {
       >
         <span className="block text-body2 text-primary-default">{background.item.name}</span>
         <span className="text-mini text-brown-500">
-          {t("acquiredAt")} {formatDate(background.acquiredAt)}
+          {t("acquiredAt", { date: formatDate(background.acquiredAt) })}
         </span>
       </span>
     </li>

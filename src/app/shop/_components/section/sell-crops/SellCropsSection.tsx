@@ -45,7 +45,7 @@ const SellCropsSection = () => {
       <div className="flex w-full flex-col gap-6">
         <div className="flex w-full items-center justify-center">
           <p className="text-center text-caption text-text-03 xs:text-body2 s:text-title2">
-            {t("selectedCrops")} {selectedCount} {t("unit")}
+            {t("selectedCrops", { count: selectedCount })}
           </p>
         </div>
 

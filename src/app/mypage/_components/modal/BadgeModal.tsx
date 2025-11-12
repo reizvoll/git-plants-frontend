@@ -93,11 +93,10 @@ const BadgeModal = ({ isOpen, onClose, badges }: BadgeModalProps) => {
 
                 <div className="flex flex-col items-center gap-2">
                   <p className="whitespace-pre-line text-center font-pretendard text-body2 text-text-03">
-                    {/* TODO: 응답값 한국어도 받도록 수정할 것. */}
                     {selectedBadge.badge.condition}
                   </p>
                   <p className="font-pretendard text-caption text-text-03">
-                    {t("earnedDate")}: {new Date(selectedBadge.awardedAt).toLocaleDateString()}
+                    {t("earnedDate", { date: new Date(selectedBadge.awardedAt).toLocaleDateString() })}
                   </p>
                 </div>
               </div>

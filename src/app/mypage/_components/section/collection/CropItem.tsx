@@ -43,10 +43,10 @@ const CropItem = ({ crop }: CropItemProps) => {
         >
           <span className="block text-body2 text-primary-default">{crop.monthlyPlant.name}</span>
           <span className="text-mini text-brown-500">
-            {t("acquiredAt")} {formatDate(crop.createdAt)}
+            {t("acquiredAt", { date: formatDate(crop.createdAt) })}
           </span>
           <span className="text-mini text-brown-500">
-            {t("quantity")} {crop.quantity} {t("unit")}
+            {t("quantity", { quantity: crop.quantity })}
           </span>
           <span className="flex items-center gap-1 text-mini text-brown-500">
             {t("price")} <Image src={seed} alt="seed" width={9} height={9} /> 10
@@ -60,10 +60,10 @@ const CropItem = ({ crop }: CropItemProps) => {
       >
         <span className="block text-body2 text-primary-default">{crop.monthlyPlant.name}</span>
         <span className="text-mini text-brown-500">
-          {t("acquiredAt")} {formatDate(crop.createdAt)}
+          {t("acquiredAt", { date: formatDate(crop.createdAt) })}
         </span>
         <span className="text-mini text-brown-500">
-          {t("quantity")} {crop.quantity} {t("unit")}
+          {t("quantity", { quantity: crop.quantity })}
         </span>
         {/* TODO: 판매가격 필드 추가 필요 */}
         <span className="flex items-center gap-1 text-mini text-brown-500">
