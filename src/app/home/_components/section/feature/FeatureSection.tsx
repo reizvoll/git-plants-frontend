@@ -4,7 +4,7 @@ import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
 import DotIndicators from "@/components/ui/DotIndicators";
 import SlideWrapper from "@/components/ui/SlideWrapper";
 import SliderNavigationButtons from "@/components/ui/SliderNavigationButtons";
-import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
+
 import { useEffect, useState } from "react";
 
 import ModeSectionCard from "./ModeSectionCard";
@@ -12,6 +12,7 @@ import RewardSectionCard from "./RewardSectionCard";
 import SystemSectionCard from "./SystemSectionCard";
 import UpdateSectionCard from "./UpdateSecionCard";
 
+import { useEmblaNavigation } from "@/lib/hooks/common/useEmblaNavigation";
 import ModeSectionCardDesktop from "./desktop/ModeSectionCardDesktop";
 import RewardSectionCardDesktop from "./desktop/RewardSectionCardDesktop";
 import SystemSectionCardDesktop from "./desktop/SystemSectionCardDesktop";

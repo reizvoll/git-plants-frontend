@@ -3,8 +3,8 @@
 import DotIndicators from "@/components/ui/DotIndicators";
 import SlideWrapper from "@/components/ui/SlideWrapper";
 import SliderNavigationButtons from "@/components/ui/SliderNavigationButtons";
+import { useEmblaNavigation } from "@/lib/hooks/common/useEmblaNavigation";
 import { useCurrentUpdate } from "@/lib/hooks/update/useCurrentUpdate";
-import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
 import { useEffect, useState } from "react";
 import BackgroundSectionCard from "./BackgroundSectionCard";
 import BackgroundSectionCardDesktop from "./Desktop/BackgroundSectionCardDesktop";
