@@ -1,16 +1,19 @@
 "use client";
 
 import plant from "@/assets/images/plants.png";
+import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const MainHeroDesktop = () => {
   const t = useTranslations("main-hero");
   const router = useRouter();
   const { user, login } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const isLoggedIn = !!user;
 
@@ -19,6 +22,14 @@ const MainHeroDesktop = () => {
       router.push("/shop");
     } else {
       login();
+    }
+  };
+
+  const handleMyPageClick = () => {
+    if (isLoggedIn) {
+      router.push("/mypage");
+    } else {
+      setShowLoginModal(true);
     }
   };
 
@@ -55,7 +66,7 @@ const MainHeroDesktop = () => {
               variant="primaryLine"
               size="md"
               className="flex items-center justify-center !px-3 py-3 text-caption ml:!px-6 tb:!px-7 tb:text-body1 lt:!px-10 lt:text-title2"
-              onClick={() => router.push("/mypage")}
+              onClick={handleMyPageClick}
             >
               {t("myPageButton")}
             </Button>
@@ -67,6 +78,8 @@ const MainHeroDesktop = () => {
           <figcaption className="sr-only">{t("title")}</figcaption>
         </figure>
       </div>
+
+      <LoginRequiredModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </section>
   );
 };
