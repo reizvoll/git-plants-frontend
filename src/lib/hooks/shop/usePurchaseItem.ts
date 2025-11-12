@@ -3,18 +3,22 @@ import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useToastStore } from "@/lib/store/useToaststore";
 import { ShopItem } from "@/lib/types/api/public";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
-
-// TODO: update translations message
+/**
+ * Custom hook to handle shop item purchases
+ * @returns Purchase mutation and handler
+ */
 export const usePurchaseItem = () => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
   const addToast = useToastStore((state) => state.addToast);
+  const t = useTranslations("shop.hooks.purchase");
 
   const mutation = useMutation({
     mutationFn: async (item: ShopItem) => {
       if (!user) {
-        throw new Error("로그인이 필요합니다.");
+        throw new Error(t("loginRequired"));
       }
 
       const response = await shopApi.purchaseItem(item.id, item.price);
@@ -28,10 +32,10 @@ export const usePurchaseItem = () => {
     onSuccess: ({ item }) => {
       // invalidate profile (refresh)
       queryClient.invalidateQueries({ queryKey: ["profile"] });
-      addToast(`${item.name}을(를) 구매했습니다!`, "success");
+      addToast(t("success", { itemName: item.name }), "success");
     },
     onError: (error: unknown) => {
-      const errorMessage = error instanceof Error ? error.message : "구매에 실패했습니다.";
+      const errorMessage = error instanceof Error ? error.message : t("error");
       addToast(errorMessage, "warning");
     }
   });
