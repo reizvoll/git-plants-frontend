@@ -240,6 +240,22 @@
       "purchase": "구매하기",
       "notReady": "준비 중입니다.",
       "notReady2": "화분이 아직 준비되지 않았습니다.\n 추후 업데이트를 기대해주세요!"
+    },
+    "hooks": {
+      "purchase": {
+        "loginRequired": "로그인이 필요합니다.",
+        "success": "{itemName}을(를) 구매했습니다!",
+        "error": "구매에 실패했습니다."
+      },
+      "sell": {
+        "loginRequired": "로그인이 필요합니다.",
+        "noCropsSelected": "판매할 작물을 선택해주세요.",
+        "success": "작물 {count}개를 판매했습니다! (+{seeds} 시드)",
+        "error": "판매에 실패했습니다."
+      },
+      "update": {
+        "invalidResponse": "잘못된 응답 형식입니다."
+      }
     }
   },
   "common": {

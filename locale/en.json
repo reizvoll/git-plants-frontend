@@ -239,6 +239,22 @@
       "purchase": "Buy",
       "notReady": "No pots.",
       "notReady2": "Pot is not ready yet.\n We'll update it soon!"
+    },
+    "hooks": {
+      "purchase": {
+        "loginRequired": "Login required.",
+        "success": "Successfully purchased {itemName}!",
+        "error": "Failed to purchase item."
+      },
+      "sell": {
+        "loginRequired": "Login required.",
+        "noCropsSelected": "Please select crops to sell.",
+        "success": "Sold {count} crops! (+{seeds} seeds)",
+        "error": "Failed to sell crops."
+      },
+      "update": {
+        "invalidResponse": "Invalid response format."
+      }
     }
   },
   "common": {
