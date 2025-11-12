@@ -32,7 +32,7 @@ const PotItem = ({ pot }: PotItemProps) => {
         >
           <span className="block text-body2 text-primary-default">{pot.item.name}</span>
           <span className="text-mini text-brown-500">
-            {t("acquiredAt")} {formatDate(pot.acquiredAt)}
+            {t("acquiredAt", { date: formatDate(pot.acquiredAt) })}
           </span>
         </span>
       )}
@@ -43,7 +43,7 @@ const PotItem = ({ pot }: PotItemProps) => {
       >
         <span className="block text-body2 text-primary-default">{pot.item.name}</span>
         <span className="text-mini text-brown-500">
-          {t("acquiredAt")} {formatDate(pot.acquiredAt)}
+          {t("acquiredAt", { date: formatDate(pot.acquiredAt) })}
         </span>
       </span>
     </li>

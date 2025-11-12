@@ -46,16 +46,18 @@ const FooterContent = () => {
           <p className="font-pretendard text-caption font-medium leading-relaxed text-text-01 tb:text-body1">
             {t("description")}
             <br />
-            {t("feedback")}
-            <a
-              href="https://github.com/reizvoll/git-plants-frontend/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="m-0.5 ml-1.5 underline"
-            >
-              {t("githubIssues")}
-            </a>
-            {t("feedbackEnd")}
+            {t.rich("feedback", {
+              link: (chunks) => (
+                <a
+                  href="https://github.com/reizvoll/git-plants-frontend/issues"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="m-0.5 ml-1.5 underline"
+                >
+                  {chunks}
+                </a>
+              )
+            })}
           </p>
 
           <small className="text-caption text-text-01 tb:text-body1">{t("copyrightNotice")}</small>
