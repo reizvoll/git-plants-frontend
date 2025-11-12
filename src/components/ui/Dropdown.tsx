@@ -77,31 +77,33 @@ const Dropdown = ({
       <div className="cursor-pointer" onClick={handleTriggerClick}>
         {displayTrigger}
       </div>
-      <div
-        className={`shadow-emphasize absolute left-1/2 top-full z-50 -translate-x-1/2 flex-col items-center justify-center gap-4 whitespace-nowrap rounded-2xl bg-white p-5 before:absolute before:-top-5 before:left-0 before:h-5 before:w-full before:content-[''] ${
-          mode === "hover" ? "mt-5 hidden group-hover:flex" : isOpen ? "mt-2 flex" : "hidden"
-        } ${className}`}
-      >
-        {items
-          ? items.map((item, index) => [
-              <button
-                key={`item-${index}`}
-                onClick={() => {
-                  item.onClick?.();
-                  if (mode === "click") {
-                    setIsOpen(false);
-                  }
-                }}
-                className={`flex h-[1.6875rem] w-full flex-row items-center justify-center px-2 ${className} transition-colors hover:text-text-03 ${
-                  item.active ? "text-text-04" : "text-text-02"
-                }`}
-              >
-                {item.label}
-              </button>,
-              index < items.length - 1 && <hr key={`hr-${index}`} className="w-full border-t border-line-02" />
-            ])
-          : children}
-      </div>
+      {(mode === "hover" || isOpen) && (
+        <div
+          className={`shadow-emphasize absolute left-1/2 top-full z-50 -translate-x-1/2 flex-col items-center justify-center gap-4 whitespace-nowrap rounded-2xl bg-white p-5 before:absolute before:-top-5 before:left-0 before:h-5 before:w-full before:content-[''] ${
+            mode === "hover" ? "mt-5 hidden group-hover:flex" : "mt-2 flex"
+          } ${className}`}
+        >
+          {items
+            ? items.map((item, index) => [
+                <button
+                  key={`item-${index}`}
+                  onClick={() => {
+                    item.onClick?.();
+                    if (mode === "click") {
+                      setIsOpen(false);
+                    }
+                  }}
+                  className={`flex h-[1.6875rem] w-full flex-row items-center justify-center px-2 ${className} transition-colors hover:text-text-03 ${
+                    item.active ? "text-text-04" : "text-text-02"
+                  }`}
+                >
+                  {item.label}
+                </button>,
+                index < items.length - 1 && <hr key={`hr-${index}`} className="w-full border-t border-line-02" />
+              ])
+            : children}
+        </div>
+      )}
     </div>
   );
 };

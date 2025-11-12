@@ -5,28 +5,20 @@ import GithubIcon from "@/assets/icons/github";
 import List from "@/assets/icons/list.svg";
 import StoreIcon from "@/assets/icons/store";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
-import { useLanguageStore } from "@/lib/store/languageStore";
+import { useHeaderNavigation } from "@/lib/hooks/common/useHeaderNavigation";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import ProfileImageCircle from "../shared/ProfileImageCircle";
 import { Button } from "../ui/Button";
 import Dropdown from "../ui/Dropdown";
+import LanguageToggle from "../ui/LanguageToggle";
 
 const HeaderContent = () => {
   const { user, login, logout, isHydrated } = useAuth();
-  const { language, setLanguage } = useLanguageStore();
+  const { language, handleLanguageToggle, handleLanguageChange, navigateWithLang } = useHeaderNavigation();
   const t = useTranslations("navigation");
-  const router = useRouter();
   const pathname = usePathname();
-
-  const handleLanguageToggle = () => {
-    const newLang = language === "ko" ? "en" : "ko";
-    setLanguage(newLang);
-    const url = new URL(window.location.href);
-    url.searchParams.set("lang", newLang);
-    window.location.href = url.toString();
-  };
 
   const currentLanguage = isHydrated ? language : "en";
   const isOnMypage = pathname === "/mypage";
@@ -34,16 +26,12 @@ const HeaderContent = () => {
   const menuItems = user
     ? [
         {
-          label: currentLanguage === "ko" ? "한국어" : "English",
-          onClick: handleLanguageToggle
-        },
-        {
           label: "Shop",
-          onClick: () => router.push("/shop")
+          onClick: () => navigateWithLang("/shop")
         },
         {
           label: isOnMypage ? t("home") : t("mypage"),
-          onClick: () => router.push(isOnMypage ? "/" : "/mypage")
+          onClick: () => navigateWithLang(isOnMypage ? "/" : "/mypage")
         },
         {
           label: t("logout"),
@@ -52,12 +40,8 @@ const HeaderContent = () => {
       ]
     : [
         {
-          label: currentLanguage === "ko" ? "한국어" : "English",
-          onClick: handleLanguageToggle
-        },
-        {
           label: "Shop",
-          onClick: () => router.push("/shop")
+          onClick: () => navigateWithLang("/shop")
         }
       ];
 
@@ -121,7 +105,7 @@ const HeaderContent = () => {
           {user && (
             <Dropdown
               items={[
-                { label: t("mypage"), onClick: () => router.push("/mypage") },
+                { label: t("mypage"), onClick: () => navigateWithLang("/mypage") },
                 { label: t("logout"), onClick: logout }
               ]}
               trigger={
@@ -170,10 +154,7 @@ const HeaderContent = () => {
 
           {/* Hamburger Menu */}
           <Dropdown
-            items={menuItems.map((item) => ({
-              label: item.label,
-              onClick: item.onClick
-            }))}
+            mode="click"
             trigger={
               <button
                 className="flex items-center justify-center rounded-lg p-1.5 hover:bg-gray-100 xs:p-2 sm:p-2"
@@ -183,8 +164,23 @@ const HeaderContent = () => {
                 <List className="h-5 w-5 text-text-04 xs:h-5 xs:w-5 sm:h-6 sm:w-6" aria-hidden="true" />
               </button>
             }
-            className="text-body1 text-text-04 !left-auto !right-0 !translate-x-0"
-          />
+            className="!left-auto !right-0 !translate-x-0 text-body1"
+          >
+            {/* Language Toggle */}
+            <LanguageToggle currentLanguage={currentLanguage} onLanguageChange={handleLanguageChange} />
+
+            {/* Menu Items */}
+            {menuItems.map((item, index) => [
+              <hr key={`hr-before-${index}`} className="w-full border-t border-line-02" />,
+              <button
+                key={item.label}
+                onClick={item.onClick}
+                className="flex h-[1.6875rem] w-full items-center justify-center px-2 text-body1 text-text-04 transition-colors tb:hover:text-text-03"
+              >
+                {item.label}
+              </button>
+            ])}
+          </Dropdown>
         </div>
       </section>
     </header>
