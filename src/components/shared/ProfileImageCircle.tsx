@@ -13,8 +13,8 @@ const ProfileImageCircle = ({ profileImage, nickname, size, className }: Props) 
   const [isImgError, setIsImgError] = useState<boolean>(false);
   return (
     <Image
-      src={isImgError || !profileImage ? "" : profileImage} // 프로필 이미지 또는 기본 이미지 사용
-      alt={`${nickname}의 프로필 이미지`}
+      src={isImgError || !profileImage ? "" : profileImage}
+      alt={`${nickname}'s profile image`}
       width={size}
       height={size}
       className={clsx("overflow-hidden rounded-full bg-gray-50 object-cover", className)}

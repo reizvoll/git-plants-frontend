@@ -1,5 +1,5 @@
 import { SHOP_ITEMS_LIMIT } from "@/lib/constants/constants";
-import { useEmblaNavigation } from "@/lib/hooks/useEmblaNavigation";
+import { useEmblaNavigation } from "@/lib/hooks/common/useEmblaNavigation";
 import { useResponsiveLimit } from "@/lib/hooks/common/useResponsiveLimit";
 import { useCallback, useEffect, useState } from "react";
 

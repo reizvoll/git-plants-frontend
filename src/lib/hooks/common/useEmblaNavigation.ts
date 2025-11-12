@@ -2,10 +2,6 @@ import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 
-/**
- * Embla Carousel 네비게이션 훅
- * 이전/다음 버튼과 상태 관리를 제공합니다
- */
 export function useEmblaNavigation(options: EmblaOptionsType = { loop: false }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const [canScrollPrev, setCanScrollPrev] = useState(false);

@@ -1,16 +1,19 @@
 "use client";
 
 import plant from "@/assets/images/plants.png";
+import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const MainHero = () => {
   const t = useTranslations("main-hero");
   const router = useRouter();
   const { user, login } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const isLoggedIn = !!user;
 
@@ -19,6 +22,14 @@ const MainHero = () => {
       router.push("/shop");
     } else {
       login();
+    }
+  };
+
+  const handleMyPageClick = () => {
+    if (isLoggedIn) {
+      router.push("/mypage");
+    } else {
+      setShowLoginModal(true);
     }
   };
 
@@ -65,12 +76,14 @@ const MainHero = () => {
             variant="primaryLine"
             size="md"
             className="w-full max-w-[200px] px-6 text-caption"
-            onClick={() => router.push("/mypage")}
+            onClick={handleMyPageClick}
           >
             {t("myPageButton")}
           </Button>
         </div>
       </div>
+
+      <LoginRequiredModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </section>
   );
 };

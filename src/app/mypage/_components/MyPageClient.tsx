@@ -1,11 +1,13 @@
 "use client";
 
 import LoadingText from "@/components/shared/LoadingText";
+import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
 import { useProfile } from "@/lib/hooks/mypage/useProfile";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import BadgeNotificationModal from "./modal/BadgeNotificationModal";
 import SelectTab from "./SelectTab";
@@ -13,12 +15,30 @@ import UserInfo from "./UserInfo";
 import UserInfoDesktop from "./UserInfoDesktop";
 
 const MyPageClient = () => {
+  const router = useRouter();
   const { isLoading: authLoading, isAuthenticated } = useAuth(true); // requireAuth: true
   const { data: profileData, isLoading: profileLoading, error, refetch } = useProfile(isAuthenticated);
   const { newBadges, setProfileData, clearNewBadges } = useProfileStore();
   const [showBadgeNotification, setShowBadgeNotification] = useState(false);
+  const [showLoginRequiredModal, setShowLoginRequiredModal] = useState(false);
   const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
   const t = useTranslations("mypage");
+
+  // 로그인 체크
+  useEffect(() => {
+    if (!authLoading) {
+      if (!isAuthenticated) {
+        setShowLoginRequiredModal(true);
+      } else {
+        setShowLoginRequiredModal(false);
+      }
+    }
+  }, [authLoading, isAuthenticated]);
+
+  const handleLoginRequiredClose = () => {
+    setShowLoginRequiredModal(false);
+    router.push("/");
+  };
 
   // TanStack Query -> Zustand 동기화
   useEffect(() => {
@@ -106,6 +126,8 @@ const MyPageClient = () => {
           }}
         />
       )}
+
+      <LoginRequiredModal isOpen={showLoginRequiredModal} onClose={handleLoginRequiredClose} />
     </>
   );
 };
