@@ -6,7 +6,6 @@ export const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 export const API = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
-  withCredentials: true,
   validateStatus: (status) => status < 500,
   headers: {
     "Content-Type": "application/json"
