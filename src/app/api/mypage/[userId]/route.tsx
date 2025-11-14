@@ -27,8 +27,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const cacheKey = `${userId}-${potX}-${potY}-${width}-${height}-${format}`;
 
     // fetch profile data from backend
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const fullUrl = `${apiUrl}/api/public/profile/${userId}`;
+    const apiUrl = process.env.API_URL;
+    const fullUrl = `${apiUrl}/public/profile/${userId}`;
 
     const profileResponse = await fetch(fullUrl, {
       headers: {
