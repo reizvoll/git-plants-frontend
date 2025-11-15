@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
     }
 
     // Proxy all other /api/* requests to the backend
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiUrl = process.env.BACKEND_URL;
     const url = new URL(pathname + request.nextUrl.search, apiUrl);
     return NextResponse.rewrite(url);
   }
