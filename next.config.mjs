@@ -7,8 +7,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/((?!mypage).*)',
-        destination: 'https://api.git-plants.com/api/:0'
+        source: '/api/(?<path>(?!mypage).*)',
+        destination: 'https://api.git-plants.com/api/:path'
       }
     ];
   },
