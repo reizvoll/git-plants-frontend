@@ -4,14 +4,6 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/((?!mypage).*)',
-        destination: 'https://api.git-plants.com/api/:0'
-      }
-    ];
-  },
   images: {
     remotePatterns: [
       {
