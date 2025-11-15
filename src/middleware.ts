@@ -11,7 +11,8 @@ export function middleware(request: NextRequest) {
     }
 
     // Proxy all other /api/* requests to the backend
-    const url = new URL(pathname + request.nextUrl.search, "https://api.git-plants.com");
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const url = new URL(pathname + request.nextUrl.search, apiUrl);
     return NextResponse.rewrite(url);
   }
 
