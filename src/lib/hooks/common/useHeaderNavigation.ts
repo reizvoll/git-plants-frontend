@@ -1,6 +1,10 @@
 import { useLanguageStore } from "@/lib/store/languageStore";
 import { useRouter } from "next/navigation";
 
+/**
+ * Custom hook to handle language switching and navigation with language parameters
+ * @returns Language state and navigation handlers
+ */
 export const useHeaderNavigation = () => {
   const { language, setLanguage } = useLanguageStore();
   const router = useRouter();

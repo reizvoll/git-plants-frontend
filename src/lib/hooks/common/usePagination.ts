@@ -5,6 +5,12 @@ interface UsePaginationProps<T> {
   limit: number;
 }
 
+/**
+ * Custom hook to handle pagination logic
+ * @param items - Array of items to paginate
+ * @param limit - Number of items per page
+ * @returns Current page, current items, and page change handler
+ */
 export const usePagination = <T>({ items, limit }: UsePaginationProps<T>) => {
   const [currentPage, setCurrentPage] = useState(1);
 

@@ -16,6 +16,12 @@ interface UseEmblaSliderOptions {
   };
 }
 
+/**
+ * Custom hook to manage Embla carousel slider with responsive pagination
+ * @param items - Array of items to display in the slider
+ * @param options - Optional configuration for responsive breakpoints
+ * @returns Embla ref, pagination state, and handlers
+ */
 export const useEmblaSlider = <T>(items: T[], options?: UseEmblaSliderOptions) => {
   const { breakpoints = SHOP_ITEMS_LIMIT.MOBILE } = options || {};
   const [currentPage, setCurrentPage] = useState(1);

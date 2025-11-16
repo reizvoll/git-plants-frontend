@@ -1,5 +1,9 @@
 import { useEffect } from "react";
 
+/**
+ * Custom hook to lock page scroll and prevent layout shift
+ * @param isOpen - Optional boolean to control scroll lock state
+ */
 const useLockScroll = (isOpen?: boolean) => {
   useEffect(() => {
     if (isOpen === false) return;
