@@ -20,6 +20,12 @@ interface UseItemEquipOptions {
   autoEquip?: boolean; // 자동 장착 활성화 여부
 }
 
+/**
+ * Custom hook to handle item equipment (backgrounds and pots)
+ * Supports optimistic updates and auto-equip functionality
+ * @param options - Optional configuration for auto-equip behavior
+ * @returns Equipment mutation and handlers
+ */
 export const useItemEquip = (options?: UseItemEquipOptions) => {
   const { updateItemEquipStatus, items, equipped } = useProfileStore();
   const addToast = useToastStore((state) => state.addToast);

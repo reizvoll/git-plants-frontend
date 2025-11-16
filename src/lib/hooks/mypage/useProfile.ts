@@ -1,6 +1,11 @@
 import { authApi } from "@/api/auth";
 import { useQuery } from "@tanstack/react-query";
 
+/**
+ * Custom hook to fetch user profile data
+ * @param enabled - Whether to enable the query (default: true)
+ * @returns Query result with profile data
+ */
 export const useProfile = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ["profile"],

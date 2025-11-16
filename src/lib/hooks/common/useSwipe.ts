@@ -6,6 +6,13 @@ interface UseSwipeProps {
   minSwipeDistance?: number;
 }
 
+/**
+ * Custom hook to handle touch swipe gestures
+ * @param onSwipeLeft - Callback for left swipe
+ * @param onSwipeRight - Callback for right swipe
+ * @param minSwipeDistance - Minimum swipe distance in pixels (default: 50)
+ * @returns Touch event handlers and swipe state
+ */
 export const useSwipe = ({ onSwipeLeft, onSwipeRight, minSwipeDistance = 50 }: UseSwipeProps) => {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);

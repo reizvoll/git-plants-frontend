@@ -2,6 +2,12 @@ import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 
+/**
+ * Custom hook for Embla Carousel navigation
+ * Provides previous/next button controls and scroll state management
+ * @param options - Embla carousel options (default: { loop: false })
+ * @returns Embla ref, API, scroll state, and navigation handlers
+ */
 export function useEmblaNavigation(options: EmblaOptionsType = { loop: false }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const [canScrollPrev, setCanScrollPrev] = useState(false);

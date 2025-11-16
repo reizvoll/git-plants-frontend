@@ -4,6 +4,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+/**
+ * Custom hook to manage authentication state and actions
+ * @param requireAuth - Whether authentication is required (default: false)
+ * @returns Authentication state and actions (login, logout)
+ */
 export const useAuth = (requireAuth: boolean = false) => {
   const router = useRouter();
   const { user, setUser, clearUser } = useAuthStore();

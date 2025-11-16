@@ -9,6 +9,14 @@ interface ItemSelectionParams {
   equipped: { backgrounds: Item[]; pots: Item[] };
 }
 
+/**
+ * Custom hook to manage item selection and equipment in collection
+ * @param items - Available user items
+ * @param currentMode - Current game mode
+ * @param category - Item category (background or pot)
+ * @param equipped - Currently equipped items
+ * @returns Item selection state and handlers
+ */
 export const useItemSelection = ({ items, currentMode, category, equipped }: ItemSelectionParams) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { equipItem, isLoading } = useItemEquip();

@@ -11,6 +11,9 @@ interface UseCollectionSortParams {
   currentSort: SortType;
 }
 
+/**
+ * Sort functions for different collection types
+ */
 const sortFunctions = {
   crops: {
     latest: (a: Crop, b: Crop) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
@@ -23,6 +26,13 @@ const sortFunctions = {
   }
 };
 
+/**
+ * Custom hook to sort and manage collection items (crops, backgrounds, pots)
+ * @param items - User items to sort
+ * @param crops - User crops to sort
+ * @param currentSort - Current sort type
+ * @returns Sorted data and sort options
+ */
 export const useCollectionSort = ({ items, crops, currentSort }: UseCollectionSortParams) => {
   const t = useTranslations("mypage.collectionSection.sort");
 
@@ -40,10 +50,8 @@ export const useCollectionSort = ({ items, crops, currentSort }: UseCollectionSo
       items.filter((item) => item.item.category === "pot")
     ];
 
-    // 작물 정렬
     const sortedCrops = crops ? [...crops].sort(sortFunctions.crops[currentSort]) : [];
 
-    // 아이템 정렬 (MOST_GROWN은 작물에만 적용)
     const itemSortFn = sortFunctions.items[currentSort as keyof typeof sortFunctions.items];
     const sortedBackgrounds = itemSortFn ? [...backgroundItems].sort(itemSortFn) : backgroundItems;
     const sortedPots = itemSortFn ? [...potItems].sort(itemSortFn) : potItems;

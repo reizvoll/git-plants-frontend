@@ -12,6 +12,11 @@ interface UseResponsiveLimitOptions {
   xl?: number;
 }
 
+/**
+ * Custom hook to get responsive item limit based on viewport width
+ * @param breakpoints - Object containing item limits for each breakpoint
+ * @returns Current item limit based on viewport width
+ */
 export const useResponsiveLimit = (breakpoints: UseResponsiveLimitOptions) => {
   const [limit, setLimit] = useState(breakpoints.sm || 3);
 
