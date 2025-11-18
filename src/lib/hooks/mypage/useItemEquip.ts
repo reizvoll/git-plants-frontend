@@ -28,7 +28,7 @@ interface UseItemEquipOptions {
  */
 export const useItemEquip = (options?: UseItemEquipOptions) => {
   const { updateItemEquipStatus, items, equipped } = useProfileStore();
-  const addToast = useToastStore((state) => state.addToast);
+  const { addToast, addErrorToast } = useToastStore();
   const t = useTranslations("mypage.styleSection");
 
   const equippedRef = useRef(equipped);
@@ -80,7 +80,7 @@ export const useItemEquip = (options?: UseItemEquipOptions) => {
       }
 
       console.error("Failed to equip/unequip item:", error);
-      addToast(t("errorEquip"), "warning");
+      addErrorToast(error, t("errorEquip"));
     },
     onSuccess: (data, variables) => {
       if (!variables.silent) {

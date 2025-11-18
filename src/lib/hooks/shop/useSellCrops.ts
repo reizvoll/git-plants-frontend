@@ -17,7 +17,7 @@ interface SellCropsParams {
 export const useSellCrops = () => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const addToast = useToastStore((state) => state.addToast);
+  const { addToast, addErrorToast } = useToastStore();
   const t = useTranslations("shop.hooks.sell");
 
   const mutation = useMutation({
@@ -49,8 +49,7 @@ export const useSellCrops = () => {
       addToast(t("success", { count: soldCropsCount, seeds: seeds.count }), "success");
     },
     onError: (error: unknown) => {
-      const errorMessage = error instanceof Error ? error.message : t("error");
-      addToast(errorMessage, "warning");
+      addErrorToast(error, t("error"));
     }
   });
 
