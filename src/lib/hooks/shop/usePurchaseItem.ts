@@ -12,7 +12,7 @@ import { useTranslations } from "next-intl";
 export const usePurchaseItem = () => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const addToast = useToastStore((state) => state.addToast);
+  const { addToast, addErrorToast } = useToastStore();
   const t = useTranslations("shop.hooks.purchase");
 
   const mutation = useMutation({
@@ -22,11 +22,6 @@ export const usePurchaseItem = () => {
       }
 
       const response = await shopApi.purchaseItem(item.id, item.price);
-
-      if (response.status >= 400) {
-        throw response;
-      }
-
       return { item, response };
     },
     onSuccess: ({ item }) => {
@@ -35,8 +30,7 @@ export const usePurchaseItem = () => {
       addToast(t("success", { itemName: item.name }), "success");
     },
     onError: (error: unknown) => {
-      const errorMessage = error instanceof Error ? error.message : t("error");
-      addToast(errorMessage, "warning");
+      addErrorToast(error, t("error"));
     }
   });
 

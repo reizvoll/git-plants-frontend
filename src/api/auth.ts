@@ -9,9 +9,12 @@ export const authApi = {
     window.location.href = `${BASE_URL}/api/auth/github`;
   },
   signOut: () => API.post("/api/auth/signout"),
+  refresh: () => API.post<SessionResponse>("/api/auth/refresh"),
   getSession: async () => {
     try {
-      const response = await API.get<SessionResponse>("/api/auth/session");
+      const response = await API.get<SessionResponse>("/api/auth/session", {
+        validateStatus: (status) => status < 500  // Treat 4xx as success to avoid auto-refresh
+      });
       if (response.status === 401) {
         return {
           success: false,
