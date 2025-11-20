@@ -17,8 +17,13 @@ API.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // 401 error and not already retried
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // 401 error and not already retried and not refresh endpoint
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes("/api/auth/refresh") &&
+      !originalRequest.url?.includes("/api/auth/session")
+    ) {
       originalRequest._retry = true;
 
       try {
