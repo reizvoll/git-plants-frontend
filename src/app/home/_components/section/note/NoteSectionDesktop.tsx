@@ -1,41 +1,17 @@
 "use client";
 
-import { getMonthlyPlant } from "@/api/public";
 import note from "@/assets/images/note.webp";
 import plant from "@/assets/images/plant_icon.png";
 import LoadingText from "@/components/shared/LoadingText";
+import { useMonthlyPlant } from "@/lib/hooks/note/useMonthlyPlant";
 import { getTranslated, useLanguageStore } from "@/lib/store/languageStore";
-import { MonthlyPlant } from "@/lib/types/api/public";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 const NoteSectionDesktop = () => {
   const t = useTranslations("plants-note");
   const { language } = useLanguageStore();
-  const [monthlyPlant, setMonthlyPlant] = useState<MonthlyPlant | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    setError(false);
-
-    getMonthlyPlant(language)
-      .then((data) => {
-        if (data && data.mainImageUrl && data.iconUrl) {
-          setMonthlyPlant(data);
-        } else {
-          setError(true);
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error("API 에러:", err);
-        setError(true);
-        setIsLoading(false);
-      });
-  }, [language]);
+  const { data: monthlyPlant, isLoading, isError } = useMonthlyPlant();
 
   return (
     <section
@@ -61,7 +37,7 @@ const NoteSectionDesktop = () => {
             </div>
           </div>
         </div>
-      ) : error || !monthlyPlant ? (
+      ) : isError || !monthlyPlant ? (
         <div className="flex w-full justify-center">
           <div className="relative aspect-[1000/634] w-full max-w-[1000px]">
             <Image
