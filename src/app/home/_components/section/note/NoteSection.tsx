@@ -1,42 +1,19 @@
 "use client";
 
-import { getMonthlyPlant } from "@/api/public";
 import note from "@/assets/images/note.webp";
 import LoadingText from "@/components/shared/LoadingText";
+import { useMonthlyPlant } from "@/lib/hooks/note/useMonthlyPlant";
 import { getTranslated, useLanguageStore } from "@/lib/store/languageStore";
-import { MonthlyPlant } from "@/lib/types/api/public";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NoteModal from "./NoteModal";
 
 const NoteSection = () => {
   const t = useTranslations("plants-note");
   const { language } = useLanguageStore();
-  const [monthlyPlant, setMonthlyPlant] = useState<MonthlyPlant | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const { data: monthlyPlant, isLoading, isError } = useMonthlyPlant();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    setError(false);
-
-    getMonthlyPlant(language)
-      .then((data) => {
-        if (data && data.mainImageUrl && data.iconUrl) {
-          setMonthlyPlant(data);
-        } else {
-          setError(true);
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error("API 에러:", err);
-        setError(true);
-        setIsLoading(false);
-      });
-  }, [language]);
 
   return (
     <section
@@ -53,7 +30,7 @@ const NoteSection = () => {
             />
           </div>
         </div>
-      ) : error || !monthlyPlant ? (
+      ) : isError || !monthlyPlant ? (
         <div className="relative aspect-[1000/634] w-full overflow-hidden">
           <Image src={note} alt="Note" fill className="object-cover" sizes="(min-width: 480px) 480px, 100vw" />
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">

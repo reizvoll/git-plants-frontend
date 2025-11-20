@@ -11,14 +11,29 @@ export const API = axios.create({
   }
 });
 
+// Public API instance - treats 404 as success (data not found is normal)
+export const PublicAPI = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json"
+  },
+  validateStatus: (status) => status < 500
+});
+
 // Response interceptor - automatically refresh token on 401 error
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // 401 error and not already retried
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // 401 error and not already retried and not refresh endpoint
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes("/api/auth/refresh") &&
+      !originalRequest.url?.includes("/api/auth/session")
+    ) {
       originalRequest._retry = true;
 
       try {
