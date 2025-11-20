@@ -11,6 +11,16 @@ export const API = axios.create({
   }
 });
 
+// Public API instance - treats 404 as success (data not found is normal)
+export const PublicAPI = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json"
+  },
+  validateStatus: (status) => status < 500
+});
+
 // Response interceptor - automatically refresh token on 401 error
 API.interceptors.response.use(
   (response) => response,
