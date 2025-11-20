@@ -40,7 +40,7 @@ export const authApi = {
             success: false,
             data: null
           };
-        } catch (refreshError) {
+        } catch {
           return {
             success: false,
             data: null
