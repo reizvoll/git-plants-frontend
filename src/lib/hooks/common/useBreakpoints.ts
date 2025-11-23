@@ -1,3 +1,4 @@
+import { BREAKPOINTS } from "@/lib/constants/constants";
 import { useEffect, useState } from "react";
 
 /**
@@ -22,9 +23,17 @@ export const useMediaQuery = (query: string) => {
 };
 
 /**
- * Custom hook to detect if the viewport is mobile size
- * @returns boolean indicating if the viewport is mobile (< 480px)
+ * Custom hook to detect current breakpoint
+ * @returns 'mobile' | 'tablet' | 'desktop'
+ * - mobile: < 480px (mb)
+ * - tablet: 480px - 767px (mb ~ tb)
+ * - desktop: ≥ 768px (tb)
  */
-export const useIsMobile = (): boolean => {
-  return useMediaQuery("(max-width: 479px)");
+export const useBreakpoint = (): "mobile" | "tablet" | "desktop" => {
+  const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mb - 1}px)`);
+  const isTablet = useMediaQuery(`(min-width: ${BREAKPOINTS.mb}px) and (max-width: ${BREAKPOINTS.tb - 1}px)`);
+
+  if (isMobile) return "mobile";
+  if (isTablet) return "tablet";
+  return "desktop";
 };
