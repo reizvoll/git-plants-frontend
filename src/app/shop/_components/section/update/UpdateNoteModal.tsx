@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
-import { useIsMobile } from "@/lib/hooks/common/useBreakpoints";
+import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { useModalKeyboard } from "@/lib/hooks/common/useModalKeyboard";
 import type { UpdateNote } from "@/lib/types/api/public";
 import { useTranslations } from "next-intl";
@@ -14,13 +14,13 @@ interface UpdateNoteModalProps {
 
 const UpdateNoteModal = ({ isOpen, onClose, updateNote }: UpdateNoteModalProps) => {
   const t = useTranslations("shop.update.updateModal");
-  const isMobile = useIsMobile();
+  const breakpoint = useBreakpoint();
 
   useModalKeyboard({ isOpen, onClose });
 
   if (!isOpen) return null;
 
-  return isMobile ? (
+  return breakpoint === "mobile" ? (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
