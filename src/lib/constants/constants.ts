@@ -3,15 +3,17 @@
  * Matches tailwind.config.ts screen values
  */
 export const BREAKPOINTS = {
-  XS: 280,
-  S: 320,
-  SM: 380,
-  MB: 480,
-  ML: 640,
-  TB: 768,
-  LT: 1024,
-  XL: 1200
+  xs: 280, // Extra small (≥280px)
+  s: 320, // Small (≥320px)
+  sm: 380, // Default mobile (≥380px)
+  mb: 480, // Mobile (≥480px)
+  ml: 640, // Small Tablet (≥640px)
+  tb: 768, // Tablet (≥768px)
+  lt: 1024, // Desktop (≥1024px)
+  xl: 1200 // Large desktop (≥1200px)
 } as const;
+
+export type Breakpoint = keyof typeof BREAKPOINTS;
 
 /**
  * Pagination Constants

@@ -2,6 +2,7 @@
 
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
+import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { useProfile } from "@/lib/hooks/mypage/useProfile";
 import { useShopItems } from "@/lib/hooks/shop/useShopItems";
 import { useProfileStore } from "@/lib/store/profileStore";
@@ -18,6 +19,7 @@ import SellCropsSectionDesktop from "./section/sell-crops/SellCropsSectionDeskto
 import UpdateSection from "./section/update/UpdateSection";
 
 const ShopPageClient = () => {
+  const breakpoint = useBreakpoint();
   const { user } = useAuth();
   const { data: shopItems, isLoading } = useShopItems();
   const { data: profileData } = useProfile();
@@ -48,28 +50,28 @@ const ShopPageClient = () => {
             Shop
           </h1>
 
-          {/* Hero Section - Mobile & Desktop */}
-          <ShopHero />
-          <ShopHeroDesktop />
+          {/* Hero Section */}
+          {breakpoint === "mobile" ? <ShopHero /> : <ShopHeroDesktop />}
 
-          {/* Sell Crops Section - Mobile & Desktop */}
-          {user && (
-            <>
-              <SellCropsSection />
-              <SellCropsSectionDesktop />
-            </>
-          )}
+          {/* Sell Crops Section */}
+          {user && (breakpoint === "mobile" ? <SellCropsSection /> : <SellCropsSectionDesktop />)}
 
           {/* Update Section - Same for all */}
           <UpdateSection />
 
-          {/* Background List - Mobile & Desktop */}
-          <BackgroundList items={backgroundItems} loading={isLoading} />
-          <BackgroundListDesktop items={backgroundItems} loading={isLoading} />
+          {/* Background List */}
+          {breakpoint === "mobile" ? (
+            <BackgroundList items={backgroundItems} loading={isLoading} />
+          ) : (
+            <BackgroundListDesktop items={backgroundItems} loading={isLoading} />
+          )}
 
-          {/* Pot List - Mobile & Desktop */}
-          <PotList items={potItems} loading={isLoading} />
-          <PotListDesktop items={potItems} loading={isLoading} />
+          {/* Pot List */}
+          {breakpoint === "mobile" ? (
+            <PotList items={potItems} loading={isLoading} />
+          ) : (
+            <PotListDesktop items={potItems} loading={isLoading} />
+          )}
         </div>
       </main>
 

@@ -2,7 +2,7 @@
 
 import plant from "@/assets/images/plant_icon.png";
 import Modal from "@/components/ui/Modal";
-import { useIsMobile } from "@/lib/hooks/common/useBreakpoints";
+import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { getTranslated, Locale } from "@/lib/store/languageStore";
 import { MonthlyPlant } from "@/lib/types/api/public";
 import { useTranslations } from "next-intl";
@@ -17,7 +17,7 @@ interface NoteModalProps {
 
 const NoteModal = ({ isOpen, onClose, monthlyPlant, language }: NoteModalProps) => {
   const t = useTranslations("plants-note");
-  const isMobile = useIsMobile();
+  const breakpoint = useBreakpoint();
 
   if (!isOpen) return null;
 
@@ -93,7 +93,7 @@ const NoteModal = ({ isOpen, onClose, monthlyPlant, language }: NoteModalProps) 
     </div>
   );
 
-  return isMobile ? (
+  return breakpoint === "mobile" ? (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
