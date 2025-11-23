@@ -1,4 +1,4 @@
-import { useIsMobile } from "@/lib/hooks/common/useBreakpoints";
+import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { useTranslations } from "next-intl";
 import { Button } from "../ui/Button";
 import Modal from "../ui/Modal";
@@ -10,13 +10,13 @@ interface LoginRequiredModalProps {
 
 function LoginRequiredModal({ isOpen, onClose }: LoginRequiredModalProps) {
   const t = useTranslations("common.loginRequired");
-  const isMobile = useIsMobile();
+  const breakpoint = useBreakpoint();
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      mode={isMobile ? "mobile" : "default"}
+      mode={breakpoint === "mobile" ? "mobile" : "default"}
       className="min-w-[200px] bg-bg-01 text-center"
       contentClassName="px-5 py-8"
     >
