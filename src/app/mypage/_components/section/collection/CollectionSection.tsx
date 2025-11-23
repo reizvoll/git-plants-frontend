@@ -3,7 +3,7 @@
 import SquaresFour from "@/assets/icons/squares-four.svg";
 import inventory from "@/assets/images/inventory.webp";
 import { Button } from "@/components/ui/Button";
-import { useIsMobile } from "@/lib/hooks/common/useBreakpoints";
+import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { useCollectionSort, type CollectionMode, type SortType } from "@/lib/hooks/mypage/useCollectionSort";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useToastStore } from "@/lib/store/useToaststore";
@@ -27,7 +27,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
   const { items, crops } = useProfileStore();
   const addToast = useToastStore((s) => s.addToast);
   const t = useTranslations("mypage.collectionSection");
-  const isMobile = useIsMobile();
+  const breakpoint = useBreakpoint();
 
   // URL에서 정렬 상태 가져오기
   const currentSort = (searchParams.get("sort") as SortType) || "latest";
@@ -68,16 +68,16 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
 
   // 화면 크기가 mb(480px) 이상이 되면 모달 자동 닫기
   useEffect(() => {
-    if (!isMobile && isModalOpen) {
+    if (breakpoint !== "mobile" && isModalOpen) {
       setIsModalOpen(false);
     }
-  }, [isMobile, isModalOpen]);
+  }, [breakpoint, isModalOpen]);
 
   const hasShownToast = useRef(false);
 
   useEffect(() => {
     // mb 이상(태블릿/데스크톱)에서만 토스트 표시
-    if (isMobile) {
+    if (breakpoint === "mobile") {
       return;
     }
 
@@ -90,7 +90,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
       hasShownToast.current = true;
       addToast(t("noItemMessage"), "warning");
     }
-  }, [currentMode, backgrounds.length, pots.length, ownedCrops.length, addToast, t, isMobile]);
+  }, [currentMode, backgrounds.length, pots.length, ownedCrops.length, addToast, t, breakpoint]);
 
   return (
     <section aria-labelledby="collection-title" className="flex w-full justify-center">

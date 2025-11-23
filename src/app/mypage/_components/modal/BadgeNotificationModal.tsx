@@ -1,6 +1,6 @@
 import Close from "@/assets/icons/Close";
 import Modal from "@/components/ui/Modal";
-import { useIsMobile } from "@/lib/hooks/common/useBreakpoints";
+import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { useModalKeyboard } from "@/lib/hooks/common/useModalKeyboard";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -16,7 +16,7 @@ type BadgeNotificationModalProps = {
 
 const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationModalProps) => {
   const t = useTranslations("mypage.badgeNotification");
-  const isMobile = useIsMobile();
+  const breakpoint = useBreakpoint();
 
   useModalKeyboard({
     isOpen,
@@ -26,7 +26,7 @@ const BadgeNotificationModal = ({ isOpen, onClose, badge }: BadgeNotificationMod
   });
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} mode={isMobile ? "mobile" : "default"} className="bg-bg-01 px-5 py-6">
+    <Modal isOpen={isOpen} onClose={onClose} mode={breakpoint === "mobile" ? "mobile" : "default"} className="bg-bg-01 px-5 py-6">
       <article className="flex flex-col items-center gap-6">
         {/* 제목 */}
         <div className="flex w-full items-center justify-between">

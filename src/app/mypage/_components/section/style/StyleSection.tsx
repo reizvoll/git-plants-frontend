@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/lib/hooks/auth/useAuth";
+import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { useItemEquip } from "@/lib/hooks/mypage/useItemEquip";
 import { useItemSelection } from "@/lib/hooks/mypage/useItemSelection";
 import { useCustomSize, usePotPosition, useSelectedIndexes } from "@/lib/store/potPositionStore";
@@ -26,6 +27,7 @@ interface StyleSectionProps {
 }
 
 const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
+  const breakpoint = useBreakpoint();
   const { user } = useAuth();
   const { equipped, items, plants } = useProfileStore();
   const { addToast } = useToastStore();
@@ -117,7 +119,8 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
         />
 
         {/* Mobile Layout */}
-        <div className="flex flex-col gap-6 xs:gap-8 mb:hidden">
+        {breakpoint === "mobile" && (
+          <div className="flex flex-col gap-6 xs:gap-8">
           <div className="flex w-full flex-col items-center gap-4 xs:gap-6">
             <PreviewArea
               selectedBackground={selectedBackground}
@@ -139,9 +142,11 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
             />
           </div>
         </div>
+        )}
 
         {/* Tablet Layout */}
-        <div className="hidden flex-col gap-16 mb:flex tb:hidden">
+        {breakpoint === "tablet" && (
+          <div className="flex flex-col gap-16">
           <div className="flex w-full flex-col items-center gap-6">
             <PreviewArea
               selectedBackground={selectedBackground}
@@ -180,9 +185,11 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
             />
           </div>
         </div>
+        )}
 
-        {/* Desktop/Tablet Layout */}
-        <div className="hidden flex-row gap-[60px] tb:flex">
+        {/* Desktop Layout */}
+        {breakpoint === "desktop" && (
+          <div className="flex flex-row gap-[60px]">
           <div className="flex flex-shrink-0 flex-col items-center gap-6">
             <PreviewAreaDesktop
               selectedBackground={selectedBackground}
@@ -221,27 +228,28 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
             />
           </div>
         </div>
+        )}
       </div>
 
       {/* Mobile - BottomSheet */}
-      <div className="mb:hidden">
+      {breakpoint === "mobile" && (
         <SizeAdjustModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           currentSize={customSize}
           onApply={handleApplySize}
         />
-      </div>
+      )}
 
       {/* Desktop/Tablet - Modal */}
-      <div className="hidden mb:block">
+      {breakpoint !== "mobile" && (
         <SizeAdjustModalDesktop
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           currentSize={customSize}
           onApply={handleApplySize}
         />
-      </div>
+      )}
 
       {selectedPot && (
         <PotPositionAdjustModal

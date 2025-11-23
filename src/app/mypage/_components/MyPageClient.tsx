@@ -4,6 +4,7 @@ import LoadingText from "@/components/shared/LoadingText";
 import LoginRequiredModal from "@/components/shared/LoginRequiredModal";
 import ScrollTopButton from "@/components/shared/ScrollTopButton";
 import { useAuth } from "@/lib/hooks/auth/useAuth";
+import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { useProfile } from "@/lib/hooks/mypage/useProfile";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useTranslations } from "next-intl";
@@ -16,6 +17,7 @@ import UserInfoDesktop from "./UserInfoDesktop";
 
 const MyPageClient = () => {
   const router = useRouter();
+  const breakpoint = useBreakpoint();
   const { isLoading: authLoading, isAuthenticated } = useAuth(true); // requireAuth: true
   const { data: profileData, isLoading: profileLoading, error, refetch } = useProfile(isAuthenticated);
   const { newBadges, setProfileData, clearNewBadges } = useProfileStore();
@@ -100,12 +102,7 @@ const MyPageClient = () => {
             <h2 id="mypage-userinfo-heading" className="sr-only">
               User information
             </h2>
-            <div className="mb:hidden">
-              <UserInfo />
-            </div>
-            <div className="hidden mb:block">
-              <UserInfoDesktop />
-            </div>
+            {breakpoint === "mobile" ? <UserInfo /> : <UserInfoDesktop />}
           </section>
 
           <nav aria-label="Tab navigation" className="w-full">
