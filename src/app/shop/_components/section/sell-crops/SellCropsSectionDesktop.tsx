@@ -1,19 +1,29 @@
 "use client";
 
-import inventory from "@/assets/images/inventory.webp";
+import inventoryEight from "@/assets/images/inventory-lg.webp";
+import inventorySix from "@/assets/images/inventory-md.webp";
+import inventoryFour from "@/assets/images/inventory-sm.webp";
+import inventoryTen from "@/assets/images/inventory-xl.webp";
 import seed from "@/assets/images/seed.webp";
+import InventorySlot, { SLOT_CONTENT_STYLE, SLOT_WRAPPER_STYLE } from "@/components/shared/InventorySlot";
 import { Button } from "@/components/ui/Button";
+import { useInventoryColumns } from "@/lib/hooks/common/useBreakpoints";
 import { useSellCrops } from "@/lib/hooks/shop/useSellCrops";
 import { useProfileStore } from "@/lib/store/profileStore";
 import { useShopStore } from "@/lib/store/shopStore";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
+const ROWS = 4;
+
 const SellCropsSectionDesktop = () => {
   const { crops } = useProfileStore();
   const { selectedCropsForSale, toggleCropSelection, selectAllCrops, clearSelection } = useShopStore();
   const { handleSell } = useSellCrops();
   const t = useTranslations("shop.sellCrops");
+
+  const cols = useInventoryColumns();
+  const slotCount = cols * ROWS;
 
   // 수확된 작물들 (crops 배열을 직접 사용)
   const harvestableCrops = crops || [];
@@ -31,6 +41,12 @@ const SellCropsSectionDesktop = () => {
     clearSelection();
   };
   const handleCancel = () => clearSelection();
+
+  // 빈 슬롯 렌더링
+  const renderEmptySlots = () => {
+    const emptyCount = Math.max(0, slotCount - availableCrops.length);
+    return Array.from({ length: emptyCount }, (_, i) => <InventorySlot key={`empty-${i}`} />);
+  };
 
   return (
     <section
@@ -72,35 +88,40 @@ const SellCropsSectionDesktop = () => {
           </Button>
         </div>
 
-        {/* TODO: 그리드 디자인 완료되는 대로 다시 작업 예정 (슬롯에 따른 작물그리드 변경 필요) */}
+        {/* 픽셀 프레임 이미지 + CSS 그리드 */}
         <figure className="relative flex w-full flex-col">
-          <Image src={inventory} alt="inventory" priority />
+          <Image src={inventoryFour} alt="inventory" priority className="w-full ml:hidden" />
+          <Image src={inventorySix} alt="inventory" priority className="hidden w-full ml:block tb:hidden" />
+          <Image src={inventoryEight} alt="inventory" priority className="hidden w-full tb:block lt:hidden" />
+          <Image src={inventoryTen} alt="inventory" priority className="hidden w-full lt:block" />
           <figcaption className="sr-only">inventory</figcaption>
 
-          <div className="absolute inset-0 flex px-8 py-8 mb:px-10 mb:py-9 lt:px-[45px] lt:py-[40px]">
-            <div className="grid w-full grid-cols-8 gap-3 mb:gap-4">
-              {availableCrops.length > 0 ? (
-                availableCrops.map((crop) => {
-                  const selectedItem = selectedCropsForSale.find((item) => item.plantId === crop.id);
-                  const isSelected = Boolean(selectedItem);
-                  const remaining = crop.quantity - (selectedItem?.count || 0);
+          {/* CSS 그리드 오버레이 */}
+          <div className="absolute inset-0 p-[10%] ml:p-[8%] tb:p-[6%] lt:p-[4%]">
+            <ul className="m-0 grid h-full list-none grid-cols-4 gap-2 p-0 leading-none ml:grid-cols-6 tb:grid-cols-8 lt:grid-cols-10">
+              {availableCrops.map((crop) => {
+                const selectedItem = selectedCropsForSale.find((item) => item.plantId === crop.id);
+                const isSelected = Boolean(selectedItem);
+                const remaining = crop.quantity - (selectedItem?.count || 0);
 
-                  return (
+                return (
+                  <li key={crop.id} className={SLOT_WRAPPER_STYLE}>
                     <button
-                      key={crop.id}
                       type="button"
                       onClick={() => toggleCropSelection(crop.id)}
-                      className={`relative size-[82px] cursor-pointer ${isSelected ? "" : "hover:border-primary-200"}`}
+                      className="relative size-full"
                       aria-pressed={isSelected}
                       title={crop.monthlyPlant.name}
                     >
-                      <div className="relative h-full w-full">
-                        <Image
-                          src={crop.monthlyPlant.cropImageUrl}
-                          alt={crop.monthlyPlant.name}
-                          className="object-contain"
-                          fill
-                        />
+                      <div className={SLOT_CONTENT_STYLE}>
+                        <div className="relative h-full w-full">
+                          <Image
+                            src={crop.monthlyPlant.cropImageUrl}
+                            alt={crop.monthlyPlant.name}
+                            className="object-contain"
+                            fill
+                          />
+                        </div>
                       </div>
 
                       {isSelected && (
@@ -110,18 +131,22 @@ const SellCropsSectionDesktop = () => {
                         />
                       )}
 
-                      <span className="text-border absolute -bottom-3 -right-1 flex items-center justify-center text-title1 text-white">
+                      <span className="text-border absolute -bottom-1 -right-1 flex items-center justify-center text-body1 text-white mb:text-title1">
                         {remaining}
                       </span>
                     </button>
-                  );
-                })
-              ) : (
-                <div className="col-span-8 flex items-center justify-center rounded-lg bg-black/50 text-center text-subtitle text-text-01">
-                  {t("noCrops")}
-                </div>
-              )}
-            </div>
+                  </li>
+                );
+              })}
+              {renderEmptySlots()}
+            </ul>
+
+            {/* No crops 메시지 - 슬롯 전체를 감싸는 오버레이 */}
+            {availableCrops.length === 0 && (
+              <div className="absolute inset-6 flex items-center justify-center rounded-lg bg-black/50">
+                <p className="text-center text-title2 text-text-01 tb:text-subtitle">{t("noCrops")}</p>
+              </div>
+            )}
           </div>
         </figure>
 

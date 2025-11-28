@@ -127,11 +127,11 @@ const NoteSectionDesktop = () => {
                     </dl>
 
                     {/* Plant Image */}
-                    <div className="h-[clamp(187px,25vw,233px)] w-[clamp(280px,35vw,350px)]">
+                    <div className="h-[clamp(130px,18vw,175px)] w-[clamp(260px,36vw,350px)]">
                       <Image
                         src={monthlyPlant.mainImageUrl}
                         width={350}
-                        height={233}
+                        height={175}
                         alt="monthly_plant_main"
                         className="h-full w-full object-cover"
                       />
