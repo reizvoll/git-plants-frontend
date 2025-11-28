@@ -88,11 +88,11 @@ const PreviewArea = ({ selectedBackground, selectedPot, currentPlant, customSize
                     className="absolute"
                     style={{
                       left: "50%",
-                      top: "-52px",
+                      top: "-120px",
                       transform: "translateX(-50%)",
                       zIndex: 10,
                       width: "75px",
-                      height: "75px",
+                      height: "150px",
                       position: "absolute"
                     }}
                   >

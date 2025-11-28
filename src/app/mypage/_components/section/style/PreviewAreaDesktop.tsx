@@ -51,11 +51,11 @@ const PreviewAreaDesktop = ({
                     className="absolute"
                     style={{
                       left: "50%",
-                      top: "-70px",
+                      top: "-160px",
                       transform: "translateX(-50%)",
                       zIndex: 10,
                       width: "100px",
-                      height: "100px",
+                      height: "200px",
                       position: "absolute"
                     }}
                   >
