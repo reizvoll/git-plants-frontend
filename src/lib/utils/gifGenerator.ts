@@ -5,10 +5,11 @@ const gifFrames = require("gif-frames") as any;
 
 // Constants
 const CACHE_DURATION = 2 * 60 * 60 * 1000; // 2hr
-const PLANT_SIZE = 100;
+const PLANT_WIDTH = 100;
+const PLANT_HEIGHT = 200;
 const POT_OFFSET = 40;
 const PLANT_OFFSET_X = 50;
-const PLANT_OFFSET_Y = 70 + 50;
+const PLANT_OFFSET_Y = 200;
 
 // Frame cache for better performance
 const frameCache = new Map<string, Buffer[]>();
@@ -59,7 +60,7 @@ async function extractPlantFrames(plantUrl: string): Promise<Buffer[]> {
           channels: 4 // RGBA
         }
       })
-        .resize(PLANT_SIZE, PLANT_SIZE, {
+        .resize(PLANT_WIDTH, PLANT_HEIGHT, {
           kernel: sharp.kernel.nearest,
           fastShrinkOnLoad: false
         })
@@ -116,7 +117,7 @@ export async function createAnimatedGIF({
 
     // Setup GIF encoder
     const encoder = new GifEncoder(customSize.width, customSize.height);
-    encoder.setRepeat(0).setDelay(500).setQuality(20).setDispose(2);
+    encoder.setRepeat(0).setDelay(500).setQuality(1).setDispose(2);
 
     const chunks: Buffer[] = [];
     const stream = encoder.createReadStream();
