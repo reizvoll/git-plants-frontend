@@ -22,7 +22,7 @@ const CollectionControls = ({
   const t = useTranslations("mypage.collectionSection");
 
   return (
-    <div className="hidden h-12 w-full flex-row items-start justify-between mb:flex">
+    <div className="hidden h-12 w-full flex-row items-start justify-between gap-3 mb:flex">
       <Dropdown
         items={[
           { label: t("crop"), onClick: () => onModeChange("CROP"), active: currentMode === "CROP" },
@@ -36,7 +36,7 @@ const CollectionControls = ({
         className="font-pretendard text-body1 text-sageGreen-900"
         mode="click"
       />
-      <div className="flex flex-row gap-[10px]">
+      <div className="flex flex-row gap-2 ml:gap-[10px]">
         <Dropdown
           items={sortOptions.map((option) => ({
             ...option,
@@ -51,7 +51,7 @@ const CollectionControls = ({
           className="shadow-normal flex items-center gap-2 text-body1"
           onClick={onResetSort}
         >
-          {t("resetSort")}
+          <span className="max-w-[80px] truncate ml:max-w-none">{t("resetSort")}</span>
           <Funnel className="h-5 w-5" />
         </Button>
       </div>

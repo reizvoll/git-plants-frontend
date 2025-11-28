@@ -1,5 +1,6 @@
 "use client";
 
+import { SLOT_CONTENT_STYLE, SLOT_WRAPPER_STYLE } from "@/components/shared/InventorySlot";
 import { UserItem } from "@/lib/types/api/profile";
 import { formatDate } from "@/lib/utils/formatDate";
 import { useTranslations } from "next-intl";
@@ -15,21 +16,18 @@ const BackgroundItem = ({ background }: BackgroundItemProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <li className="group relative size-[60px] mb:size-[76px]">
+    <li className={SLOT_WRAPPER_STYLE}>
       <button
         type="button"
         className="relative size-full mb:pointer-events-none"
         onClick={() => setShowTooltip(!showTooltip)}
         aria-label={`${background.item.name} 정보 보기`}
       >
-        <Image
-          src={background.item.iconUrl}
-          alt={background.item.name}
-          className="object-cover"
-          width={76}
-          height={76}
-          priority
-        />
+        <div className={SLOT_CONTENT_STYLE}>
+          <div className="relative h-full w-full">
+            <Image src={background.item.iconUrl} alt={background.item.name} className="object-cover" fill priority />
+          </div>
+        </div>
       </button>
       {/* Mobile/Tablet tooltip - click to toggle */}
       {showTooltip && (
@@ -49,9 +47,7 @@ const BackgroundItem = ({ background }: BackgroundItemProps) => {
         className="group-hover:shadow-emphasize absolute left-1/2 top-[-8px] hidden -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-2xl bg-bg-01 px-4 py-3 text-center opacity-0 transition-all duration-200 group-hover:opacity-100 mb:block"
       >
         <span className="block text-body2 text-primary-default">{background.item.name}</span>
-        <span className="text-mini text-brown-500">
-          {t("acquiredAt", { date: formatDate(background.acquiredAt) })}
-        </span>
+        <span className="text-mini text-brown-500">{t("acquiredAt", { date: formatDate(background.acquiredAt) })}</span>
       </span>
     </li>
   );

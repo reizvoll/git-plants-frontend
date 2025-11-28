@@ -37,3 +37,22 @@ export const useBreakpoint = (): "mobile" | "tablet" | "desktop" => {
   if (isTablet) return "tablet";
   return "desktop";
 };
+
+/**
+ * Custom hook to calculate grid columns for inventory slots
+ * @returns number of columns based on current breakpoint
+ * - lt (≥1024px): 10 columns
+ * - tb (≥768px): 8 columns
+ * - ml (≥640px): 6 columns
+ * - default: 4 columns
+ */
+export const useInventoryColumns = (): number => {
+  const isLt = useMediaQuery(`(min-width: ${BREAKPOINTS.lt}px)`);
+  const isTb = useMediaQuery(`(min-width: ${BREAKPOINTS.tb}px)`);
+  const isMl = useMediaQuery(`(min-width: ${BREAKPOINTS.ml}px)`);
+
+  if (isLt) return 10;
+  if (isTb) return 8;
+  if (isMl) return 6;
+  return 4;
+};

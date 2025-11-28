@@ -26,28 +26,21 @@ const MyPageClient = () => {
   const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
   const t = useTranslations("mypage");
 
-  // 로그인 체크
-  useEffect(() => {
-    if (!authLoading) {
-      if (!isAuthenticated) {
-        setShowLoginRequiredModal(true);
-      } else {
-        setShowLoginRequiredModal(false);
-      }
-    }
-  }, [authLoading, isAuthenticated]);
-
   const handleLoginRequiredClose = () => {
     setShowLoginRequiredModal(false);
     router.push("/");
   };
 
-  // TanStack Query -> Zustand 동기화
+  // 로그인 체크 + TanStack Query -> Zustand 동기화
   useEffect(() => {
+    if (authLoading) return;
+
+    setShowLoginRequiredModal(!isAuthenticated);
+
     if (profileData && isAuthenticated) {
       setProfileData(profileData);
     }
-  }, [profileData, isAuthenticated, setProfileData]);
+  }, [authLoading, isAuthenticated, profileData, setProfileData]);
 
   // 신규 뱃지 알림 제어
   useEffect(() => {

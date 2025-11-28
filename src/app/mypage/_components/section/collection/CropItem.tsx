@@ -1,8 +1,9 @@
 "use client";
 
 import seed from "@/assets/images/seed.webp";
-import { formatDate } from "@/lib/utils/formatDate";
+import { SLOT_CONTENT_STYLE, SLOT_WRAPPER_STYLE } from "@/components/shared/InventorySlot";
 import { Crop } from "@/lib/types/api/profile";
+import { formatDate } from "@/lib/utils/formatDate";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
@@ -16,20 +17,22 @@ const CropItem = ({ crop }: CropItemProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <li className="group relative size-[60px] mb:size-[76px]">
+    <li className={SLOT_WRAPPER_STYLE}>
       <button
         type="button"
         className="relative size-full mb:pointer-events-none"
         onClick={() => setShowTooltip(!showTooltip)}
         aria-label={`${crop.monthlyPlant.name} 정보 보기`}
       >
-        <div className="relative h-full w-full">
-          <Image
-            src={crop.monthlyPlant.cropImageUrl}
-            alt={crop.monthlyPlant.name}
-            className="object-contain"
-            fill
-          />
+        <div className={SLOT_CONTENT_STYLE}>
+          <div className="relative h-full w-full">
+            <Image
+              src={crop.monthlyPlant.cropImageUrl}
+              alt={crop.monthlyPlant.name}
+              className="object-contain"
+              fill
+            />
+          </div>
         </div>
         <div className="text-border absolute -bottom-1 -right-1 flex items-center justify-center text-body1 text-white mb:text-title1">
           {crop.quantity}

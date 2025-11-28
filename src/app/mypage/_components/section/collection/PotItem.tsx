@@ -1,7 +1,8 @@
 "use client";
 
-import { formatDate } from "@/lib/utils/formatDate";
+import { SLOT_CONTENT_STYLE, SLOT_WRAPPER_STYLE } from "@/components/shared/InventorySlot";
 import { UserItem } from "@/lib/types/api/profile";
+import { formatDate } from "@/lib/utils/formatDate";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
@@ -15,14 +16,18 @@ const PotItem = ({ pot }: PotItemProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <li className="group relative size-[52px] mb:size-[66px]">
+    <li className={SLOT_WRAPPER_STYLE}>
       <button
         type="button"
         className="relative size-full mb:pointer-events-none"
         onClick={() => setShowTooltip(!showTooltip)}
         aria-label={`${pot.item.name} 정보 보기`}
       >
-        <Image src={pot.item.iconUrl} alt={pot.item.name} width={66} height={66} className="object-cover" />
+        <div className={SLOT_CONTENT_STYLE}>
+          <div className="relative h-full w-full">
+            <Image src={pot.item.iconUrl} alt={pot.item.name} fill className="object-cover" />
+          </div>
+        </div>
       </button>
       {/* Mobile/Tablet tooltip - click to toggle */}
       {showTooltip && (
