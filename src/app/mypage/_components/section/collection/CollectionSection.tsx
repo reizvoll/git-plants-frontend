@@ -1,7 +1,10 @@
 "use client";
 
 import SquaresFour from "@/assets/icons/squares-four.svg";
-import inventory from "@/assets/images/inventory.webp";
+import inventoryEight from "@/assets/images/inventory-lg.webp";
+import inventorySix from "@/assets/images/inventory-md.webp";
+import inventoryFour from "@/assets/images/inventory-sm.webp";
+import inventoryTen from "@/assets/images/inventory-xl.webp";
 import { Button } from "@/components/ui/Button";
 import { useBreakpoint } from "@/lib/hooks/common/useBreakpoints";
 import { useCollectionSort, type CollectionMode, type SortType } from "@/lib/hooks/mypage/useCollectionSort";
@@ -61,36 +64,27 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
     addToast(t("resetSortMessage"), "success");
   };
 
-  // update currentMode when initialMode changes
+  const shownToastModes = useRef<Set<CollectionMode>>(new Set());
+
+  // prop 동기화
   useEffect(() => {
     setCurrentMode(initialMode);
   }, [initialMode]);
 
-  // 화면 크기가 mb(480px) 이상이 되면 모달 자동 닫기
+  // breakpoint 기반 UI 반응
   useEffect(() => {
     if (breakpoint !== "mobile" && isModalOpen) {
       setIsModalOpen(false);
     }
-  }, [breakpoint, isModalOpen]);
 
-  const hasShownToast = useRef(false);
+    if (breakpoint === "mobile") return;
 
-  useEffect(() => {
-    // mb 이상(태블릿/데스크톱)에서만 토스트 표시
-    if (breakpoint === "mobile") {
-      return;
-    }
-
-    const hasNoItems =
-      (currentMode === "CROP" && ownedCrops.length === 0) ||
-      (currentMode === "BACKGROUND" && backgrounds.length === 0) ||
-      (currentMode === "POT" && pots.length === 0);
-
-    if (hasNoItems && !hasShownToast.current) {
-      hasShownToast.current = true;
+    const items = { CROP: ownedCrops, BACKGROUND: backgrounds, POT: pots }[currentMode];
+    if (items.length === 0 && !shownToastModes.current.has(currentMode)) {
+      shownToastModes.current.add(currentMode);
       addToast(t("noItemMessage"), "warning");
     }
-  }, [currentMode, backgrounds.length, pots.length, ownedCrops.length, addToast, t, breakpoint]);
+  }, [breakpoint, isModalOpen, currentMode, ownedCrops, backgrounds, pots, addToast, t]);
 
   return (
     <section aria-labelledby="collection-title" className="flex w-full justify-center">
@@ -126,12 +120,16 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
           onResetSort={handleResetToDefault}
         />
 
-        <div className="flex w-full flex-col gap-4 mb:gap-6">
-          <div className="relative flex w-full flex-col">
-            <Image src={inventory} alt="inventory" priority />
-            <div className="absolute inset-0 flex px-5 py-5 mb:px-9 mb:py-9">
-              <CollectionGrid mode={currentMode} backgrounds={backgrounds} pots={pots} crops={ownedCrops} />
-            </div>
+        {/* 픽셀 프레임 이미지 + CSS 그리드 */}
+        <div className="relative w-full">
+          {/* 프레임 이미지 */}
+          <Image src={inventoryFour} alt="inventory" priority className="w-full ml:hidden" />
+          <Image src={inventorySix} alt="inventory" priority className="hidden w-full ml:block tb:hidden" />
+          <Image src={inventoryEight} alt="inventory" priority className="hidden w-full tb:block lt:hidden" />
+          <Image src={inventoryTen} alt="inventory" priority className="hidden w-full lt:block" />
+          {/* CSS 그리드 오버레이 */}
+          <div className="absolute inset-0 p-[10%] ml:p-[8%] tb:p-[6%] lt:p-[4%]">
+            <CollectionGrid mode={currentMode} backgrounds={backgrounds} pots={pots} crops={ownedCrops} />
           </div>
         </div>
       </div>
