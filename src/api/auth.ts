@@ -72,5 +72,5 @@ export const authApi = {
       data: response.data
     }));
   },
-  equipItem: (userItemId: string, equipped: boolean) => API.put(`/api/garden/user-items/${userItemId}`, { equipped })
+  equipItem: (userItemId: string, equipped: boolean) => API.patch(`/api/garden/user-items/${userItemId}`, { equipped })
 };
