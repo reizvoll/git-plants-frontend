@@ -39,6 +39,7 @@ const ModeSectionCard = () => {
         </div>
 
         {/* Garden Mode */}
+        {/* TODO: 가든 모드 기능 완성 시 status 제거 예정 */}
         <div className="flex w-full flex-col items-center justify-center gap-2 xs:gap-3">
           <figure className="h-[45px] w-[68px] xs:h-[60px] xs:w-[90px] sm:h-[80px] sm:w-[120px]">
             <Image src={gardenMode} alt="Garden mode preview" loading="lazy" className="h-full w-auto" />
@@ -46,8 +47,9 @@ const ModeSectionCard = () => {
           </figure>
 
           <dl className="flex flex-col items-center gap-1">
-            <dt className="text-center text-[11px] text-text-04 xs:text-caption sm:text-body2">
-              {t("gardenMode.title")}
+            <dt className="flex flex-col items-center text-center text-[11px] text-text-04 xs:text-caption sm:text-body2">
+              <span>{t("gardenMode.title")}</span>
+              <span className="text-[9px] text-text-03 xs:text-[10px] sm:text-[11px]">{t("gardenMode.status")}</span>
             </dt>
             <dd className="whitespace-pre-line px-2 text-center text-[9px] text-text-04 xs:text-[10px] sm:text-[11px]">
               {t("gardenMode.description")}
