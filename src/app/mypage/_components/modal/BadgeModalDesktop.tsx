@@ -1,5 +1,6 @@
 import Close from "@/assets/icons/Close";
 import badgeSlot from "@/assets/images/badge_slot.webp";
+import { BadgeSlot } from "@/components/shared/InventorySlot";
 import Modal from "@/components/ui/Modal";
 import { useModalKeyboard } from "@/lib/hooks/common/useModalKeyboard";
 import { useTranslations } from "next-intl";
@@ -21,6 +22,8 @@ type BadgeModalDesktopProps = {
 
 const BadgeModalDesktop = ({ isOpen, onClose, badges }: BadgeModalDesktopProps) => {
   const t = useTranslations("mypage.badgeModal");
+  const totalSlots = 12;
+  const slots = Array.from({ length: totalSlots }, (_, index) => badges[index] || null);
   useModalKeyboard({ isOpen, onClose });
 
   return (
@@ -40,15 +43,10 @@ const BadgeModalDesktop = ({ isOpen, onClose, badges }: BadgeModalDesktopProps) 
           <Image src={badgeSlot} alt="Badge slot background" priority />
           <figcaption className="sr-only">title</figcaption>
 
-          <div className="absolute inset-0 flex -translate-x-[3px] -translate-y-[72px] transform flex-col items-center justify-center">
-            <ul className="grid grid-cols-6 gap-7">
-              {badges.map((badge) => (
-                <li key={badge.id} className="group relative flex flex-col items-center">
-                  <Image src={badge.badge.imageUrl} alt={badge.badge.name} width={120} height={120} />
-                  <span className="text-body group-hover:shadow-emphasize absolute left-1/2 top-[-8px] -translate-x-1/2 -translate-y-full rounded-lg bg-bg-01 px-4 py-2 text-center text-primary-default opacity-0 transition-all duration-200 group-hover:opacity-100">
-                    {badge.badge.name}
-                  </span>
-                </li>
+          <div className="absolute inset-0 flex items-center justify-center p-[clamp(14px,4.2vw,42px)]">
+            <ul className="grid h-full w-full grid-cols-6 grid-rows-2 gap-[clamp(5px,0.75vw,22px)] p-[clamp(3px,0.9vw,9px)]">
+              {slots.map((badge, index) => (
+                <BadgeSlot key={badge?.id || `empty-${index}`} badge={badge?.badge} />
               ))}
             </ul>
           </div>
