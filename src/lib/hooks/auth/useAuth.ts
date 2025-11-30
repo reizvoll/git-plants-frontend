@@ -39,7 +39,7 @@ export const useAuth = (requireAuth: boolean = false) => {
   const logoutMutation = useMutation({
     mutationFn: authApi.signOut,
     onSuccess: () => {
-      queryClient.clear();
+      queryClient.removeQueries();
       clearUser();
       localStorage.removeItem("auth-storage");
 
@@ -67,12 +67,13 @@ export const useAuth = (requireAuth: boolean = false) => {
       setUser(sessionUser);
     } else if (!isLoading && !sessionUser && user) {
       // 세션이 없으면서 localStorage에는 user가 있는 경우 = 세션 만료
+      queryClient.removeQueries();
       clearUser();
       if (requireAuth) {
         router.push("/");
       }
     }
-  }, [sessionUser, isLoading, setUser, clearUser, router, requireAuth, user]);
+  }, [sessionUser, isLoading, setUser, clearUser, router, requireAuth, user, queryClient]);
 
   return {
     // 사용자 정보
