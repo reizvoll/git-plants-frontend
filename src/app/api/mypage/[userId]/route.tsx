@@ -1,9 +1,31 @@
 import { createAnimatedGIF } from "@/lib/utils/gifGenerator";
 import { NextRequest } from "next/server";
 
-// image caching for 2hr
-const imageCache = new Map<string, Buffer>();
-const CACHE_DURATION = 2 * 60 * 60 * 1000; // 2hr
+// LRU cache with size limit and TTL
+const MAX_CACHE_SIZE = 50; // Maximum number of cached items
+const CACHE_DURATION = 1 * 60 * 1000; // 1 minute
+const imageCache = new Map<string, { buffer: Buffer; timestamp: number }>();
+
+function cleanExpiredCache() {
+  const now = Date.now();
+  for (const [key, value] of imageCache.entries()) {
+    if (now - value.timestamp > CACHE_DURATION) {
+      imageCache.delete(key);
+    }
+  }
+}
+
+function addToCache(key: string, buffer: Buffer) {
+  cleanExpiredCache();
+
+  // If cache is full, remove oldest entry (first item in Map)
+  if (imageCache.size >= MAX_CACHE_SIZE) {
+    const firstKey = imageCache.keys().next().value;
+    if (firstKey) imageCache.delete(firstKey);
+  }
+
+  imageCache.set(key, { buffer, timestamp: Date.now() });
+}
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
   try {
@@ -61,17 +83,24 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const calculatedPotX = Math.round((potPosition.x / 100) * customSize.width);
     const calculatedPotY = Math.round((potPosition.y / 100) * customSize.height);
 
-    // check cache
-    if (imageCache.has(cacheKey)) {
-      console.log("Using cached GIF");
-      const cachedGif = imageCache.get(cacheKey)!;
+    // create cache key including item URLs to invalidate when equipment changes
+    const itemCacheKey = `${cacheKey}-${backgroundUrl}-${potUrl}-${plantUrl}`;
 
-      return new Response(new Uint8Array(cachedGif), {
-        headers: {
-          "Content-Type": "image/gif",
-          "Cache-Control": "public, max-age=7200" // 2hr
-        }
-      });
+    // check cache
+    const cached = imageCache.get(itemCacheKey);
+    if (cached) {
+      const age = Date.now() - cached.timestamp;
+      if (age < CACHE_DURATION) {
+        console.log("Using cached GIF");
+        return new Response(new Uint8Array(cached.buffer), {
+          headers: {
+            "Content-Type": "image/gif",
+            "Cache-Control": `public, max-age=${Math.floor((CACHE_DURATION - age) / 1000)}`
+          }
+        });
+      } else {
+        imageCache.delete(itemCacheKey);
+      }
     }
 
     // compose image using Sharp
@@ -110,18 +139,13 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         calculatedPotY
       });
 
-      // save to cache
-      imageCache.set(cacheKey, animatedGIF);
-
-      // remove from cache after 2hr
-      setTimeout(() => {
-        imageCache.delete(cacheKey);
-      }, CACHE_DURATION);
+      // save to cache with LRU eviction
+      addToCache(itemCacheKey, animatedGIF);
 
       return new Response(new Uint8Array(animatedGIF), {
         headers: {
           "Content-Type": "image/gif",
-          "Cache-Control": "public, max-age=3600"
+          "Cache-Control": `public, max-age=${CACHE_DURATION / 1000}`
         }
       });
     } catch (sharpError) {
