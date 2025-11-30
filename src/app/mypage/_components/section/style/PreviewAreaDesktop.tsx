@@ -39,23 +39,31 @@ const PreviewAreaDesktop = ({
                 style={{
                   left: `${potPosition.x}%`,
                   top: `${potPosition.y}%`,
-                  transform: "translate(-50%, -80%)"
+                  transform: "translate(-50%, -70%)",
+                  width: "90px",
+                  height: "90px"
                 }}
                 onClick={(e) => e.stopPropagation()}
                 aria-label="potPosition"
               >
-                <Image src={selectedPot.item.iconUrl} alt={selectedPot.item.name || "Pot"} width={80} height={80} />
+                <Image
+                  src={selectedPot.item.iconUrl}
+                  alt={selectedPot.item.name || "Pot"}
+                  width={90}
+                  height={90}
+                  style={{ width: "100%", height: "100%" }}
+                />
 
                 {currentPlant && (
                   <div
-                    className="absolute"
+                    className="absolute leading-none"
                     style={{
                       left: "50%",
-                      top: "-160px",
+                      top: "-167px",
                       transform: "translateX(-50%)",
                       zIndex: 10,
-                      width: "100px",
-                      height: "200px",
+                      width: "110px",
+                      height: "210px",
                       position: "absolute"
                     }}
                   >
@@ -65,7 +73,7 @@ const PreviewAreaDesktop = ({
                         alt={currentPlant.monthlyPlant.name || "Plant"}
                         fill
                         className="object-contain"
-                        sizes="100px"
+                        sizes="110px"
                       />
                     </div>
                   </div>

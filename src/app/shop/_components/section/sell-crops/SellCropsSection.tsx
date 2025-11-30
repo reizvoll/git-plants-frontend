@@ -22,7 +22,8 @@ const SellCropsSection = () => {
 
   // 선택된 작물 개수와 총 판매가 계산
   const selectedCount = selectedCropsForSale.reduce((sum, item) => sum + item.count, 0);
-  const totalPrice = selectedCount * 100; // 임시로 개당 100 seed
+  // TODO: 백엔드에서 판매가격 필드(sellingPrice) 추가 시 삭제 예정
+  const totalPrice = selectedCount * 100;
 
   const handleSellCrops = () => {
     handleSell(selectedCropsForSale, harvestableCrops);

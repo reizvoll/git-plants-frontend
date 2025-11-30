@@ -35,9 +35,13 @@ const ModeSectionCard = () => {
           </dl>
         </div>
 
+        {/* TODO: 가든 모드 기능 완성 시 status 제거 예정 */}
         <div className="flex w-full flex-row items-center justify-center gap-4 tb:gap-10">
           <dl className="flex flex-col items-center">
-            <dt className="text-center text-body2 text-text-04">{t("gardenMode.title")}</dt>
+            <dt className="flex flex-col items-center text-center text-body2 text-text-04">
+              <span>{t("gardenMode.title")}</span>
+              <span className="text-caption text-text-03">{t("gardenMode.status")}</span>
+            </dt>
             <dd className="mt-3 whitespace-pre-line text-center text-caption text-text-04">
               {t("gardenMode.description")}
             </dd>

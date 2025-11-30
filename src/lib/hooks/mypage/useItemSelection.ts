@@ -49,11 +49,18 @@ export const useItemSelection = ({ items, currentMode, category, equipped }: Ite
     const item = items[index];
     if (item) {
       const isCurrentlyEquipped = isItemEquipped(item);
+
+      // 이미 장착된 아이템을 클릭하면 아무것도 하지 않음
+      if (isCurrentlyEquipped) {
+        return;
+      }
+
       equipItem({
         userItemId: item.id,
-        equipped: !isCurrentlyEquipped,
+        equipped: true,
         category,
-        currentMode
+        currentMode,
+        silent: true
       });
     }
   };

@@ -51,8 +51,9 @@ const CropItem = ({ crop }: CropItemProps) => {
           <span className="text-mini text-brown-500">
             {t("quantity", { quantity: crop.quantity })}
           </span>
+          {/* TODO: 백엔드에서 판매가격 필드(sellingPrice) 추가 시 삭제 예정 */}
           <span className="flex items-center gap-1 text-mini text-brown-500">
-            {t("price")} <Image src={seed} alt="seed" width={9} height={9} /> 10
+            {t("price")} <Image src={seed} alt="seed" width={9} height={9} /> 100
           </span>
         </span>
       )}
@@ -68,9 +69,9 @@ const CropItem = ({ crop }: CropItemProps) => {
         <span className="text-mini text-brown-500">
           {t("quantity", { quantity: crop.quantity })}
         </span>
-        {/* TODO: 판매가격 필드 추가 필요 */}
+        {/* TODO: 백엔드에서 판매가격 필드(sellingPrice) 추가 시 삭제 예정 */}
         <span className="flex items-center gap-1 text-mini text-brown-500">
-          {t("price")} <Image src={seed} alt="seed" width={9} height={9} /> 10
+          {t("price")} <Image src={seed} alt="seed" width={9} height={9} /> 100
         </span>
       </span>
     </li>
