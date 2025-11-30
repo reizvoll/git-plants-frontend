@@ -137,7 +137,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
               onResetToDefault={() => {
                 const defaultSize = currentMode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
                 setCustomSize(defaultSize);
-                setPotPosition({ x: 50, y: 80 });
+                setPotPosition({ x: 50, y: 88 });
               }}
             />
           </div>
@@ -163,7 +163,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
               onResetToDefault={() => {
                 const defaultSize = currentMode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
                 setCustomSize(defaultSize);
-                setPotPosition({ x: 50, y: 80 });
+                setPotPosition({ x: 50, y: 88 });
               }}
             />
           </div>
@@ -206,7 +206,7 @@ const StyleSection = ({ onNavigateToCollection }: StyleSectionProps) => {
               onResetToDefault={() => {
                 const defaultSize = currentMode === "MINI" ? { width: 267, height: 400 } : { width: 400, height: 300 };
                 setCustomSize(defaultSize);
-                setPotPosition({ x: 50, y: 80 });
+                setPotPosition({ x: 50, y: 88 });
               }}
             />
           </div>
