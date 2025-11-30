@@ -7,6 +7,8 @@ const gifFrames = require("gif-frames") as any;
 const CACHE_DURATION = 2 * 60 * 60 * 1000; // 2hr
 const PLANT_WIDTH = 100;
 const PLANT_HEIGHT = 200;
+const POT_WIDTH = 80;
+const POT_HEIGHT = 80;
 const POT_OFFSET = 40;
 const PLANT_OFFSET_X = 50;
 const PLANT_OFFSET_Y = 200;
@@ -86,11 +88,20 @@ async function createBaseComposite(
   calculatedPotX: number,
   calculatedPotY: number
 ): Promise<Buffer> {
+  // Resize pot to appropriate dimensions
+  const resizedPot = await sharp(potBuffer)
+    .resize(POT_WIDTH, POT_HEIGHT, {
+      kernel: sharp.kernel.nearest,
+      fastShrinkOnLoad: false
+    })
+    .png()
+    .toBuffer();
+
   return await sharp(bgBuffer)
     .resize(customSize.width, customSize.height)
     .composite([
       {
-        input: potBuffer,
+        input: resizedPot,
         left: calculatedPotX - POT_OFFSET,
         top: calculatedPotY - POT_OFFSET,
         blend: "over"
