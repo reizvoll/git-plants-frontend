@@ -67,7 +67,10 @@ export const useAuth = (requireAuth: boolean = false) => {
       setUser(sessionUser);
     } else if (!isLoading && !sessionUser && user) {
       // 세션이 없으면서 localStorage에는 user가 있는 경우 = 세션 만료
-      queryClient.removeQueries();
+      // auth 쿼리는 제외하고 나머지만 제거 (무한 루프 방지)
+      queryClient.removeQueries({
+        predicate: (query) => !query.queryKey.includes("auth")
+      });
       clearUser();
       if (requireAuth) {
         router.push("/");
