@@ -30,23 +30,26 @@ export const useSellCrops = () => {
         throw new Error(t("noCropsSelected"));
       }
 
-      // calculate the price of the selected crops (temporary: 100 seed per crop)
+      // calculate the price of the selected crops
       const totalCount = selectedCropsForSale.reduce((sum, item) => sum + item.count, 0);
+      // TODO: 백엔드에서 판매가격 필드(sellingPrice) 추가 시 삭제 예정
+      const totalPrice = totalCount * 100;
 
       // prepare the data to send to the server
       const plantIds = selectedCropsForSale.flatMap((item) => Array(item.count).fill(item.plantId));
 
       // call the crop sell API
-      const response = await shopApi.sellCrops(plantIds, totalCount);
-      return { response, totalCount };
+      const response = await shopApi.sellCrops(plantIds, totalPrice);
+      return { response, totalCount, totalPrice };
     },
-    onSuccess: ({ response }) => {
+    onSuccess: ({ response, totalPrice }) => {
       // invalidate profile (refresh)
       queryClient.invalidateQueries({ queryKey: ["profile"] });
 
       // get the information from the server response
-      const { soldCropsCount, seeds } = response.data;
-      addToast(t("success", { count: soldCropsCount, seeds: seeds.count }), "success");
+      const { soldCropsCount } = response.data;
+      // totalPrice: increase seeds count (seeds.count is not used because it is the final seed count)
+      addToast(t("success", { count: soldCropsCount, seeds: totalPrice }), "success");
     },
     onError: (error: unknown) => {
       addErrorToast(error, t("error"));
