@@ -21,6 +21,15 @@ export const PublicAPI = axios.create({
   validateStatus: (status) => status < 500
 });
 
+// Request interceptor - add timezone header to all requests
+[API, PublicAPI].forEach((instance) => {
+  instance.interceptors.request.use((config) => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    config.headers["X-Timezone"] = timezone;
+    return config;
+  });
+});
+
 // Response interceptor - automatically refresh token on 401 error
 API.interceptors.response.use(
   (response) => response,
