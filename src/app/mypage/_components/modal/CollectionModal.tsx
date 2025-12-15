@@ -21,8 +21,8 @@ const CollectionModal = ({ isOpen, onClose }: CollectionModalProps) => {
   const ts = useTranslations("mypage.collectionSection");
 
   // 아이템 분류
-  const backgrounds = items.filter((item) => item.item.category === "BACKGROUND");
-  const pots = items.filter((item) => item.item.category === "POT");
+  const backgrounds = items.filter((item) => item.item.category === "background");
+  const pots = items.filter((item) => item.item.category === "pot");
   const ownedCrops = crops;
 
   const hasShownToast = useRef(false);
@@ -45,7 +45,7 @@ const CollectionModal = ({ isOpen, onClose }: CollectionModalProps) => {
 
   return (
     <FullScreenModal isOpen={isOpen} onClose={onClose} title={t("title")}>
-      <section className="flex flex-1 flex-col items-center gap-6 bg-bg-02 px-3 pt-6 xs:gap-8 xs:px-4 xs:pt-8 s:gap-[40px]">
+      <section className="flex flex-1 flex-col items-center gap-[8vw] bg-bg-02 px-3 py-6 xs:px-4 xs:py-8">
         <figure className="flex flex-row items-center justify-center gap-2 self-start xs:gap-3">
           <Image src={plant} alt="plant" width={32} height={32} className="xs:h-10 xs:w-10" />
           <figcaption className="sr-only">{t("title")}</figcaption>
@@ -56,7 +56,7 @@ const CollectionModal = ({ isOpen, onClose }: CollectionModalProps) => {
         </figure>
 
         {hasAnyItems ? (
-          <article className="flex w-full flex-col gap-10 px-1 xs:gap-12 xs:px-2 s:gap-16">
+          <article className="flex w-full flex-col gap-[8vw] px-1 xs:px-2">
             {/* 작물 섹션 */}
             {ownedCrops.length > 0 && (
               <div className="flex flex-col gap-3 xs:gap-4">
@@ -64,7 +64,7 @@ const CollectionModal = ({ isOpen, onClose }: CollectionModalProps) => {
                 <ul className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide xs:gap-4">
                   {ownedCrops.map((crop) => (
                     <li key={crop.id} className="relative flex-shrink-0">
-                      <div className="relative size-[60px] xs:size-[70px] s:size-[80px]">
+                      <div className="relative size-[50px] xs:size-[60px] s:size-[60px]">
                         <Image
                           src={crop.monthlyPlant.cropImageUrl}
                           alt={crop.monthlyPlant.name}
@@ -91,11 +91,9 @@ const CollectionModal = ({ isOpen, onClose }: CollectionModalProps) => {
                       <Image
                         src={background.item.iconUrl}
                         alt={background.item.name}
-                        className="object-cover"
-                        width={80}
-                        height={80}
-                        sizes="(max-width: 280px) 60px, (max-width: 320px) 70px, 80px"
-                        style={{ width: "auto", height: "auto" }}
+                        width={60}
+                        height={60}
+                        className="h-[50px] w-[50px] object-cover xs:h-[60px] xs:w-[60px] s:h-[60px] s:w-[60px]"
                       />
                     </li>
                   ))}
@@ -106,16 +104,16 @@ const CollectionModal = ({ isOpen, onClose }: CollectionModalProps) => {
             {/* 화분 섹션 */}
             {pots.length > 0 && (
               <div className="flex flex-col gap-3 xs:gap-4">
-                <h4 className="font-pretendard text-body1 font-bold text-text-04 xs:text-title2">{ts("pot")}</h4>
+                <h4 className="text-body1 font-bold text-text-04 xs:text-title2">{ts("pot")}</h4>
                 <ul className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide xs:gap-4">
                   {pots.map((pot) => (
                     <li key={pot.id} className="relative flex-shrink-0">
                       <Image
                         src={pot.item.iconUrl}
                         alt={pot.item.name}
-                        width={80}
-                        height={80}
-                        className="h-[60px] w-[60px] object-cover xs:h-[70px] xs:w-[70px] s:h-[80px] s:w-[80px]"
+                        width={60}
+                        height={60}
+                        className="h-[50px] w-[50px] object-cover xs:h-[60px] xs:w-[60px] s:h-[60px] s:w-[60px]"
                       />
                     </li>
                   ))}
