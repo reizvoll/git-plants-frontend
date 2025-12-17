@@ -76,7 +76,9 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
     if (breakpoint !== "mobile" && isModalOpen) {
       setIsModalOpen(false);
     }
+  }, [breakpoint, isModalOpen]);
 
+  useEffect(() => {
     if (breakpoint === "mobile") return;
 
     const items = { CROP: ownedCrops, BACKGROUND: backgrounds, POT: pots }[currentMode];
@@ -84,7 +86,7 @@ const CollectionSection = ({ initialMode = "CROP" }: CollectionSectionProps) => 
       shownToastModes.current.add(currentMode);
       addToast(t("noItemMessage"), "warning");
     }
-  }, [breakpoint, isModalOpen, currentMode, ownedCrops, backgrounds, pots, addToast, t]);
+  }, [currentMode]);
 
   return (
     <section aria-labelledby="collection-title" className="flex w-full justify-center">
