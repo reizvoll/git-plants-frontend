@@ -20,7 +20,6 @@ const CollectionModal = ({ isOpen, onClose }: CollectionModalProps) => {
   const t = useTranslations("mypage.collectionSection.modal");
   const ts = useTranslations("mypage.collectionSection");
 
-  // 아이템 분류
   const backgrounds = items.filter((item) => item.item.category === "background");
   const pots = items.filter((item) => item.item.category === "pot");
   const ownedCrops = crops;
@@ -39,7 +38,7 @@ const CollectionModal = ({ isOpen, onClose }: CollectionModalProps) => {
       hasShownToast.current = true;
       addToast(ts("noItemMessage"), "warning");
     }
-  }, [isOpen, backgrounds.length, pots.length, ownedCrops.length, addToast, ts]);
+  }, [isOpen]);
 
   const hasAnyItems = ownedCrops.length > 0 || backgrounds.length > 0 || pots.length > 0;
 
