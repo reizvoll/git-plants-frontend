@@ -17,7 +17,7 @@ const RewardSectionCard = () => {
       </h3>
 
       <figure className="h-auto w-[80px] xs:w-[110px] sm:w-[140px]">
-        <Image src={sysflow} alt="System flow illustration" loading="lazy" className="h-full w-auto" />
+        <Image src={sysflow} alt="System flow illustration" loading="lazy" className="h-auto w-full" />
         <figcaption className="sr-only">{t("title")}</figcaption>
       </figure>
 
